@@ -87,9 +87,9 @@ class Crawler(object):
             # TODO
             # movies and images
             # article.movies = extractor.extractVideos(article.topNode)
-            # if self.config.enableImageFetching:
-            #     imageExtractor = self.getImageExtractor(article)
-            #     article.topImage = imageExtractor.getBestImage(article.rawDoc, article.topNode)
+            if self.config.enableImageFetching:
+                imageExtractor = self.getImageExtractor(article)
+                article.topImage = imageExtractor.getBestImage(article.rawDoc, article.topNode)
                 
             article.topNode = extractor.postExtractionCleanup(article.topNode)
             article.cleanedArticleText = outputFormatter.getFormattedText(article.topNode)
