@@ -52,7 +52,8 @@ Goose is licensed by Gravity.com under the Apache 2.0 license, see the LICENSE f
 
 
 ##TODO
-  - CamelCase method and variables : We have used camelcase code to reflect the orginal scala code.
+  - Camel Case method and variables : We have used camelcase code to reflect the orginal scala code.
+  - Move modules around.
     This should be changed to a more pythonic naming.
   - Video extraction
   - Ability to use localized stopwords
