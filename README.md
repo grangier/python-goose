@@ -3,7 +3,7 @@
 ##Intro
 
 
-Goose was originally an article extractor written in Java that has most recently (aug2011) converted to a scala project by gravitylabs.com
+Goose was originally an article extractor written in Java that has most recently (aug2011) converted to a scala project by Gravity.com
 
 This is a complete rewrite in python. The aim of the software is is to take any news article or article type web page and not only extract what is the main body of the article but also all meta data and most probable image candidate.
 
