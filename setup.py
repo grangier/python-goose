@@ -1,0 +1,17 @@
+from setuptools import setup, find_packages
+import os
+
+setup(name='goose',
+    version='0.0.1',
+    description="Html Content / Article Extractor",
+    long_description="",
+    keywords='',
+    author='Xavier Grangier',
+    author_email='grangier@gmail.com',
+    url='https://github.com/xgdlm/python-goose',
+    license='Apache',
+    packages=find_packages(),
+    include_package_data=True,
+    zip_safe=False,
+    install_requires=['PIL', 'lxml']
+)
