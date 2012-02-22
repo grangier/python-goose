@@ -45,9 +45,13 @@ Goose is licensed by Gravity.com under the Apache 2.0 license, see the LICENSE f
     >>> url = 'http://edition.cnn.com/2012/02/22/world/europe/uk-occupy-london/index.html?hpt=ieu_c2'
     >>> g = Goose()
     >>> article = g.extractContent(url=url)
-    >>> print article.cleanedArticleText[:150]
+    >>> article.title
+    u'Occupy London loses eviction fight'
+    >>> article.metaDescription
+    "Occupy London protesters who have been camped outside the landmark St. Paul's Cathedral for the past four months lost their court bid to avoid eviction Wednesday in a decision made by London's Court of Appeal."
+    >>> article.cleanedArticleText[:150]
     (CNN) -- Occupy London protesters who have been camped outside the landmark St. Paul's Cathedral for the past four months lost their court bid to avoi
-    >>> print article.topImage.imageSrc
+    >>> article.topImage.imageSrc
     http://i2.cdn.turner.com/cnn/dam/assets/111017024308-occupy-london-st-paul-s-cathedral-story-top.jpg
 
 
