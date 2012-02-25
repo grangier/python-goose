@@ -4,7 +4,6 @@ import string
 from goose.utils import FileHelper 
 
 from goose.utils.encoding import smart_unicode
-from goose.utils.encoding import force_unicode
 from goose.utils.encoding import smart_str
 from goose.utils.encoding import DjangoUnicodeDecodeError
 
@@ -46,7 +45,7 @@ class WordStats(object):
     
     
     def getStopWords(self):
-        return stopWords
+        return self.stopWords
     
     
     def setStopWords(self, words):
