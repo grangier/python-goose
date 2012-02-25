@@ -20,9 +20,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import os
 from copy import deepcopy
 from goose.Article import Article
-from goose.utils import ParsingCandidate, URLHelper
+from goose.utils import URLHelper
 from goose.extractors import StandardContentExtractor
 from goose.cleaners import StandardDocumentCleaner
 from goose.outputformatters import StandardOutputFormatter

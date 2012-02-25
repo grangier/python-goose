@@ -3,16 +3,12 @@ from lxml import etree
 from copy import deepcopy
 from goose.text import innerTrim
 from goose.text import encodeValue
-# from goose.utils.dammit import UnicodeDammit
-# from BeautifulSoup import UnicodeDammit
-# from django.utils.encoding import smart_unicode
 
 class Parser(object):
     
     
     @classmethod
     def fromstring(self, html):
-        html_org = html
         html = encodeValue(html)
         self.doc = lxml.html.fromstring(html)
         return self.doc
@@ -70,7 +66,6 @@ class Parser(object):
     
     @classmethod
     def childNodesWithText(self, node):
-        parent = self.getParent(node)
         root = node
         # create the first text node
         # if we have some text in the node
@@ -90,8 +85,6 @@ class Parser(object):
             if n.tail:
                 t = self.createElement(tag='text', text=n.tail, tail=None)
                 root.insert(idx+1, t)
-        # replace the node by the root
-        #parent.replace(node, root)
         return list(root)
         
         

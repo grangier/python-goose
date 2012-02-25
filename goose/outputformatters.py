@@ -2,7 +2,6 @@
 from HTMLParser import HTMLParser
 from goose.text import StopWords, innerTrim
 from goose.parsers import Parser
-from copy import deepcopy
 
 class OutputFormatter(object):
     

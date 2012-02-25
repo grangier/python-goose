@@ -3,7 +3,6 @@ import os
 from goose.Configuration import Configuration
 from goose.Crawler import CrawlCandidate
 from goose.Crawler import Crawler
-from goose.Article import Article
 
 class Goose(object):
     """\
