@@ -2,7 +2,7 @@
 import goose
 from goose.utils import FileHelper
 from goose.Goose import Goose
-from goose.Goose import Article
+from goose.Article import Article
 from goose.parsers import Parser
 from goose.Configuration import Configuration
 import unittest
