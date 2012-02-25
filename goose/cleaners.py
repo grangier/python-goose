@@ -205,15 +205,7 @@ class DocumentCleaner(object):
     def convertDivsToParagraphs(self, doc, domType):
         badDivs = 0
         elseDivs = 0
-        convertedTextNodes = 0
         divs = Parser.getElementsByTag(doc, tag=domType)
-        replaceNodesList = {}
-        
-        divIndex = 0
-        errors = []
-        goods = []
-        regexps = []
-        selectors = []
         tags = ['a','blockquote','dl','div','img','ol','p','pre','table','ul']
         
         for div in divs:
