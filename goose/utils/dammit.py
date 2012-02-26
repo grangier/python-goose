@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Beautiful Soup bonus library: Unicode, Dammit
 
 This class forces XML data into a standard format (usually to UTF-8 or

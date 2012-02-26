@@ -1,11 +1,10 @@
+# -*- coding: utf-8 -*-
 import types
 import urllib
 import locale
 import datetime
 import codecs
 from decimal import Decimal
-
-#from django.utils.functional import Promise
 
 class DjangoUnicodeDecodeError(UnicodeDecodeError):
     def __init__(self, obj, *args):
