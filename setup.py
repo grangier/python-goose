@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-import os
 
 setup(name='goose',
     version='0.0.1',
