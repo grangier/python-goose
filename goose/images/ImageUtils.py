@@ -3,12 +3,12 @@
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
-regarding copyright ownership. 
+regarding copyright ownership.
 
 Python port was written by Xavier Grangier for Recrutae
 
 Gravity.com licenses this file
-to you under the Apache License, Version 2.0 (the "License"); 
+to you under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
@@ -38,20 +38,20 @@ class ImageUtils(object):
         imageDetails.setWidth(width)
         imageDetails.setHeight(height)
         return imageDetails
-        
+    
     
     @classmethod
     def storeImageToLocalFile(self, httpClient, linkhash, imageSrc, config):
         """\
-        Writes an image src http string to disk as a temporary file 
-        and returns the LocallyStoredImage object 
+        Writes an image src http string to disk as a temporary file
+        and returns the LocallyStoredImage object
         that has the info you should need on the image
         """
         # check for a cache hit already on disk
         image = self.readExistingFileInfo(linkhash, imageSrc, config)
         if image:
             return image
-            
+        
         # no cache found download the image
         data = self.fetchEntity(httpClient, imageSrc)
         if data:
@@ -60,7 +60,7 @@ class ImageUtils(object):
                 return image
         
         return None
-            
+    
     
     @classmethod
     def getFileExtensionName(self, imageDetails):
@@ -128,5 +128,5 @@ class ImageUtils(object):
 
 
 
-
+        
         

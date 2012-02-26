@@ -3,12 +3,12 @@
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
-regarding copyright ownership. 
+regarding copyright ownership.
 
 Python port was written by Xavier Grangier for Recrutae
 
 Gravity.com licenses this file
-to you under the Apache License, Version 2.0 (the "License"); 
+to you under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
@@ -108,8 +108,8 @@ class Parser(object):
                 t = self.createElement(tag='text', text=n.tail, tail=None)
                 root.insert(idx+1, t)
         return list(root)
-        
-        
+    
+    
     @classmethod
     def textToPara(self, text):
         return self.fromstring(text)
@@ -215,7 +215,7 @@ class Parser(object):
     def setAttribute(self, node, attr=None, value=None):
         if attr and value:
             node.set(attr, value)
-            
+    
     @classmethod
     def outerHtml(self, node):
         e0 = node

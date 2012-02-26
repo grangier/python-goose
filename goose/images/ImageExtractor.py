@@ -3,12 +3,12 @@
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
-regarding copyright ownership. 
+regarding copyright ownership.
 
 Python port was written by Xavier Grangier for Recrutae
 
 Gravity.com licenses this file
-to you under the Apache License, Version 2.0 (the "License"); 
+to you under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
@@ -22,7 +22,7 @@ limitations under the License.
 """
 class LocallyStoredImage(object):
     
-    def __init__(self, imgSrc='', localFileName='', 
+    def __init__(self, imgSrc='', localFileName='',
         linkhash='', bytes=long(0), fileExtension='', height=0, width=0):
         self.imgSrc = imgSrc
         self.localFileName = localFileName

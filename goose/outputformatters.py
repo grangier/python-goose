@@ -3,12 +3,12 @@
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
-regarding copyright ownership. 
+regarding copyright ownership.
 
 Python port was written by Xavier Grangier for Recrutae
 
 Gravity.com licenses this file
-to you under the Apache License, Version 2.0 (the "License"); 
+to you under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
@@ -51,12 +51,12 @@ class OutputFormatter(object):
                 txt = HTMLParser().unescape(txt)
                 txts.append(innerTrim(txt))
         return '\n\n'.join(txts)
-            
+    
     
     
     def convertLinksToText(self):
         """\
-        cleans up and converts any nodes that 
+        cleans up and converts any nodes that
         should be considered text into text
         """
         Parser.stripTags(self.getTopNode(), 'a')
@@ -64,8 +64,8 @@ class OutputFormatter(object):
     
     def removeNodesWithNegativeScores(self):
         """\
-        if there are elements inside our top node 
-        that have a negative gravity score, 
+        if there are elements inside our top node
+        that have a negative gravity score,
         let's give em the boot
         """
         gravityItems = self.topNode.cssselect("*[gravityScore]")
@@ -77,9 +77,9 @@ class OutputFormatter(object):
     
     def replaceTagsWithText(self):
         """\
-        replace common tags with just 
+        replace common tags with just
         text so we don't have any crazy formatting issues
-        so replace <br>, <i>, <strong>, etc.... 
+        so replace <br>, <i>, <strong>, etc....
         with whatever text is inside them
         code : http://lxml.de/api/lxml.etree-module.html#strip_tags
         """
@@ -88,7 +88,7 @@ class OutputFormatter(object):
     
     def removeParagraphsWithFewWords(self):
         """\
-        remove paragraphs that have less than x number of words, 
+        remove paragraphs that have less than x number of words,
         would indicate that it's some sort of link
         """
         allNodes = Parser.getElementsByTags(self.getTopNode(),['*'])#.cssselect('*')

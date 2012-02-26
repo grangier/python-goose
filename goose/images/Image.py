@@ -3,12 +3,12 @@
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
-regarding copyright ownership. 
+regarding copyright ownership.
 
 Python port was written by Xavier Grangier for Recrutae
 
 Gravity.com licenses this file
-to you under the Apache License, Version 2.0 (the "License"); 
+to you under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
@@ -29,7 +29,7 @@ class Image(object):
         # holds the src of the image
         self.imageSrc = ""
         
-        # how confident are we in this image extraction? 
+        # how confident are we in this image extraction?
         # the most images generally the less confident
         self.confidenceScore = float(0.0)
         
@@ -39,7 +39,7 @@ class Image(object):
         # width of the image in pixels
         self.width = 0
         
-        # what kind of image extraction was used for this? 
+        # what kind of image extraction was used for this?
         # bestGuess, linkTag, openGraph tags?
         self.imageExtractionType = "NA"
         
@@ -50,7 +50,7 @@ class Image(object):
     def getImageSrc(self):
         return self.imageSrc
     
-    
 
 
+        
         

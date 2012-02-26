@@ -3,12 +3,12 @@
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
-regarding copyright ownership. 
+regarding copyright ownership.
 
 Python port was written by Xavier Grangier for Recrutae
 
 Gravity.com licenses this file
-to you under the Apache License, Version 2.0 (the "License"); 
+to you under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
@@ -109,26 +109,26 @@ class DocumentCleaner(object):
         comments = Parser.getComments(doc)
         for item in comments:
             Parser.remove(item)
-                
+        
         return doc
     
     
     def cleanBadTags(self, doc):
         
         # ids
-        naughtyList = doc.xpath(self.queryNaughtyIDs, 
+        naughtyList = doc.xpath(self.queryNaughtyIDs,
                                         namespaces={'re':self.regexpNS})
         for node in naughtyList:
             Parser.remove(node)
         
         # class
-        naughtyClasses = doc.xpath(self.queryNaughtyClasses, 
+        naughtyClasses = doc.xpath(self.queryNaughtyClasses,
                                         namespaces={'re':self.regexpNS})
         for node in naughtyClasses:
             Parser.remove(node)
         
         # name
-        naughtyNames = doc.xpath(self.queryNaughtyNames,    
+        naughtyNames = doc.xpath(self.queryNaughtyNames,
                                         namespaces={'re':self.regexpNS})
         for node in naughtyNames:
             Parser.remove(node)
@@ -151,11 +151,11 @@ class DocumentCleaner(object):
         for item in spans:
             item.drop_tag()
         return doc
-    
 
+    
     def getFlushedBuffer(self, replacementText, doc):
         return Parser.textToPara(replacementText)
-        
+    
     
     def getReplacementNodes(self, doc, div):
         replacementText = []
@@ -184,7 +184,7 @@ class DocumentCleaner(object):
                         outer = " " + Parser.outerHtml(prevSibNode) + " "
                         replacementText.append(outer)
                         nodesToRemove.append(prevSibNode)
-                        Parser.setAttribute(prevSibNode, 
+                        Parser.setAttribute(prevSibNode,
                                     attr='grv-usedalready', value='yes')
                         prev = Parser.previousSibling(prevSibNode)
                         prevSibNode = prev if prev is not None else None
@@ -198,11 +198,11 @@ class DocumentCleaner(object):
                         outer = " " + Parser.outerHtml(nextSibNode) + " "
                         replacementText.append(outer)
                         nodesToRemove.append(nextSibNode)
-                        Parser.setAttribute(nextSibNode, 
+                        Parser.setAttribute(nextSibNode,
                                     attr='grv-usedalready', value='yes')
                         next = Parser.nextSibling(nextSibNode)
                         prevSibNode = next if next is not None else None
-                        
+            
             # otherwise
             else:
                 nodesToReturn.append(kid)
@@ -212,13 +212,13 @@ class DocumentCleaner(object):
             newNode = self.getFlushedBuffer(''.join(replacementText), doc)
             nodesToReturn.append(newNode)
             replacementText = []
-            
+        
         #
         for n in nodesToRemove:
             Parser.remove(n)
         
         return nodesToReturn
-        
+    
     
     def replaceElementsWithPara(self, doc, div):
         Parser.replaceTag(div, 'p')
@@ -237,7 +237,7 @@ class DocumentCleaner(object):
             elif div is not None:
                 replaceNodes = self.getReplacementNodes(doc, div)
                 div.clear()
-    
+                
                 for c, n in enumerate(replaceNodes):
                     div.insert(c, n)
                 
@@ -249,7 +249,7 @@ class DocumentCleaner(object):
         
         
         
-        
     
+
 class StandardDocumentCleaner(DocumentCleaner):
     pass

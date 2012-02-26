@@ -3,12 +3,12 @@
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
-regarding copyright ownership. 
+regarding copyright ownership.
 
 Python port was written by Xavier Grangier for Recrutae
 
 Gravity.com licenses this file
-to you under the Apache License, Version 2.0 (the "License"); 
+to you under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
@@ -36,7 +36,7 @@ class Goose(object):
     
     def extractContent(self, url=None, rawHTML=None):
         """\
-        Main method to extract an article object from a URL, 
+        Main method to extract an article object from a URL,
         pass in a url and get back a Article
         """
         cc = CrawlCandidate(self.config, url, rawHTML)
@@ -60,11 +60,11 @@ class Goose(object):
             os.makedirs(self.config.localStoragePath)
         
         if not os.path.isdir(self.config.localStoragePath):
-            raise Exception(self.config.localStoragePath + 
+            raise Exception(self.config.localStoragePath +
                 " directory does not seem to exist, "
                 "you need to set this for image processing downloads"
             )
-            
+        
         # test to write a dummy file to the directory
         # to check is directory is writtable
         path = '%s/test.txt' % self.config.localStoragePath
@@ -73,11 +73,11 @@ class Goose(object):
             f.close()
             os.remove(path)
         except IOError:
-            raise Exception(self.config.localStoragePath + 
+            raise Exception(self.config.localStoragePath +
                 " directory is not writeble, "
                 "you need to set this for image processing downloads"
             )
         
         
-        
+    
     

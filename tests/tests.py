@@ -3,12 +3,12 @@
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
-regarding copyright ownership. 
+regarding copyright ownership.
 
 Python port was written by Xavier Grangier for Recrutae
 
 Gravity.com licenses this file
-to you under the Apache License, Version 2.0 (the "License"); 
+to you under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
@@ -43,7 +43,7 @@ class TestParser(unittest.TestCase):
         html += '</body></html>'
         doc = Parser.fromstring(html)
         p = Parser.getElementsByTag(doc, tag='p')[0]
-        
+    
     
     
     def test_replacetag(self):
@@ -109,7 +109,7 @@ class TestParser(unittest.TestCase):
         p = Parser.getElementsByTag(doc, tag='p')[0]
         elements = Parser.getElementsByTags(p, ['p', 'a', 'strong'])
         self.assertEqual(len(elements), 2)
-        
+    
     
     
     def test_getElementsByTag(self):
@@ -175,7 +175,7 @@ class TestParser(unittest.TestCase):
         elements = Parser.getElementsByTag(elem, tag="strong", attr="class", value="link")
         self.assertEqual(len(elements), 1)
     
-    
+
 
 
 class TestArticle(unittest.TestCase):
@@ -202,8 +202,8 @@ class TestExtractions(unittest.TestCase):
         return article
     
     
-    def runArticleAssertions(self, article=None, expectedTitle=None, 
-            expectedStart=None, expectedImage=None, 
+    def runArticleAssertions(self, article=None, expectedTitle=None,
+            expectedStart=None, expectedImage=None,
             expectedDescription=None, expectedKeywords=None):
         
         
@@ -248,15 +248,15 @@ class TestExtractions(unittest.TestCase):
             title = article.title
             self.assertIsNotNone(title, msg=u"Title was NULL!")
             self.assertEqual(title, expectedTitle)
-            
+        
         if expectedStart:
             articleText = article.cleanedArticleText
-            self.assertIsNotNone(articleText, 
+            self.assertIsNotNone(articleText,
                     msg=u"Resulting article text was NULL!")
-                    
-            self.assertTrue(len(expectedStart) <= len(articleText), 
+            
+            self.assertTrue(len(expectedStart) <= len(articleText),
                     msg=u"Article text was not as long as expected beginning!")
-                    
+            
             actual = articleText[0:len(expectedStart)]
             try:
                 msg = u"The beginning of the article text was not as expected!\nEXPECTED:%s\nGOT:%s" \
@@ -264,13 +264,13 @@ class TestExtractions(unittest.TestCase):
             except UnicodeDecodeError:
                 msg = u"The beginning of the article text was not as expected!"
             self.assertEqual(expectedStart, actual, msg=msg)
-            
+        
         if expectedImage:
             pass
-            
+        
         if expectedDescription:
             description = article.metaDescription
-            self.assertIsNotNone(description, 
+            self.assertIsNotNone(description,
                     msg="Meta Description was NULL!")
             msg = u"Meta Description was not as expected!\nEXPECTED:%s\nGOT:%s" \
                         % (expectedDescription, description)
@@ -324,7 +324,7 @@ class TestExtractions(unittest.TestCase):
     
     ########################################
     # makes lxml crash
-    # python: double free or corruption 
+    # python: double free or corruption
     def test_techcrunch1(self):
         html = self.getHtml("statichtml/techcrunch1.txt")
         url = "http://techcrunch.com/2011/08/13/2005-zuckerberg-didnt-want-to-take-over-the-world/"
@@ -473,7 +473,7 @@ class TestExtractions(unittest.TestCase):
         article = self.getArticle(url, html)
         self.runArticleAssertions(article=article, expectedStart=content)
         self.printReport()
-        
+    
     
     
     #########################################
@@ -527,7 +527,7 @@ class TestExtractions(unittest.TestCase):
         article = self.getArticle(url, html)
         self.runArticleAssertions(article=article, expectedStart=expected)
         self.printReport()
-    
+
 
 
 if __name__ == '__main__':

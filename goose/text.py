@@ -3,12 +3,12 @@
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
-regarding copyright ownership. 
+regarding copyright ownership.
 
 Python port was written by Xavier Grangier for Recrutae
 
 Gravity.com licenses this file
-to you under the Apache License, Version 2.0 (the "License"); 
+to you under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
@@ -22,7 +22,7 @@ limitations under the License.
 """
 import re
 import string
-from goose.utils import FileHelper 
+from goose.utils import FileHelper
 
 from goose.utils.encoding import smart_unicode
 from goose.utils.encoding import smart_str
@@ -53,14 +53,14 @@ def encodeValue(string):
 class WordStats(object):
     
     def __init__(self):
-        # total number of stopwords or 
+        # total number of stopwords or
         # good words that we can calculate
         self.stopWordCount = 0
         
         # total number of words on a node
         self.wordCount = 0
         
-        # holds an actual list 
+        # holds an actual list
         # of the stop words we found
         self.stopWords = []
     
@@ -88,7 +88,7 @@ class WordStats(object):
     def setWordCount(self, cnt):
         self.wordCount = cnt
     
-    
+
 
 
 class StopWords(object):

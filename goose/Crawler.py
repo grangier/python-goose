@@ -3,12 +3,12 @@
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
-regarding copyright ownership. 
+regarding copyright ownership.
 
 Python port was written by Xavier Grangier for Recrutae
 
 Gravity.com licenses this file
-to you under the Apache License, Version 2.0 (the "License"); 
+to you under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
@@ -37,7 +37,7 @@ class CrawlCandidate(object):
         self.config = config
         self.url = url
         self.rawHTML = rawHTML
-    
+
 
 
 class Crawler(object):
@@ -45,7 +45,7 @@ class Crawler(object):
     def __init__(self, config):
         self.config = config
         self.logPrefix = "crawler:"
-        
+    
     def crawl(self, crawlCandidate):
         article = Article()
         
@@ -91,12 +91,12 @@ class Crawler(object):
             if self.config.enableImageFetching:
                 imageExtractor = self.getImageExtractor(article)
                 article.topImage = imageExtractor.getBestImage(article.rawDoc, article.topNode)
-                
+            
             article.topNode = extractor.postExtractionCleanup(article.topNode)
             article.cleanedArticleText = outputFormatter.getFormattedText(article.topNode)
-            
-        return article
         
+        return article
+    
     def getHTML(self, crawlCandidate, parsingCandidate):
         if crawlCandidate.rawHTML:
             return crawlCandidate.rawHTML
@@ -138,6 +138,6 @@ class Crawler(object):
                 # TODO better log handeling
                 pass
                 
-                
         
+            
             

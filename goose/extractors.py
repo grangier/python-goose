@@ -3,12 +3,12 @@
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
-regarding copyright ownership. 
+regarding copyright ownership.
 
 Python port was written by Xavier Grangier for Recrutae
 
 Gravity.com licenses this file
-to you under the Apache License, Version 2.0 (the "License"); 
+to you under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
@@ -67,7 +67,7 @@ class ContentExtractor(object):
         if '|' in titleText:
             titleText = self.doTitleSplits(titleText, PIPE_SPLITTER)
             usedDelimeter = True
-            
+        
         # split title with -
         if not usedDelimeter and '-' in titleText:
             titleText = self.doTitleSplits(titleText, DASH_SPLITTER)
@@ -154,10 +154,10 @@ class ContentExtractor(object):
         
         if meta is not None and len(meta) > 0:
             content = meta[0].attrib.get('content')
-            
+        
         if content:
             return content.strip()
-            
+        
         return ''
     
     
@@ -215,7 +215,7 @@ class ContentExtractor(object):
             tag = Parser.getText(el)
             if tag:
                 tags.append(tag)
-                
+        
         return set(tags)
     
     
@@ -236,7 +236,7 @@ class ContentExtractor(object):
             highLinkDensity = self.isHighLinkDensity(node)
             if wordStats.getStopWordCount() > 2 and not highLinkDensity:
                 nodesWithText.append(node)
-                
+        
         numberOfNodes = len(nodesWithText)
         negativeScoring = 0
         bottomNodesForNegativeScore = float(numberOfNodes) * 0.25
@@ -295,11 +295,11 @@ class ContentExtractor(object):
     
     def isOkToBoost(self, node):
         """\
-        alot of times the first paragraph might be the caption under an image 
-        so we'll want to make sure if we're going to boost a parent node that 
-        it should be connected to other paragraphs, 
-        at least for the first n paragraphs so we'll want to make sure that 
-        the next sibling is a paragraph and has at 
+        alot of times the first paragraph might be the caption under an image
+        so we'll want to make sure if we're going to boost a parent node that
+        it should be connected to other paragraphs,
+        at least for the first n paragraphs so we'll want to make sure that
+        the next sibling is a paragraph and has at
         least some substatial weight to it
         """
         para = "p"
@@ -319,7 +319,7 @@ class ContentExtractor(object):
                     return True
                 stepsAway += 1
         return False
-        
+    
     
     
     def walkSiblings(self, node):
@@ -375,12 +375,12 @@ class ContentExtractor(object):
     
     def getBaselineScoreForSiblings(self, topNode):
         """\
-        we could have long articles that have tons of paragraphs 
+        we could have long articles that have tons of paragraphs
         so if we tried to calculate the base score against
-        the total text score of those paragraphs it would be unfair. 
+        the total text score of those paragraphs it would be unfair.
         So we need to normalize the score based on the average scoring
-        of the paragraphs within the top node. 
-        For example if our total score of 10 paragraphs was 1000 
+        of the paragraphs within the top node.
+        For example if our total score of 10 paragraphs was 1000
         but each had an average value of 100 then 100 should be our base.
         """
         base = 100000
@@ -405,7 +405,7 @@ class ContentExtractor(object):
     def updateScore(self, node, addToScore):
         """\
         adds a score to the gravityScore Attribute we put on divs
-        we'll get the current score then add the score 
+        we'll get the current score then add the score
         we're passing in to the current
         """
         currentScore = 0
@@ -432,14 +432,14 @@ class ContentExtractor(object):
     
     def isHighLinkDensity(self, e):
         """\
-        checks the density of links within a node, 
+        checks the density of links within a node,
         is there not much text and most of it contains linky shit?
         if so it's no good
         """
         links = Parser.getElementsByTag(e, tag='a')
         if links is None or len(links) == 0:
             return False
-          
+        
         text = Parser.getText(e)
         words = text.split(' ')
         numberOfWords = float(len(words))
@@ -475,7 +475,7 @@ class ContentExtractor(object):
     
     def getNodesToCheck(self, doc):
         """\
-        returns a list of nodes we want to search 
+        returns a list of nodes we want to search
         on like paragraphs and tables
         """
         nodesToCheck = []
@@ -506,11 +506,11 @@ class ContentExtractor(object):
         if (currentNodeScore < thresholdScore) and e.tag != 'td':
             return False
         return True
-    
      
+    
     def postExtractionCleanup(self, targetNode):
         """\
-        remove any divs that looks like non-content, 
+        remove any divs that looks like non-content,
         clusters of links, or paras with no gusto
         """
         node = self.addSiblings(targetNode)
@@ -522,7 +522,7 @@ class ContentExtractor(object):
                     Parser.remove(e)
         return node
     
-    
+
 
 
 class StandardContentExtractor(ContentExtractor):
