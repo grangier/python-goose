@@ -12,7 +12,7 @@ import os
 class TestParser(unittest.TestCase):
     
     def getHtml(self, filename):
-        return FileHelper.loadResourceFile(filename, 'x')
+        return FileHelper.loadResourceFile(filename)
     
     
     def test_childNodesWithText(self):
@@ -170,7 +170,7 @@ class TestExtractions(unittest.TestCase):
         self.articleReport = ["=======================::. ARTICLE REPORT .::======================\n"]
     
     def getHtml(self, filename):
-        return FileHelper.loadResourceFile(filename, 'x')
+        return FileHelper.loadResourceFile(filename)
     
     
     def getArticle(self, url, rawHTML):

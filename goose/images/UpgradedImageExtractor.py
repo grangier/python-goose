@@ -406,7 +406,7 @@ class UpgradedImageIExtractor(ImageExtractor):
     
     def loadCustomSiteMapping(self):
         # TODO
-        dataFile = FileHelper.loadResourceFile("images/known-image-css.txt", "xx")
+        dataFile = FileHelper.loadResourceFile("images/known-image-css.txt")
         lines = dataFile.splitlines()
         for line in lines:
             domain, css = line.split('^')

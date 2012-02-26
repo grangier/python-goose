@@ -46,7 +46,7 @@ class BuildURL(object):
 class FileHelper(object):
     
     @classmethod
-    def loadResourceFile(self, filename, cls):
+    def loadResourceFile(self, filename):
         dirpath =  os.path.dirname(goose.__file__)
         path = '%s/resources/%s' % (dirpath, filename)
         try:

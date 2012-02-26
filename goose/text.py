@@ -77,7 +77,7 @@ class StopWords(object):
         # TODO replace 'x' with class
         # to generate dynamic path for file to load
         path = 'text/stopwords-%s.txt' % language
-        self.STOP_WORDS = set(FileHelper.loadResourceFile(path, 'x').splitlines())
+        self.STOP_WORDS = set(FileHelper.loadResourceFile(path).splitlines())
     
     
     def removePunctuation(self, content):
