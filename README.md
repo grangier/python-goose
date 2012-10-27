@@ -69,10 +69,12 @@ Goose is licensed by Gravity.com under the Apache 2.0 license, see the LICENSE f
 ##OS X 10.7 Install Instructions
 
 Installation Help:
-1. Install libjpeg
+
+1. Install python-devel if you don't have it
+2. Install libjpeg
         brew install libjpeg
 
-2. You need to install the python imaging library.  We wont be using it, but its a dependency deep in the goose egg (fun!).
+3. You need to install the python imaging library.  We wont be using it, but its a dependency deep in the goose egg (fun!).
 
   a. download
 
@@ -88,6 +90,8 @@ Installation Help:
         python setup.py build
         sudo python setup.py install
 
-3. Next up clone this repo and install the egg.
+4. Next up clone this repo and install the egg.
 
-4. Once you install the egg you have to then copy the resources directory manually into the egg.  There is something screwy about the way its setup.
+5. Once you install the egg you have to then copy the resources directory manually into the egg.  There is something screwy about the way its setup.
+
+6. Create and chown the Goose temp directory "/tmp/goosetmp"
