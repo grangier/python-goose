@@ -92,9 +92,10 @@ class WordStats(object):
 
 
 class StopWords(object):
+
+    PUNCTUATION = re.compile("[^\\p{Ll}\\p{Lu}\\p{Lt}\\p{Lo}\\p{Nd}\\p{Pc}\\s]")
     
     def __init__(self, language='en'):
-        self.PUNCTUATION = re.compile("[^\\p{Ll}\\p{Lu}\\p{Lt}\\p{Lo}\\p{Nd}\\p{Pc}\\s]")
         # TODO replace 'x' with class
         # to generate dynamic path for file to load
         path = 'text/stopwords-%s.txt' % language
