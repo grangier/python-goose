@@ -1,1 +1,4 @@
-recursive-include goose/resources *
+recursive-include goose/resources/images *
+recursive-include goose/resources/parser *
+recursive-include goose/resources/text *
+recursive-include goose/resources/statichtml *
