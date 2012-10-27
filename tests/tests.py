@@ -321,6 +321,15 @@ class TestExtractions(unittest.TestCase):
         article = self.getArticle(url, html)
         self.runArticleAssertions(article=article, expectedStart=content)
         self.printReport()
+        
+
+    def test_cbslocal(self):
+        html = self.getHtml("statichtml/cbslocal1.txt")
+        url = "http://newyork.cbslocal.com/2012/06/08/bc-morning-show-american-hero-kelly-malloy/"
+        content = "Boomer & Craig were thrilled to welcome an American Hero into the Allstate Studio, as Kelly"
+        article = self.getArticle(url, html)
+        self.runArticleAssertions(article=article, expectedStart=content)
+        self.printReport()
     
     ########################################
     # makes lxml crash

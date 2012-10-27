@@ -50,6 +50,7 @@ class DocumentCleaner(object):
         self.googlePattern = " google "
         self.entriesPattern = "^[^entry-]more.*$"
         self.facebookPattern = "[^-]facebook"
+        self.facebookBroadcastingPattern = "facebook-broadcasting"
         self.twitterPattern = "[^-]twitter"
         
         self.tabsAndNewLinesReplcesments = ReplaceSequence()\
@@ -70,6 +71,7 @@ class DocumentCleaner(object):
         docToClean = self.removeNodesViaRegEx(docToClean, self.googlePattern)
         docToClean = self.removeNodesViaRegEx(docToClean, self.entriesPattern)
         docToClean = self.removeNodesViaRegEx(docToClean, self.facebookPattern)
+        docToClean = self.removeNodesViaRegEx(docToClean, self.facebookBroadcastingPattern)
         docToClean = self.removeNodesViaRegEx(docToClean, self.twitterPattern)
         docToClean = self.cleanUpSpanTagsInParagraphs(docToClean)
         docToClean = self.convertDivsToParagraphs(docToClean, 'div')
