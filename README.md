@@ -65,3 +65,29 @@ Goose is licensed by Gravity.com under the Apache 2.0 license, see the LICENSE f
 
 ##Known issues
   - There is some issue with unicode URLs.
+
+##OS X 10.7 Install Instructions
+
+Installation Help:
+1. Install libjpeg
+        brew install libjpeg
+
+2. You need to install the python imaging library.  We wont be using it, but its a dependency deep in the goose egg (fun!).
+
+  a. download
+
+        curl -O -L http://effbot.org/downloads/Imaging-1.1.7.tar.gz
+
+  b. extract
+
+        tar -xzf Imaging-1.1.7.tar.gz
+        cd Imaging-1.1.7
+
+  c. build and install
+
+        python setup.py build
+        sudo python setup.py install
+
+3. Next up clone this repo and install the egg.
+
+4. Once you install the egg you have to then copy the resources directory manually into the egg.  There is something screwy about the way its setup.
