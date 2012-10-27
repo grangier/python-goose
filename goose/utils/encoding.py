@@ -6,6 +6,7 @@ import datetime
 import codecs
 from decimal import Decimal
 
+
 class DjangoUnicodeDecodeError(UnicodeDecodeError):
     def __init__(self, obj, *args):
         self.obj = obj
@@ -16,6 +17,7 @@ class DjangoUnicodeDecodeError(UnicodeDecodeError):
         return '%s. You passed in %r (%s)' % (original, self.obj,
                 type(self.obj))
 
+
 class StrAndUnicode(object):
     """
     A class whose __str__ returns its __unicode__ as a UTF-8 bytestring.
@@ -24,6 +26,7 @@ class StrAndUnicode(object):
     """
     def __str__(self):
         return self.__unicode__().encode('utf-8')
+
 
 def smart_unicode(s, encoding='utf-8', strings_only=False, errors='strict'):
     """
@@ -37,6 +40,7 @@ def smart_unicode(s, encoding='utf-8', strings_only=False, errors='strict'):
     #     return s
     return force_unicode(s, encoding, strings_only, errors)
 
+
 def is_protected_type(obj):
     """Determine if the object instance is of a protected type.
 
@@ -49,6 +53,7 @@ def is_protected_type(obj):
         datetime.datetime, datetime.date, datetime.time,
         float, Decimal)
     )
+
 
 def force_unicode(s, encoding='utf-8', strings_only=False, errors='strict'):
     """
@@ -100,6 +105,7 @@ def force_unicode(s, encoding='utf-8', strings_only=False, errors='strict'):
                     errors) for arg in s])
     return s
 
+
 def smart_str(s, encoding='utf-8', strings_only=False, errors='strict'):
     """
     Returns a bytestring version of 's', encoded as specified in 'encoding'.
@@ -128,6 +134,7 @@ def smart_str(s, encoding='utf-8', strings_only=False, errors='strict'):
     else:
         return s
 
+
 def iri_to_uri(iri):
     """
     Convert an Internationalized Resource Identifier (IRI) portion to a URI
@@ -155,6 +162,7 @@ def iri_to_uri(iri):
         return iri
     return urllib.quote(smart_str(iri), safe="/#%[]=:;$&()+,!?*@'~")
 
+
 def filepath_to_uri(path):
     """Convert an file system path to a URI portion that is suitable for
     inclusion in a URL.
@@ -173,6 +181,7 @@ def filepath_to_uri(path):
     # I know about `os.sep` and `os.altsep` but I want to leave
     # some flexibility for hardcoding separators.
     return urllib.quote(smart_str(path).replace("\\", "/"), safe="/~!*()'")
+
 
 # The encoding of the default system locale but falls back to the
 # given fallback encoding if the encoding is unsupported by python or could

@@ -23,10 +23,11 @@ limitations under the License.
 from goose.parsers import Parser
 from goose.utils import ReplaceSequence
 
+
 class DocumentCleaner(object):
-    
+
     def __init__(self):
-        
+
         self.regExRemoveNodes = (
         "^side$|combx|retweet|mediaarticlerelated|menucontainer|navbar"
         "|comment|PopularQuestions|contact|foot|footer|Footer|footnote"
@@ -39,12 +40,10 @@ class DocumentCleaner(object):
         "|konafilter|KonaFilter|breadcrumbs|^fn$|wp-caption-text"
         "|source|legende|ajoutVideo|timestamp"
         )
-        
         self.regexpNS = "http://exslt.org/regular-expressions"
         self.queryNaughtyIDs = "//*[re:test(@id, '%s', 'i')]" % self.regExRemoveNodes
         self.queryNaughtyClasses = "//*[re:test(@class, '%s', 'i')]" % self.regExRemoveNodes
         self.queryNaughtyNames = "//*[re:test(@name, '%s', 'i')]" % self.regExRemoveNodes
-        
         self.divToPElementsPattern = r"<(a|blockquote|dl|div|img|ol|p|pre|table|ul)"
         self.captionPattern = "^caption$"
         self.googlePattern = " google "
@@ -52,16 +51,13 @@ class DocumentCleaner(object):
         self.facebookPattern = "[^-]facebook"
         self.facebookBroadcastingPattern = "facebook-broadcasting"
         self.twitterPattern = "[^-]twitter"
-        
         self.tabsAndNewLinesReplcesments = ReplaceSequence()\
                                             .create("\n", "\n\n")\
                                             .append("\t")\
                                             .append("^\\s+$")
-    
-    
+
     def clean(self, article):
-        
-        
+
         docToClean = article.doc
         docToClean = self.cleanEmTags(docToClean)
         docToClean = self.removeDropCaps(docToClean)
@@ -77,8 +73,7 @@ class DocumentCleaner(object):
         docToClean = self.convertDivsToParagraphs(docToClean, 'div')
         docToClean = self.convertDivsToParagraphs(docToClean, 'span')
         return docToClean
-    
-    
+
     def cleanEmTags(self, doc):
         ems = Parser.getElementsByTag(doc, tag='em')
         for node in ems:
@@ -86,85 +81,77 @@ class DocumentCleaner(object):
             if len(images) == 0:
                 node.drop_tag()
         return doc
-    
-    
+
     def removeDropCaps(self, doc):
         items = doc.cssselect("span[class~=dropcap], span[class~=drop_cap]")
         for item in items:
             item.drop_tag()
-        
+
         return doc
-    
-    
+
     def removeScriptsAndStyles(self, doc):
         # remove scripts
         scripts = Parser.getElementsByTag(doc, tag='script')
         for item in scripts:
             Parser.remove(item)
-        
+
         # remove styles
         styles = Parser.getElementsByTag(doc, tag='style')
         for item in styles:
             Parser.remove(item)
-        
+
         # remove comments
         comments = Parser.getComments(doc)
         for item in comments:
             Parser.remove(item)
-        
+
         return doc
-    
-    
+
     def cleanBadTags(self, doc):
-        
+
         # ids
         naughtyList = doc.xpath(self.queryNaughtyIDs,
-                                        namespaces={'re':self.regexpNS})
+                                        namespaces={'re': self.regexpNS})
         for node in naughtyList:
             Parser.remove(node)
-        
+
         # class
         naughtyClasses = doc.xpath(self.queryNaughtyClasses,
-                                        namespaces={'re':self.regexpNS})
+                                        namespaces={'re': self.regexpNS})
         for node in naughtyClasses:
             Parser.remove(node)
-        
+
         # name
         naughtyNames = doc.xpath(self.queryNaughtyNames,
-                                        namespaces={'re':self.regexpNS})
+                                        namespaces={'re': self.regexpNS})
         for node in naughtyNames:
             Parser.remove(node)
-        
+
         return doc
-    
-    
+
     def removeNodesViaRegEx(self, doc, pattern):
         for selector in ['id', 'class']:
             reg = "//*[re:test(@%s, '%s', 'i')]" % (selector, pattern)
-            naughtyList = doc.xpath(reg, namespaces={'re':self.regexpNS})
+            naughtyList = doc.xpath(reg, namespaces={'re': self.regexpNS})
             for node in naughtyList:
                 Parser.remove(node)
         return doc
-    
-    
-    
+
     def cleanUpSpanTagsInParagraphs(self, doc):
         spans = doc.cssselect('p > span')
         for item in spans:
             item.drop_tag()
         return doc
 
-    
     def getFlushedBuffer(self, replacementText, doc):
         return Parser.textToPara(replacementText)
-    
-    
+
     def getReplacementNodes(self, doc, div):
         replacementText = []
         nodesToReturn = []
         nodesToRemove = []
         childs = Parser.childNodesWithText(div)
-        
+
         for kid in childs:
             # node is a p
             # and already have some replacement text
@@ -204,33 +191,31 @@ class DocumentCleaner(object):
                                     attr='grv-usedalready', value='yes')
                         next = Parser.nextSibling(nextSibNode)
                         prevSibNode = next if next is not None else None
-            
+
             # otherwise
             else:
                 nodesToReturn.append(kid)
-        
+
         # flush out anything still remaining
         if(len(replacementText) > 0):
             newNode = self.getFlushedBuffer(''.join(replacementText), doc)
             nodesToReturn.append(newNode)
             replacementText = []
-        
-        #
+
         for n in nodesToRemove:
             Parser.remove(n)
-        
+
         return nodesToReturn
-    
-    
+
     def replaceElementsWithPara(self, doc, div):
         Parser.replaceTag(div, 'p')
-    
+
     def convertDivsToParagraphs(self, doc, domType):
         badDivs = 0
         elseDivs = 0
         divs = Parser.getElementsByTag(doc, tag=domType)
-        tags = ['a','blockquote','dl','div','img','ol','p','pre','table','ul']
-        
+        tags = ['a', 'blockquote', 'dl', 'div', 'img', 'ol', 'p', 'pre', 'table', 'ul']
+
         for div in divs:
             items = Parser.getElementsByTags(div, tags)
             if div is not None and len(items) == 0:
@@ -239,19 +224,14 @@ class DocumentCleaner(object):
             elif div is not None:
                 replaceNodes = self.getReplacementNodes(doc, div)
                 div.clear()
-                
+
                 for c, n in enumerate(replaceNodes):
                     div.insert(c, n)
-                
-                elseDivs +=1
-        
+
+                elseDivs += 1
+
         return doc
-        
-        
-        
-        
-        
-    
+
 
 class StandardDocumentCleaner(DocumentCleaner):
     pass

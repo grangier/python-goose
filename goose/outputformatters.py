@@ -24,16 +24,15 @@ from HTMLParser import HTMLParser
 from goose.text import StopWords, innerTrim
 from goose.parsers import Parser
 
+
 class OutputFormatter(object):
-    
+
     def __init__(self):
         self.topNode = None
-    
-    
+
     def getTopNode(self):
         return self.topNode
-    
-    
+
     def getFormattedText(self, topNode):
         self.topNode = topNode
         self.removeNodesWithNegativeScores()
@@ -41,8 +40,7 @@ class OutputFormatter(object):
         self.replaceTagsWithText()
         self.removeParagraphsWithFewWords()
         return self.convertToText()
-    
-    
+
     def convertToText(self):
         txts = []
         for node in list(self.getTopNode()):
@@ -51,17 +49,14 @@ class OutputFormatter(object):
                 txt = HTMLParser().unescape(txt)
                 txts.append(innerTrim(txt))
         return '\n\n'.join(txts)
-    
-    
-    
+
     def convertLinksToText(self):
         """\
         cleans up and converts any nodes that
         should be considered text into text
         """
         Parser.stripTags(self.getTopNode(), 'a')
-    
-    
+
     def removeNodesWithNegativeScores(self):
         """\
         if there are elements inside our top node
@@ -70,11 +65,10 @@ class OutputFormatter(object):
         """
         gravityItems = self.topNode.cssselect("*[gravityScore]")
         for item in gravityItems:
-            score = int(item.attrib.get('gravityScore'),0)
+            score = int(item.attrib.get('gravityScore'), 0)
             if score < 1:
                 item.getparent().remove(item)
-    
-    
+
     def replaceTagsWithText(self):
         """\
         replace common tags with just
@@ -84,14 +78,13 @@ class OutputFormatter(object):
         code : http://lxml.de/api/lxml.etree-module.html#strip_tags
         """
         Parser.stripTags(self.getTopNode(), 'b', 'strong', 'i', 'br')
-    
-    
+
     def removeParagraphsWithFewWords(self):
         """\
         remove paragraphs that have less than x number of words,
         would indicate that it's some sort of link
         """
-        allNodes = Parser.getElementsByTags(self.getTopNode(),['*'])#.cssselect('*')
+        allNodes = Parser.getElementsByTags(self.getTopNode(), ['*'])  # .cssselect('*')
         allNodes.reverse()
         for el in allNodes:
             text = Parser.getText(el)
@@ -106,7 +99,6 @@ class OutputFormatter(object):
                 trimmed = Parser.getText(el)
                 if trimmed.startswith("(") and trimmed.endswith(")"):
                     Parser.remove(el)
-
 
 
 class StandardOutputFormatter(OutputFormatter):

@@ -27,8 +27,9 @@ from PIL import Image
 from goose.images.ImageDetails import ImageDetails
 from goose.images.ImageExtractor import LocallyStoredImage
 
+
 class ImageUtils(object):
-    
+
     @classmethod
     def getImageDimensions(self, identifyProgram, filePath):
         image = Image.open(filePath)
@@ -38,8 +39,7 @@ class ImageUtils(object):
         imageDetails.setWidth(width)
         imageDetails.setHeight(height)
         return imageDetails
-    
-    
+
     @classmethod
     def storeImageToLocalFile(self, httpClient, linkhash, imageSrc, config):
         """\
@@ -51,29 +51,27 @@ class ImageUtils(object):
         image = self.readExistingFileInfo(linkhash, imageSrc, config)
         if image:
             return image
-        
+
         # no cache found download the image
         data = self.fetchEntity(httpClient, imageSrc)
         if data:
             image = self.writeEntityContentsToDisk(data, linkhash, imageSrc, config)
             if image:
                 return image
-        
+
         return None
-    
-    
+
     @classmethod
     def getFileExtensionName(self, imageDetails):
         mimeType = imageDetails.getMimeType().lower()
         mimes = {
-            'png':'.png',
-            'jpg':'.jpg',
-            'jpeg':'.jpg',
-            'gif':'.gif',
+            'png': '.png',
+            'jpg': '.jpg',
+            'jpeg': '.jpg',
+            'gif': '.gif',
         }
         return mimes.get(mimeType, 'NA')
-    
-    
+
     @classmethod
     def readExistingFileInfo(self, linkhash, imageSrc, config):
         localImageName = self.getLocalFileName(linkhash, imageSrc, config)
@@ -92,29 +90,24 @@ class ImageUtils(object):
                 width=imageDetails.getWidth()
             )
         return None
-    
-    
+
     @classmethod
     def writeEntityContentsToDisk(self, entity, linkhash, imageSrc, config):
         localSrcPath = self.getLocalFileName(linkhash, imageSrc, config)
         f = open(localSrcPath, 'w')
         f.write(entity)
         f.close()
-        
         return self.readExistingFileInfo(linkhash, imageSrc, config)
-    
-    
+
     @classmethod
     def getLocalFileName(self, linkhash, imageSrc, config):
         imageHash = hashlib.md5(imageSrc).hexdigest()
         return config.localStoragePath + "/" + linkhash + "_py_" + imageHash
-    
-    
+
     @classmethod
     def cleanImageSrcString(self, imgSrc):
         return imgSrc.replace(" ", "%20")
-    
-    
+
     @classmethod
     def fetchEntity(self, httpClient, imageSrc):
         try:
@@ -124,9 +117,3 @@ class ImageUtils(object):
             return data
         except:
             return None
-
-
-
-
-        
-        

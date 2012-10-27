@@ -31,37 +31,36 @@ from goose.parsers import Parser
 from goose.images.UpgradedImageExtractor import UpgradedImageIExtractor
 from goose.network import HtmlFetcher
 
+
 class CrawlCandidate(object):
-    
+
     def __init__(self, config, url, rawHTML):
         self.config = config
         self.url = url
         self.rawHTML = rawHTML
 
 
-
 class Crawler(object):
-    
+
     def __init__(self, config):
         self.config = config
         self.logPrefix = "crawler:"
-    
+
     def crawl(self, crawlCandidate):
         article = Article()
-        
+
         parseCandidate = URLHelper.getCleanedUrl(crawlCandidate.url)
         rawHtml = self.getHTML(crawlCandidate, parseCandidate)
-        
+
         if rawHtml is None:
             return article
-        
+
         doc = self.getDocument(parseCandidate.url, rawHtml)
-        
-        
+
         extractor = self.getExtractor()
         docCleaner = self.getDocCleaner()
         outputFormatter = self.getOutputFormatter()
-        
+
         # article
         article.finalUrl = parseCandidate.url
         article.linkhash = parseCandidate.linkhash
@@ -81,7 +80,7 @@ class Crawler(object):
         article.tags = extractor.extractTags(article)
         # # before we do any calcs on the body itself let's clean up the document
         article.doc = docCleaner.clean(article)
-        
+
         # big stuff
         article.topNode = extractor.calculateBestNodeBasedOnClustering(article)
         if article.topNode is not None:
@@ -91,12 +90,12 @@ class Crawler(object):
             if self.config.enableImageFetching:
                 imageExtractor = self.getImageExtractor(article)
                 article.topImage = imageExtractor.getBestImage(article.rawDoc, article.topNode)
-            
+
             article.topNode = extractor.postExtractionCleanup(article.topNode)
             article.cleanedArticleText = outputFormatter.getFormattedText(article.topNode)
-        
+
         return article
-    
+
     def getHTML(self, crawlCandidate, parsingCandidate):
         if crawlCandidate.rawHTML:
             return crawlCandidate.rawHTML
@@ -104,30 +103,24 @@ class Crawler(object):
             # fetch HTML
             html = HtmlFetcher().getHtml(self.config, parsingCandidate.url)
             return html
-    
-    
+
     def getImageExtractor(self, article):
         httpClient = None
         return UpgradedImageIExtractor(httpClient, article, self.config)
-    
-    
+
     def getOutputFormatter(self):
         return StandardOutputFormatter()
-    
-    
+
     def getDocCleaner(self):
         return StandardDocumentCleaner()
-    
-    
+
     def getDocument(self, url, rawHtml):
         doc = Parser.fromstring(rawHtml)
         return doc
-    
-    
+
     def getExtractor(self):
         return StandardContentExtractor()
-    
-    
+
     def releaseResources(self, article):
         directory = self.config.localStoragePath
         for fname in os.listdir(directory):
@@ -137,7 +130,3 @@ class Crawler(object):
             except OSError:
                 # TODO better log handeling
                 pass
-                
-        
-            
-            
