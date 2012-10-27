@@ -86,6 +86,7 @@ class WordStats(object):
 class StopWords(object):
 
     PUNCTUATION = re.compile("[^\\p{Ll}\\p{Lu}\\p{Lt}\\p{Lo}\\p{Nd}\\p{Pc}\\s]")
+    TRANS_TABLE = string.maketrans('', '')
 
     def __init__(self, language='en'):
         # TODO replace 'x' with class
@@ -98,8 +99,7 @@ class StopWords(object):
         # http://stackoverflow.com/questions/265960/best-way-to-strip-punctuation-from-a-string-in-python
         if isinstance(content, unicode):
             content = content.encode('utf-8')
-        table = string.maketrans("", "")
-        return content.translate(table, string.punctuation)
+        return content.translate(self.TRANS_TABLE, string.punctuation)
 
     def getStopWordCount(self, content):
         if not content:
