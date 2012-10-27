@@ -1,0 +1,5 @@
+*.pyc
+goose.egg-info/
+build/
+dist/
+.DS_Store*
