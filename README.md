@@ -55,12 +55,44 @@ Goose is licensed by Gravity.com under the Apache 2.0 license, see the LICENSE f
     http://i2.cdn.turner.com/cnn/dam/assets/111017024308-occupy-london-st-paul-s-cathedral-story-top.jpg
 
 
+##Goose is now language aware
+For exemple scrapping a spanish content page with correct meta language tags
+
+    >>> from goose.Goose import Goose
+    >>> url = 'http://sociedad.elpais.com/sociedad/2012/10/27/actualidad/1351332873_157836.html'
+    >>> g = Goose()
+    >>> article = g.extractContent(url=url)
+    >>> article.title
+    u'Las listas de espera se agravan'
+    >>> article.cleanedArticleText[:150]
+    u'Los recortes pasan factura a los pacientes. De diciembre de 2010 a junio de 2012 las listas de espera para operarse aumentaron un 125%. Hay m\xe1s ciudad'
+
+Some pages don't have correct meta language tags, you can force it using configuration :
+
+    >>> from goose.Goose import Goose
+    >>> url = 'http://www.elmundo.es/elmundo/2012/10/28/espana/1351388909.html'
+    >>> g = Goose({'useMetaLanguge': False, 'targetLanguage':'es'})
+    >>> article = g.extractContent(url=url)
+    >>> article.cleanedArticleText[:150]
+    u'Importante golpe a la banda terrorista ETA en Francia. La Guardia Civil ha detenido en un hotel de Macon, a 70 kil\xf3metros de Lyon, a Izaskun Lesaka y '
+
+Passing 
+    {'useMetaLanguge': False, 'targetLanguage':'es'}
+will force as configuration will force the spanish language
+
+##Configruation
+There is two way to pass configuration to goose. The first one is to pass to goose a Configuration() object. The second one is to pass a configuration dict
+
+For instance, if you want to change the userAgent used by Goose juste pass :
+
+    >>> g = Goose({'browserUserAgent': 'Mozilla'})
+
+
 ##TODO
   - Camel Case method and variables : We have used camelcase code to reflect the orginal scala code.
   - Move modules around.
     This should be changed to a more pythonic naming.
   - Video extraction
-  - Ability to use localized stopwords
   - Fetch faveicon 
 
 ##Known issues
