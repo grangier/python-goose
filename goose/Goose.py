@@ -32,7 +32,16 @@ class Goose(object):
     """
     def __init__(self, config=None):
         self.config = config or Configuration()
+        self.extendConfig()
         self.initializeEnvironment()
+
+    def extendConfig(self):
+        if isinstance(self.config, dict):
+            config = Configuration()
+            for k, v in self.config.items():
+                if hasattr(config, k):
+                    setattr(config, k, v)
+            self.config = config
 
     def extractContent(self, url=None, rawHTML=None):
         """\
