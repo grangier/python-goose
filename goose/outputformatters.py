@@ -27,18 +27,31 @@ from goose.parsers import Parser
 
 class OutputFormatter(object):
 
-    def __init__(self):
+    def __init__(self, config):
         self.topNode = None
+        self.config = config
+
+    def getLanguage(self, article):
+        """\
+        Returns the language is by the article or
+        the configuration language
+        """
+        # we don't want to force the target laguage
+        # so we use the article.metaLang
+        if self.config.useMetaLanguge == True:
+            if article.metaLang:
+                return article.metaLang[:2]
+        return self.config.targetLanguage
 
     def getTopNode(self):
         return self.topNode
 
-    def getFormattedText(self, topNode):
-        self.topNode = topNode
+    def getFormattedText(self, article):
+        self.topNode = article.topNode
         self.removeNodesWithNegativeScores()
         self.convertLinksToText()
         self.replaceTagsWithText()
-        self.removeParagraphsWithFewWords()
+        self.removeParagraphsWithFewWords(article)
         return self.convertToText()
 
     def convertToText(self):
@@ -79,7 +92,7 @@ class OutputFormatter(object):
         """
         Parser.stripTags(self.getTopNode(), 'b', 'strong', 'i', 'br')
 
-    def removeParagraphsWithFewWords(self):
+    def removeParagraphsWithFewWords(self, article):
         """\
         remove paragraphs that have less than x number of words,
         would indicate that it's some sort of link
@@ -88,7 +101,7 @@ class OutputFormatter(object):
         allNodes.reverse()
         for el in allNodes:
             text = Parser.getText(el)
-            stopWords = StopWords().getStopWordCount(text)
+            stopWords = StopWords(language=self.getLanguage(article)).getStopWordCount(text)
             if stopWords.getStopWordCount() < 3 \
                 and len(Parser.getElementsByTag(el, tag='object')) == 0 \
                 and len(Parser.getElementsByTag(el, tag='embed')) == 0:

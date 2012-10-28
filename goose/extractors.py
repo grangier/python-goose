@@ -46,6 +46,22 @@ RE_LANG = r'^[A-Za-z]{2}$'
 
 class ContentExtractor(object):
 
+    def __init__(self, config):
+        self.config = config
+        self.language = config.targetLanguage
+
+    def getLanguage(self, article):
+        """\
+        Returns the language is by the article or
+        the configuration language
+        """
+        # we don't want to force the target laguage
+        # so we use the article.metaLang
+        if self.config.useMetaLanguge == True:
+            if article.metaLang:
+                self.language = article.metaLang[:2]
+        self.language = self.config.targetLanguage
+
     def getTitle(self, article):
         """\
         Fetch the article title and analyze it
@@ -127,16 +143,20 @@ class ContentExtractor(object):
         attr = Parser.getAttribute(article.doc, attr='lang')
         if attr is None:
             # look up for a Content-Language in meta
-            kwargs = {'tag': 'meta',
-                        'attr': 'http-equiv',
-                        'value': 'content-language'}
-            meta = Parser.getElementsByTag(article.doc, **kwargs)
-            if meta:
-                attr = Parser.getAttribute(meta[0], attr='content')
+            items = [
+                {'tag': 'meta', 'attr': 'http-equiv', 'value': 'content-language'},
+                {'tag': 'meta', 'attr': 'name', 'value': 'lang'}
+            ]
+            for item in items:
+                meta = Parser.getElementsByTag(article.doc, **item)
+                if meta:
+                    attr = Parser.getAttribute(meta[0], attr='content')
+                    break
 
         if attr:
             value = attr[:2]
             if re.search(RE_LANG, value):
+                self.language = value.lower()
                 return value.lower()
 
         return None
@@ -222,7 +242,7 @@ class ContentExtractor(object):
 
         for node in nodesToCheck:
             nodeText = Parser.getText(node)
-            wordStats = StopWords().getStopWordCount(nodeText)
+            wordStats = StopWords(language=self.language).getStopWordCount(nodeText)
             highLinkDensity = self.isHighLinkDensity(node)
             if wordStats.getStopWordCount() > 2 and not highLinkDensity:
                 nodesWithText.append(node)
@@ -248,7 +268,7 @@ class ContentExtractor(object):
                         boostScore = float(5)
 
             nodeText = Parser.getText(node)
-            wordStats = StopWords().getStopWordCount(nodeText)
+            wordStats = StopWords(language=self.language).getStopWordCount(nodeText)
             upscore = int(wordStats.getStopWordCount() + boostScore)
 
             # parent node
@@ -303,7 +323,7 @@ class ContentExtractor(object):
                 if stepsAway >= maxStepsAwayFromNode:
                     return False
                 paraText = Parser.getText(currentNode)
-                wordStats = StopWords().getStopWordCount(paraText)
+                wordStats = StopWords(language=self.language).getStopWordCount(paraText)
                 if wordStats.getStopWordCount > minimumStopWordCount:
                     return True
                 stepsAway += 1
@@ -346,7 +366,7 @@ class ContentExtractor(object):
                 for firstParagraph in potentialParagraphs:
                     text = Parser.getText(firstParagraph)
                     if len(text) > 0:
-                        wordStats = StopWords().getStopWordCount(text)
+                        wordStats = StopWords(language=self.language).getStopWordCount(text)
                         paragraphScore = wordStats.getStopWordCount()
                         siblingBaseLineScore = float(.30)
                         highLinkDensity = self.isHighLinkDensity(firstParagraph)
@@ -373,7 +393,7 @@ class ContentExtractor(object):
 
         for node in nodesToCheck:
             nodeText = Parser.getText(node)
-            wordStats = StopWords().getStopWordCount(nodeText)
+            wordStats = StopWords(language=self.language).getStopWordCount(nodeText)
             highLinkDensity = self.isHighLinkDensity(node)
             if wordStats.getStopWordCount() > 2 and not highLinkDensity:
                 numberOfParagraphs += 1

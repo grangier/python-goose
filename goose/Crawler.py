@@ -92,7 +92,7 @@ class Crawler(object):
                 article.topImage = imageExtractor.getBestImage(article.rawDoc, article.topNode)
 
             article.topNode = extractor.postExtractionCleanup(article.topNode)
-            article.cleanedArticleText = outputFormatter.getFormattedText(article.topNode)
+            article.cleanedArticleText = outputFormatter.getFormattedText(article)
 
         return article
 
@@ -109,7 +109,7 @@ class Crawler(object):
         return UpgradedImageIExtractor(httpClient, article, self.config)
 
     def getOutputFormatter(self):
-        return StandardOutputFormatter()
+        return StandardOutputFormatter(self.config)
 
     def getDocCleaner(self):
         return StandardDocumentCleaner()
@@ -119,7 +119,7 @@ class Crawler(object):
         return doc
 
     def getExtractor(self):
-        return StandardContentExtractor()
+        return StandardContentExtractor(self.config)
 
     def releaseResources(self, article):
         directory = self.config.localStoragePath

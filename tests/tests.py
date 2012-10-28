@@ -183,8 +183,11 @@ class TestExtractions(unittest.TestCase):
     def getHtml(self, filename):
         return FileHelper.loadResourceFile(filename)
 
-    def getArticle(self, url, rawHTML):
+    def getArticle(self, url, rawHTML, language=None):
         config = Configuration()
+        if language:
+            config.targetLanguage = language
+            config.useMetaLanguge = False
         config.enableImageFetching = False
         g = Goose(config=config)
         article = g.extractContent(url=url, rawHTML=rawHTML)
@@ -306,6 +309,30 @@ class TestExtractions(unittest.TestCase):
         html = self.getHtml("statichtml/cbslocal1.txt")
         url = "http://newyork.cbslocal.com/2012/06/08/bc-morning-show-american-hero-kelly-malloy/"
         content = "Boomer & Craig were thrilled to welcome an American Hero into the Allstate Studio, as Kelly"
+        article = self.getArticle(url, html)
+        self.runArticleAssertions(article=article, expectedStart=content)
+        self.printReport()
+
+    def test_elmondo1(self):
+        html = self.getHtml("statichtml/elmondo1.txt")
+        url = "http://www.elmundo.es/elmundo/2012/10/28/espana/1351388909.html"
+        content = "Importante golpe a la banda terrorista ETA en Francia."
+        article = self.getArticle(url, html, language='es')
+        self.runArticleAssertions(article=article, expectedStart=content)
+        self.printReport()
+
+    def test_elpais(self):
+        html = self.getHtml("statichtml/elpais.txt")
+        url = "http://www.sociedad.elpais.com/sociedad/2012/10/27/actualidad/1351332873_157836.html"
+        content = "Los recortes pasan factura a los pacientes."
+        article = self.getArticle(url, html)
+        self.runArticleAssertions(article=article, expectedStart=content)
+        self.printReport()
+
+    def test_liberation(self):
+        html = self.getHtml("statichtml/liberation.txt")
+        url = "http://www.liberation.fr/politiques/2012/10/27/ayrault-assume-et-revendique-sa-methode_856451"
+        content = "A Toulouse, Jean-Marc Ayrault aura fait deux rappels sur"
         article = self.getArticle(url, html)
         self.runArticleAssertions(article=article, expectedStart=content)
         self.printReport()

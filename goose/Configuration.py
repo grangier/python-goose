@@ -40,6 +40,17 @@ class Configuration(object):
         # interface to build your own
         self.enableImageFetching = True
 
+        # set this valriable to False if you want to force
+        # the article language. OtherWise it will attempt to 
+        # find meta language and use the correct stopwords dictionary
+        self.useMetaLanguge = True
+
+        # default language
+        # it will be use as fallback
+        # if useMetaLanguge is set to false, targetlanguage will
+        # be use
+        self.targetLanguage = 'en'
+
         # path to your imagemagick convert executable,
         # on the mac using mac ports this is the default listed
         self.imagemagickConvertPath = "/opt/local/bin/convert"
