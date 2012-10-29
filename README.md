@@ -80,7 +80,7 @@ Passing
     {'useMetaLanguge': False, 'targetLanguage':'es'}
 will force as configuration will force the spanish language
 
-##Configruation
+##Configuration
 There is two way to pass configuration to goose. The first one is to pass to goose a Configuration() object. The second one is to pass a configuration dict
 
 For instance, if you want to change the userAgent used by Goose juste pass :
