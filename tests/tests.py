@@ -521,5 +521,13 @@ class TestExtractions(unittest.TestCase):
         self.runArticleAssertions(article=article, expectedStart=expected)
         self.printReport()
 
+    def test_issue4(self):
+        html = self.getHtml("statichtml/issue_4.txt")
+        url = "http://www.slate.fr/story/64063/tapie-mougeotte-la-provence"
+        expected = u"Exercice: apr\xe8s avoir attentivement lu cette br\xe8ve parue dans L'Express, vous expliquerez en quoi elle r\xe9sume une certaine id\xe9e de la France.\n\n\xabBernar"
+        article = self.getArticle(url, html)
+        self.runArticleAssertions(article=article, expectedStart=expected)
+        self.printReport()
+
 if __name__ == '__main__':
     unittest.main()

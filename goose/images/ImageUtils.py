@@ -24,6 +24,7 @@ import hashlib
 import os
 import urllib2
 from PIL import Image
+from goose.utils.encoding import smart_str
 from goose.images.ImageDetails import ImageDetails
 from goose.images.ImageExtractor import LocallyStoredImage
 
@@ -101,7 +102,7 @@ class ImageUtils(object):
 
     @classmethod
     def getLocalFileName(self, linkhash, imageSrc, config):
-        imageHash = hashlib.md5(imageSrc).hexdigest()
+        imageHash = hashlib.md5(smart_str(imageSrc)).hexdigest()
         return config.localStoragePath + "/" + linkhash + "_py_" + imageHash
 
     @classmethod
