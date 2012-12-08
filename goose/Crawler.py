@@ -94,6 +94,9 @@ class Crawler(object):
             article.topNode = extractor.postExtractionCleanup(article.topNode)
             article.cleanedArticleText = outputFormatter.getFormattedText(article)
 
+        # cleanup tmp file
+        self.releaseResources(article)
+
         return article
 
     def getHTML(self, crawlCandidate, parsingCandidate):
