@@ -1,3 +1,4 @@
 PIL
 lxml
 cssselect
+jieba
