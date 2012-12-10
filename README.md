@@ -67,6 +67,24 @@ For exemple scrapping a spanish content page with correct meta language tags
     >>> article.cleanedArticleText[:150]
     u'Los recortes pasan factura a los pacientes. De diciembre de 2010 a junio de 2012 las listas de espera para operarse aumentaron un 125%. Hay m\xe1s ciudad'
 
+
+##Goose in Chinese
+Some users want to use Goose for chinese content. Chinese word segementation is way more difficult to deal with that occidental languages. Chinese needs a dedicated StopWord analyser thant need to be passed to the config object
+
+    >>> from goose.Goose import Goose
+    >>> from goose.text import StopWordsChinese
+    >>> url  = 'http://www.bbc.co.uk/zhongwen/simp/chinese_news/2012/12/121210_hongkong_politics.shtml'
+    >>> g = Goose({'stopwordsCls': StopWordsChinese})
+    >>> article = g.extractContent(url=url)
+    >>> print article.cleanedArticleText[:150]
+    香港行政长官梁振英在各方压力下就其大宅的违章建筑（僭建）问题到立法会接受质询，并向香港民众道歉。
+
+    梁振英在星期二（12月10日）的答问大会开始之际在其演说中道歉，但强调他在违章建筑问题上没有隐瞒的意图和动机。
+
+    一些亲北京阵营议员欢迎梁振英道歉，且认为应能获得香港民众接受，但这些议员也质问梁振英有
+
+
+
 Some pages don't have correct meta language tags, you can force it using configuration :
 
     >>> from goose.Goose import Goose

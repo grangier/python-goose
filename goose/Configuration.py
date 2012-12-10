@@ -20,7 +20,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-
+from goose.text import StopWords
 
 class Configuration(object):
 
@@ -51,6 +51,9 @@ class Configuration(object):
         # be use
         self.targetLanguage = 'en'
 
+        # defautl stopwrods class
+        self.stopwordsCls = StopWords
+
         # path to your imagemagick convert executable,
         # on the mac using mac ports this is the default listed
         self.imagemagickConvertPath = "/opt/local/bin/convert"
@@ -64,7 +67,7 @@ class Configuration(object):
         #                         " AppleWebKit/534.52.7 (KHTML, like Gecko) "\
         #                         "Version/5.1.2 Safari/534.52.7"
         self.browserUserAgent = 'Goose/1.0'
-        
+
         # debug mode
         # enable this to have additional debugging information
         # sent to stdout

@@ -21,7 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 from HTMLParser import HTMLParser
-from goose.text import StopWords, innerTrim
+from goose.text import innerTrim
 from goose.parsers import Parser
 
 
@@ -30,6 +30,7 @@ class OutputFormatter(object):
     def __init__(self, config):
         self.topNode = None
         self.config = config
+        self.stopwordsCls = config.stopwordsCls
 
     def getLanguage(self, article):
         """\
@@ -101,7 +102,7 @@ class OutputFormatter(object):
         allNodes.reverse()
         for el in allNodes:
             text = Parser.getText(el)
-            stopWords = StopWords(language=self.getLanguage(article)).getStopWordCount(text)
+            stopWords = self.stopwordsCls(language=self.getLanguage(article)).getStopWordCount(text)
             if stopWords.getStopWordCount() < 3 \
                 and len(Parser.getElementsByTag(el, tag='object')) == 0 \
                 and len(Parser.getElementsByTag(el, tag='embed')) == 0:

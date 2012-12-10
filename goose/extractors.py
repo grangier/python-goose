@@ -26,7 +26,6 @@ from urlparse import urlparse, urljoin
 from goose.utils import StringSplitter
 from goose.utils import StringReplacement
 from goose.utils import ReplaceSequence
-from goose.text import StopWords
 from goose.parsers import Parser
 
 MOTLEY_REPLACEMENT = StringReplacement("&#65533;", "")
@@ -49,6 +48,7 @@ class ContentExtractor(object):
     def __init__(self, config):
         self.config = config
         self.language = config.targetLanguage
+        self.stopwordsCls = config.stopwordsCls
 
     def getLanguage(self, article):
         """\
@@ -242,7 +242,7 @@ class ContentExtractor(object):
 
         for node in nodesToCheck:
             nodeText = Parser.getText(node)
-            wordStats = StopWords(language=self.language).getStopWordCount(nodeText)
+            wordStats = self.stopwordsCls(language=self.language).getStopWordCount(nodeText)
             highLinkDensity = self.isHighLinkDensity(node)
             if wordStats.getStopWordCount() > 2 and not highLinkDensity:
                 nodesWithText.append(node)
@@ -268,7 +268,7 @@ class ContentExtractor(object):
                         boostScore = float(5)
 
             nodeText = Parser.getText(node)
-            wordStats = StopWords(language=self.language).getStopWordCount(nodeText)
+            wordStats = self.stopwordsCls(language=self.language).getStopWordCount(nodeText)
             upscore = int(wordStats.getStopWordCount() + boostScore)
 
             # parent node
@@ -323,7 +323,7 @@ class ContentExtractor(object):
                 if stepsAway >= maxStepsAwayFromNode:
                     return False
                 paraText = Parser.getText(currentNode)
-                wordStats = StopWords(language=self.language).getStopWordCount(paraText)
+                wordStats = self.stopwordsCls(language=self.language).getStopWordCount(paraText)
                 if wordStats.getStopWordCount > minimumStopWordCount:
                     return True
                 stepsAway += 1
@@ -366,7 +366,7 @@ class ContentExtractor(object):
                 for firstParagraph in potentialParagraphs:
                     text = Parser.getText(firstParagraph)
                     if len(text) > 0:
-                        wordStats = StopWords(language=self.language).getStopWordCount(text)
+                        wordStats = self.stopwordsCls(language=self.language).getStopWordCount(text)
                         paragraphScore = wordStats.getStopWordCount()
                         siblingBaseLineScore = float(.30)
                         highLinkDensity = self.isHighLinkDensity(firstParagraph)
@@ -393,7 +393,7 @@ class ContentExtractor(object):
 
         for node in nodesToCheck:
             nodeText = Parser.getText(node)
-            wordStats = StopWords(language=self.language).getStopWordCount(nodeText)
+            wordStats = self.stopwordsCls(language=self.language).getStopWordCount(nodeText)
             highLinkDensity = self.isHighLinkDensity(node)
             if wordStats.getStopWordCount() > 2 and not highLinkDensity:
                 numberOfParagraphs += 1
