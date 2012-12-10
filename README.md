@@ -67,6 +67,20 @@ For exemple scrapping a spanish content page with correct meta language tags
     >>> article.cleanedArticleText[:150]
     u'Los recortes pasan factura a los pacientes. De diciembre de 2010 a junio de 2012 las listas de espera para operarse aumentaron un 125%. Hay m\xe1s ciudad'
 
+Some pages don't have correct meta language tags, you can force it using configuration :
+
+    >>> from goose.Goose import Goose
+    >>> url = 'http://www.elmundo.es/elmundo/2012/10/28/espana/1351388909.html'
+    >>> g = Goose({'useMetaLanguge': False, 'targetLanguage':'es'})
+    >>> article = g.extractContent(url=url)
+    >>> article.cleanedArticleText[:150]
+    u'Importante golpe a la banda terrorista ETA en Francia. La Guardia Civil ha detenido en un hotel de Macon, a 70 kil\xf3metros de Lyon, a Izaskun Lesaka y '
+
+Passing 
+    {'useMetaLanguge': False, 'targetLanguage':'es'}
+will force as configuration will force the spanish language
+
+
 
 ##Goose in Chinese
 Some users want to use Goose for chinese content. Chinese word segementation is way more difficult to deal with that occidental languages. Chinese needs a dedicated StopWord analyser thant need to be passed to the config object
@@ -83,20 +97,6 @@ Some users want to use Goose for chinese content. Chinese word segementation is 
 
     一些亲北京阵营议员欢迎梁振英道歉，且认为应能获得香港民众接受，但这些议员也质问梁振英有
 
-
-
-Some pages don't have correct meta language tags, you can force it using configuration :
-
-    >>> from goose.Goose import Goose
-    >>> url = 'http://www.elmundo.es/elmundo/2012/10/28/espana/1351388909.html'
-    >>> g = Goose({'useMetaLanguge': False, 'targetLanguage':'es'})
-    >>> article = g.extractContent(url=url)
-    >>> article.cleanedArticleText[:150]
-    u'Importante golpe a la banda terrorista ETA en Francia. La Guardia Civil ha detenido en un hotel de Macon, a 70 kil\xf3metros de Lyon, a Izaskun Lesaka y '
-
-Passing 
-    {'useMetaLanguge': False, 'targetLanguage':'es'}
-will force as configuration will force the spanish language
 
 ##Configuration
 There is two way to pass configuration to goose. The first one is to pass to goose a Configuration() object. The second one is to pass a configuration dict
