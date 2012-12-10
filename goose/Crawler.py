@@ -21,6 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import os
+import glob
 from copy import deepcopy
 from goose.Article import Article
 from goose.utils import URLHelper
@@ -125,11 +126,10 @@ class Crawler(object):
         return StandardContentExtractor(self.config)
 
     def releaseResources(self, article):
-        directory = self.config.localStoragePath
-        for fname in os.listdir(directory):
-            f = '%s/%s' % (self.config.localStoragePath, fname)
+        path = '%s/%s_*' % (self.config.localStoragePath, article.linkhash)
+        for fname in glob.glob(path):
             try:
-                os.remove(f)
+                os.remove(fname)
             except OSError:
                 # TODO better log handeling
                 pass

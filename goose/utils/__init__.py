@@ -20,6 +20,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import time
 import hashlib
 import re
 import os
@@ -92,7 +93,7 @@ class URLHelper(object):
         finalUrl = urlToCrawl.replace('#!', '?_escaped_fragment_=') \
                     if '#!' in urlToCrawl else urlToCrawl
 
-        linkhash = hashlib.md5(finalUrl).hexdigest()
+        linkhash = '%s.%s' % (hashlib.md5(finalUrl).hexdigest(), time.time())
 
         return ParsingCandidate(finalUrl, linkhash, finalUrl)
 
