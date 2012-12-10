@@ -64,6 +64,11 @@ class Configuration(object):
         #                         " AppleWebKit/534.52.7 (KHTML, like Gecko) "\
         #                         "Version/5.1.2 Safari/534.52.7"
         self.browserUserAgent = 'Goose/1.0'
+        
+        # debug mode
+        # enable this to have additional debugging information
+        # sent to stdout
+        self.debug = False
 
         # TODO
         self.publishDateExtractor = None
