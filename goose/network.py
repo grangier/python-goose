@@ -39,7 +39,7 @@ class HtmlFetcher(object):
             url = url.encode('utf-8')
         headers = {}  # 'User-Agent' : config.browserUserAgent }
         request = urllib2.Request(url, None, headers)
-        opener = urllib2.build_opener(urllib2.HTTPHandler(debuglevel=1))
+        opener = urllib2.build_opener(urllib2.HTTPHandler(config.debug))
         opener.addheaders = [('User-agent', config.browserUserAgent)]
         try:
             htmlResult = opener.open(request).read()
