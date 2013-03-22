@@ -324,7 +324,7 @@ class ContentExtractor(object):
                     return False
                 paraText = Parser.getText(currentNode)
                 wordStats = self.stopwordsCls(language=self.language).getStopWordCount(paraText)
-                if wordStats.getStopWordCount > minimumStopWordCount:
+                if wordStats.getStopWordCount() > minimumStopWordCount:
                     return True
                 stepsAway += 1
         return False
