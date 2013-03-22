@@ -91,7 +91,7 @@ class OutputFormatter(object):
         with whatever text is inside them
         code : http://lxml.de/api/lxml.etree-module.html#strip_tags
         """
-        Parser.stripTags(self.getTopNode(), 'b', 'strong', 'i', 'br')
+        Parser.stripTags(self.getTopNode(), 'b', 'strong', 'i', 'br', 'sup')
 
     def removeParagraphsWithFewWords(self, article):
         """\
