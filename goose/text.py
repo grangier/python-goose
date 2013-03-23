@@ -20,6 +20,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import os
 import re
 import string
 from goose.utils import FileHelper
@@ -93,7 +94,7 @@ class StopWords(object):
         # TODO replace 'x' with class
         # to generate dynamic path for file to load
         if not language in self._cached_stop_words:
-            path = 'text/stopwords-%s.txt' % language
+            path = os.path.join('text', 'stopwords-%s.txt' % language)
             self._cached_stop_words[language] = set(FileHelper.loadResourceFile(path).splitlines())
         self.STOP_WORDS = self._cached_stop_words[language]
 
@@ -129,7 +130,7 @@ class StopWordsChinese(StopWords):
         # force zh languahe code
         language = 'zh'
         if not language in self._cached_stop_words:
-            path = 'text/stopwords-%s.txt' % language
+            path = os.path.join('text', 'stopwords-%s.txt' % language)
             self._cached_stop_words[language] = set(FileHelper.loadResourceFile(path).splitlines())
         self.STOP_WORDS = self._cached_stop_words[language]
 
