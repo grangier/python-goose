@@ -230,16 +230,16 @@ class TestExtractions(unittest.TestCase):
         # self.articleReport.append("TAGS:        ")
         # self.articleReport.append(article.tags)
         # self.articleReport.append('\n')
-        self.assertIsNotNone(article, msg=u"Resulting article was NULL!")
+        self.assertNotEqual(article, None, msg=u"Resulting article was NULL!")
 
         if expectedTitle:
             title = article.title
-            self.assertIsNotNone(title, msg=u"Title was NULL!")
+            self.assertNotEqual(title, None, msg=u"Title was NULL!")
             self.assertEqual(title, expectedTitle)
 
         if expectedStart:
             articleText = article.cleanedArticleText
-            self.assertIsNotNone(articleText,
+            self.assertNotEqual(articleText, None,
                     msg=u"Resulting article text was NULL!")
 
             self.assertTrue(len(expectedStart) <= len(articleText),
@@ -258,7 +258,7 @@ class TestExtractions(unittest.TestCase):
 
         if expectedDescription:
             description = article.metaDescription
-            self.assertIsNotNone(description,
+            self.assertNotEqual(description, None,
                     msg="Meta Description was NULL!")
             msg = u"Meta Description was not as expected!\nEXPECTED:%s\nGOT:%s" \
                         % (expectedDescription, description)
