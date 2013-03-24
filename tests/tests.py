@@ -172,7 +172,7 @@ class TestArticle(unittest.TestCase):
 
     def test_instance(self):
         a = Article()
-        self.assertIsInstance(a, Article)
+        self.assertEqual(isinstance(a, Article), True)
 
 
 class TestExtractions(unittest.TestCase):
