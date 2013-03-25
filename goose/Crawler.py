@@ -23,7 +23,7 @@ limitations under the License.
 import os
 import glob
 from copy import deepcopy
-from goose.Article import Article
+from goose.article import Article
 from goose.utils import URLHelper
 from goose.extractors import StandardContentExtractor
 from goose.cleaners import StandardDocumentCleaner
