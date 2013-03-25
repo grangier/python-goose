@@ -21,7 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import os
-from goose.Configuration import Configuration
+from goose.configuration import Configuration
 from goose.Crawler import CrawlCandidate
 from goose.Crawler import Crawler
 
