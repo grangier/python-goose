@@ -22,8 +22,8 @@ limitations under the License.
 """
 import os
 from goose.configuration import Configuration
-from goose.Crawler import CrawlCandidate
-from goose.Crawler import Crawler
+from goose.crawler import CrawlCandidate
+from goose.crawler import Crawler
 
 
 class Goose(object):
