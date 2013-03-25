@@ -74,13 +74,13 @@ class Configuration(object):
         self.debug = False
 
         # TODO
-        self.publishDateExtractor = None
+        self.publish_dateExtractor = None
 
         # TODO
-        self.additionalDataExtractor = None
+        self.additional_dataExtractor = None
 
     def getPublishDateExtractor(self):
-        return self.publishDateExtractor
+        return self.publish_dateExtractor
 
     def setPublishDateExtractor(self, extractor):
         """\
@@ -89,10 +89,10 @@ class Configuration(object):
         """
         if not extractor:
             raise ValueError("extractor must not be null!")
-        self.publishDateExtractor = extractor
+        self.publish_dateExtractor = extractor
 
     def getAdditionalDataExtractor(self):
-        return self.additionalDataExtractor
+        return self.additional_dataExtractor
 
     def setAdditionalDataExtractor(self, extractor):
         """\
@@ -101,4 +101,4 @@ class Configuration(object):
         """
         if not extractor:
             raise ValueError("extractor must not be null!")
-        self.additionalDataExtractor = extractor
+        self.additional_dataExtractor = extractor

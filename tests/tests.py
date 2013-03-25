@@ -198,31 +198,31 @@ class TestExtractions(unittest.TestCase):
             expectedDescription=None, expectedKeywords=None):
 
         self.articleReport.append("URL:         ")
-        self.articleReport.append(article.finalUrl)
+        self.articleReport.append(article.final_url)
         self.articleReport.append('\n')
         self.articleReport.append("TITLE:       ")
         self.articleReport.append(article.title)
         self.articleReport.append('\n')
         # self.articleReport.append("IMAGE:       ")
-        # self.articleReport.append(article.topImage)
+        # self.articleReport.append(article.top_image)
         # self.articleReport.append('\n')
         # self.articleReport.append("IMGKIND:     ")
-        # self.articleReport.append(article.topImage)
+        # self.articleReport.append(article.top_image)
         # self.articleReport.append('\n')
         self.articleReport.append("CONTENT:     ")
-        self.articleReport.append(article.cleanedArticleText.replace("\n", "    "))
+        self.articleReport.append(article.cleaned_text.replace("\n", "    "))
         self.articleReport.append('\n')
         self.articleReport.append("METAKW:      ")
-        self.articleReport.append(article.metaKeywords)
+        self.articleReport.append(article.meta_keywords)
         self.articleReport.append('\n')
         self.articleReport.append("METADESC:    ")
-        self.articleReport.append(article.metaDescription)
+        self.articleReport.append(article.meta_description)
         self.articleReport.append('\n')
         self.articleReport.append("DOMAIN:      ")
         self.articleReport.append(article.domain)
         self.articleReport.append('\n')
         self.articleReport.append("LINKHASH:    ")
-        self.articleReport.append(article.linkhash)
+        self.articleReport.append(article.link_hash)
         self.articleReport.append('\n')
         # self.articleReport.append("MOVIES:      ")
         # self.articleReport.append(article.movies)
@@ -238,7 +238,7 @@ class TestExtractions(unittest.TestCase):
             self.assertEqual(title, expectedTitle)
 
         if expectedStart:
-            articleText = article.cleanedArticleText
+            articleText = article.cleaned_text
             self.assertNotEqual(articleText, None,
                     msg=u"Resulting article text was NULL!")
 
@@ -257,7 +257,7 @@ class TestExtractions(unittest.TestCase):
             pass
 
         if expectedDescription:
-            description = article.metaDescription
+            description = article.meta_description
             self.assertNotEqual(description, None,
                     msg="Meta Description was NULL!")
             msg = u"Meta Description was not as expected!\nEXPECTED:%s\nGOT:%s" \

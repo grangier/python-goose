@@ -64,11 +64,11 @@ class UpgradedImageIExtractor(ImageExtractor):
         self.minBytesForImages = 4000
 
         # the webpage url that we're extracting content from
-        self.targetUrl = article.finalUrl
+        self.targetUrl = article.final_url
 
         # stores a hash of our url for
         # reference and image processing
-        self.linkhash = article.linkhash
+        self.link_hash = article.link_hash
 
         # this lists all the known bad button names that we have
         self.matchBadImageNames = re.compile(
@@ -293,7 +293,7 @@ class UpgradedImageIExtractor(ImageExtractor):
         checks to see if we were able to
         find open link_src on this page
         """
-        node = self.article.rawDoc
+        node = self.article.raw_doc
         meta = Parser.getElementsByTag(node, tag='link', attr='rel', value='image_src')
         for item in meta:
             href = Parser.getAttribute(item, attr='href')
@@ -315,7 +315,7 @@ class UpgradedImageIExtractor(ImageExtractor):
         checks to see if we were able to
         find open graph tags on this page
         """
-        node = self.article.rawDoc
+        node = self.article.raw_doc
         meta = Parser.getElementsByTag(node, tag='meta', attr='property', value='og:image')
         for item in meta:
             href = Parser.getAttribute(item, attr='content')
@@ -337,7 +337,7 @@ class UpgradedImageIExtractor(ImageExtractor):
         returns the bytes of the image file on disk
         """
         locallyStoredImage = ImageUtils.storeImageToLocalFile(None,
-                                    self.linkhash, imageSrc, self.config)
+                                    self.link_hash, imageSrc, self.config)
         return locallyStoredImage
 
     def getCleanDomain(self):
@@ -361,9 +361,9 @@ class UpgradedImageIExtractor(ImageExtractor):
         knownImage = None
 
         for knownName in KNOWN_IMG_DOM_NAMES:
-            known = Parser.getElementById(self.article.rawDoc, knownName)
+            known = Parser.getElementById(self.article.raw_doc, knownName)
             if not known:
-                known = Parser.getElementsByTag(self.article.rawDoc,
+                known = Parser.getElementsByTag(self.article.raw_doc,
                                                 attr='class', value=knownName)
                 if known:
                     known = known[0]

@@ -26,7 +26,7 @@ class Image(object):
 
     def __init__(self):
         # holds the Element node of the image we think is top dog
-        self.topImageNode = None
+        self.top_imageNode = None
 
         # holds the src of the image
         self.imageSrc = ""
@@ -90,7 +90,7 @@ class LocallyStoredImage(object):
         linkhash='', bytes=long(0), fileExtension='', height=0, width=0):
         self.imgSrc = imgSrc
         self.localFileName = localFileName
-        self.linkhash = linkhash
+        self.link_hash = linkhash
         self.bytes = bytes
         self.fileExtension = fileExtension
         self.height = height

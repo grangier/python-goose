@@ -56,10 +56,10 @@ class ContentExtractor(object):
         the configuration language
         """
         # we don't want to force the target laguage
-        # so we use the article.metaLang
+        # so we use the article.meta_lang
         if self.config.useMetaLanguge == True:
-            if article.metaLang:
-                self.language = article.metaLang[:2]
+            if article.meta_lang:
+                self.language = article.meta_lang[:2]
         self.language = self.config.targetLanguage
 
     def getTitle(self, article):
@@ -200,11 +200,11 @@ class ContentExtractor(object):
                 href = href.strip()
                 o = urlparse(href)
                 if not o.hostname:
-                    z = urlparse(article.finalUrl)
+                    z = urlparse(article.final_url)
                     domain = '%s://%s' % (z.scheme, z.hostname)
                     href = urljoin(domain, href)
                 return href
-        return article.finalUrl
+        return article.final_url
 
     def getDomain(self, url):
         o = urlparse(url)

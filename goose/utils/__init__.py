@@ -80,7 +80,7 @@ class ParsingCandidate(object):
 
     def __init__(self, urlString, linkhash, url):
         self.urlString = urlString
-        self.linkhash = linkhash
+        self.link_hash = linkhash
         self.url = url
 
 

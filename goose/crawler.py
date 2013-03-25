@@ -63,37 +63,37 @@ class Crawler(object):
         outputFormatter = self.getOutputFormatter()
 
         # article
-        article.finalUrl = parseCandidate.url
-        article.linkhash = parseCandidate.linkhash
-        article.rawHtml = rawHtml
+        article.final_url = parseCandidate.url
+        article.link_hash = parseCandidate.link_hash
+        article.raw_html = rawHtml
         article.doc = doc
-        article.rawDoc = deepcopy(doc)
+        article.raw_doc = deepcopy(doc)
         article.title = extractor.getTitle(article)
         # TODO
-        # article.publishDate = config.publishDateExtractor.extract(doc)
-        # article.additionalData = config.getAdditionalDataExtractor.extract(doc)
-        article.metaLang = extractor.getMetaLang(article)
-        article.metaFavicon = extractor.getMetaFavicon(article)
-        article.metaDescription = extractor.getMetaDescription(article)
-        article.metaKeywords = extractor.getMetaKeywords(article)
-        article.canonicalLink = extractor.getCanonicalLink(article)
-        article.domain = extractor.getDomain(article.finalUrl)
+        # article.publish_date = config.publish_dateExtractor.extract(doc)
+        # article.additional_data = config.getAdditionalDataExtractor.extract(doc)
+        article.meta_lang = extractor.getMetaLang(article)
+        article.meta_favicon = extractor.getMetaFavicon(article)
+        article.meta_description = extractor.getMetaDescription(article)
+        article.meta_keywords = extractor.getMetaKeywords(article)
+        article.canonical_link = extractor.getCanonicalLink(article)
+        article.domain = extractor.getDomain(article.final_url)
         article.tags = extractor.extractTags(article)
         # # before we do any calcs on the body itself let's clean up the document
         article.doc = docCleaner.clean(article)
 
         # big stuff
-        article.topNode = extractor.calculateBestNodeBasedOnClustering(article)
-        if article.topNode is not None:
+        article.top_node = extractor.calculateBestNodeBasedOnClustering(article)
+        if article.top_node is not None:
             # TODO
             # movies and images
-            # article.movies = extractor.extractVideos(article.topNode)
+            # article.movies = extractor.extractVideos(article.top_node)
             if self.config.enableImageFetching:
                 imageExtractor = self.getImageExtractor(article)
-                article.topImage = imageExtractor.getBestImage(article.rawDoc, article.topNode)
+                article.top_image = imageExtractor.getBestImage(article.raw_doc, article.top_node)
 
-            article.topNode = extractor.postExtractionCleanup(article.topNode)
-            article.cleanedArticleText = outputFormatter.getFormattedText(article)
+            article.top_node = extractor.postExtractionCleanup(article.top_node)
+            article.cleaned_text = outputFormatter.getFormattedText(article)
 
         # cleanup tmp file
         self.releaseResources(article)
@@ -126,7 +126,7 @@ class Crawler(object):
         return StandardContentExtractor(self.config)
 
     def releaseResources(self, article):
-        path = '%s/%s_*' % (self.config.localStoragePath, article.linkhash)
+        path = '%s/%s_*' % (self.config.localStoragePath, article.link_hash)
         for fname in glob.glob(path):
             try:
                 os.remove(fname)

@@ -28,7 +28,7 @@ from goose.parsers import Parser
 class OutputFormatter(object):
 
     def __init__(self, config):
-        self.topNode = None
+        self.top_node = None
         self.config = config
         self.stopwordsCls = config.stopwordsCls
 
@@ -38,17 +38,17 @@ class OutputFormatter(object):
         the configuration language
         """
         # we don't want to force the target laguage
-        # so we use the article.metaLang
+        # so we use the article.meta_lang
         if self.config.useMetaLanguge == True:
-            if article.metaLang:
-                return article.metaLang[:2]
+            if article.meta_lang:
+                return article.meta_lang[:2]
         return self.config.targetLanguage
 
     def getTopNode(self):
-        return self.topNode
+        return self.top_node
 
     def getFormattedText(self, article):
-        self.topNode = article.topNode
+        self.top_node = article.top_node
         self.removeNodesWithNegativeScores()
         self.convertLinksToText()
         self.replaceTagsWithText()
@@ -77,7 +77,7 @@ class OutputFormatter(object):
         that have a negative gravity score,
         let's give em the boot
         """
-        gravityItems = self.topNode.cssselect("*[gravityScore]")
+        gravityItems = self.top_node.cssselect("*[gravityScore]")
         for item in gravityItems:
             score = int(item.attrib.get('gravityScore'), 0)
             if score < 1:
