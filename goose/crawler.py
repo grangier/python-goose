@@ -29,7 +29,7 @@ from goose.extractors import StandardContentExtractor
 from goose.cleaners import StandardDocumentCleaner
 from goose.outputformatters import StandardOutputFormatter
 from goose.parsers import Parser
-from goose.images.UpgradedImageExtractor import UpgradedImageIExtractor
+from goose.images.extractors import UpgradedImageIExtractor
 from goose.network import HtmlFetcher
 
 
