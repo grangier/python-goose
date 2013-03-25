@@ -22,7 +22,7 @@ limitations under the License.
 """
 import goose
 from goose.utils import FileHelper
-from goose.Goose import Goose
+from goose import Goose
 from goose.article import Article
 from goose.parsers import Parser
 from goose.configuration import Configuration

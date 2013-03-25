@@ -41,7 +41,7 @@ Goose is licensed by Gravity.com under the Apache 2.0 license, see the LICENSE f
     
 
 ##Take it for a spin
-    >>> from goose.Goose import Goose
+    >>> from goose import Goose
     >>> url = 'http://edition.cnn.com/2012/02/22/world/europe/uk-occupy-london/index.html?hpt=ieu_c2'
     >>> g = Goose()
     >>> article = g.extractContent(url=url)
@@ -58,7 +58,7 @@ Goose is licensed by Gravity.com under the Apache 2.0 license, see the LICENSE f
 ##Goose is now language aware
 For exemple scrapping a spanish content page with correct meta language tags
 
-    >>> from goose.Goose import Goose
+    >>> from goose import Goose
     >>> url = 'http://sociedad.elpais.com/sociedad/2012/10/27/actualidad/1351332873_157836.html'
     >>> g = Goose()
     >>> article = g.extractContent(url=url)
@@ -69,7 +69,7 @@ For exemple scrapping a spanish content page with correct meta language tags
 
 Some pages don't have correct meta language tags, you can force it using configuration :
 
-    >>> from goose.Goose import Goose
+    >>> from goose import Goose
     >>> url = 'http://www.elmundo.es/elmundo/2012/10/28/espana/1351388909.html'
     >>> g = Goose({'useMetaLanguge': False, 'targetLanguage':'es'})
     >>> article = g.extractContent(url=url)
@@ -85,7 +85,7 @@ will force as configuration will force the spanish language
 ##Goose in Chinese
 Some users want to use Goose for chinese content. Chinese word segementation is way more difficult to deal with that occidental languages. Chinese needs a dedicated StopWord analyser thant need to be passed to the config object
 
-    >>> from goose.Goose import Goose
+    >>> from goose import Goose
     >>> from goose.text import StopWordsChinese
     >>> url  = 'http://www.bbc.co.uk/zhongwen/simp/chinese_news/2012/12/121210_hongkong_politics.shtml'
     >>> g = Goose({'stopwordsCls': StopWordsChinese})
