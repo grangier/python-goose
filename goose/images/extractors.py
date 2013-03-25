@@ -26,7 +26,7 @@ from urlparse import urlparse, urljoin
 from goose.utils import FileHelper
 from goose.parsers import Parser
 from goose.images.image import Image
-from goose.images.ImageUtils import ImageUtils
+from goose.images.utils import ImageUtils
 
 KNOWN_IMG_DOM_NAMES = [
     "yn-story-related-media",
@@ -34,8 +34,6 @@ KNOWN_IMG_DOM_NAMES = [
     "big_photo",
     "ap-smallphoto-a",
 ]
-
-
 
 
 class DepthTraversal(object):
