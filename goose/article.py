@@ -47,7 +47,7 @@ class Article(object):
         self.meta_keywords = u""
 
         # The canonical link of this article if found in the meta data
-        self.canonical_link  = u""
+        self.canonical_link = u""
 
         # holds the domain of this article we're parsing
         self.domain = u""

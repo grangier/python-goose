@@ -47,11 +47,11 @@ Goose is licensed by Gravity.com under the Apache 2.0 license, see the LICENSE f
     >>> article = g.extractContent(url=url)
     >>> article.title
     u'Occupy London loses eviction fight'
-    >>> article.metaDescription
+    >>> article.meta_description
     "Occupy London protesters who have been camped outside the landmark St. Paul's Cathedral for the past four months lost their court bid to avoid eviction Wednesday in a decision made by London's Court of Appeal."
-    >>> article.cleanedArticleText[:150]
+    >>> article.cleaned_text[:150]
     (CNN) -- Occupy London protesters who have been camped outside the landmark St. Paul's Cathedral for the past four months lost their court bid to avoi
-    >>> article.topImage.imageSrc
+    >>> article.top_image.imageSrc
     http://i2.cdn.turner.com/cnn/dam/assets/111017024308-occupy-london-st-paul-s-cathedral-story-top.jpg
 
 
@@ -64,7 +64,7 @@ For exemple scrapping a spanish content page with correct meta language tags
     >>> article = g.extractContent(url=url)
     >>> article.title
     u'Las listas de espera se agravan'
-    >>> article.cleanedArticleText[:150]
+    >>> article.cleaned_text[:150]
     u'Los recortes pasan factura a los pacientes. De diciembre de 2010 a junio de 2012 las listas de espera para operarse aumentaron un 125%. Hay m\xe1s ciudad'
 
 Some pages don't have correct meta language tags, you can force it using configuration :
@@ -73,7 +73,7 @@ Some pages don't have correct meta language tags, you can force it using configu
     >>> url = 'http://www.elmundo.es/elmundo/2012/10/28/espana/1351388909.html'
     >>> g = Goose({'useMetaLanguge': False, 'targetLanguage':'es'})
     >>> article = g.extractContent(url=url)
-    >>> article.cleanedArticleText[:150]
+    >>> article.cleaned_text[:150]
     u'Importante golpe a la banda terrorista ETA en Francia. La Guardia Civil ha detenido en un hotel de Macon, a 70 kil\xf3metros de Lyon, a Izaskun Lesaka y '
 
 Passing 
@@ -90,7 +90,7 @@ Some users want to use Goose for chinese content. Chinese word segementation is 
     >>> url  = 'http://www.bbc.co.uk/zhongwen/simp/chinese_news/2012/12/121210_hongkong_politics.shtml'
     >>> g = Goose({'stopwordsCls': StopWordsChinese})
     >>> article = g.extractContent(url=url)
-    >>> print article.cleanedArticleText[:150]
+    >>> print article.cleaned_text[:150]
     香港行政长官梁振英在各方压力下就其大宅的违章建筑（僭建）问题到立法会接受质询，并向香港民众道歉。
 
     梁振英在星期二（12月10日）的答问大会开始之际在其演说中道歉，但强调他在违章建筑问题上没有隐瞒的意图和动机。
