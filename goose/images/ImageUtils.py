@@ -25,8 +25,8 @@ import os
 import urllib2
 from PIL import Image
 from goose.utils.encoding import smart_str
-from goose.images.ImageDetails import ImageDetails
-from goose.images.ImageExtractor import LocallyStoredImage
+from goose.images.imageDetails import ImageDetails
+from goose.images.imageExtractor import LocallyStoredImage
 
 
 class ImageUtils(object):
