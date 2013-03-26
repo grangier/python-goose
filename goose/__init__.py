@@ -73,6 +73,7 @@ class Goose(object):
 
         # test to write a dummy file to the directory
         # to check is directory is writtable
+		# FIXEME : use os.path.join
         path = '%s/test.txt' % self.config.local_storage_path
         try:
             f = open(path, 'w')

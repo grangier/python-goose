@@ -126,6 +126,7 @@ class Crawler(object):
         return StandardContentExtractor(self.config)
 
     def relase_resources(self, article):
+		# FIXEME : use os.path.join
         path = '%s/%s_*' % (self.config.local_storage_path, article.link_hash)
         for fname in glob.glob(path):
             try:
