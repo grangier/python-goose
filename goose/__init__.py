@@ -32,10 +32,10 @@ class Goose(object):
     """
     def __init__(self, config=None):
         self.config = config or Configuration()
-        self.extendConfig()
-        self.initializeEnvironment()
+        self.extend_config()
+        self.initialize()
 
-    def extendConfig(self):
+    def extend_config(self):
         if isinstance(self.config, dict):
             config = Configuration()
             for k, v in self.config.items():
@@ -43,23 +43,23 @@ class Goose(object):
                     setattr(config, k, v)
             self.config = config
 
-    def extractContent(self, url=None, rawHTML=None):
+    def extract(self, url=None, rawHTML=None):
         """\
         Main method to extract an article object from a URL,
         pass in a url and get back a Article
         """
         cc = CrawlCandidate(self.config, url, rawHTML)
-        return self.sendToActor(cc)
+        return self.crawl(cc)
 
-    def shutdownNetwork(self):
+    def shutdown_network(self):
         pass
 
-    def sendToActor(self, crawlCandiate):
+    def crawl(self, crawl_candiate):
         crawler = Crawler(self.config)
-        article = crawler.crawl(crawlCandiate)
+        article = crawler.crawl(crawl_candiate)
         return article
 
-    def initializeEnvironment(self):
+    def initialize(self):
         # test if config.local_storage_path
         # is a directory
         if not os.path.isdir(self.config.local_storage_path):

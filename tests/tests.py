@@ -190,7 +190,7 @@ class TestExtractions(unittest.TestCase):
             config.use_meta_language = False
         config.enable_image_fetching = False
         g = Goose(config=config)
-        article = g.extractContent(url=url, rawHTML=rawHTML)
+        article = g.extract(url=url, rawHTML=rawHTML)
         return article
 
     def runArticleAssertions(self, article=None, expectedTitle=None,
