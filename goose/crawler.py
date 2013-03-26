@@ -68,22 +68,22 @@ class Crawler(object):
         article.raw_html = raw_html
         article.doc = doc
         article.raw_doc = deepcopy(doc)
-        article.title = extractor.getTitle(article)
+        article.title = extractor.get_title(article)
         # TODO
         # article.publish_date = config.publishDateExtractor.extract(doc)
         # article.additional_data = config.get_additionaldata_extractor.extract(doc)
-        article.meta_lang = extractor.getMetaLang(article)
-        article.meta_favicon = extractor.getMetaFavicon(article)
-        article.meta_description = extractor.getMetaDescription(article)
-        article.meta_keywords = extractor.getMetaKeywords(article)
-        article.canonical_link = extractor.getCanonicalLink(article)
-        article.domain = extractor.getDomain(article.final_url)
-        article.tags = extractor.extractTags(article)
+        article.meta_lang = extractor.get_meta_lang(article)
+        article.meta_favicon = extractor.get_favicon(article)
+        article.meta_description = extractor.get_meta_description(article)
+        article.meta_keywords = extractor.get_meta_keywords(article)
+        article.canonical_link = extractor.get_canonical_link(article)
+        article.domain = extractor.get_domain(article.final_url)
+        article.tags = extractor.extract_tags(article)
         # # before we do any calcs on the body itself let's clean up the document
         article.doc = document_cleaner.clean(article)
 
         # big stuff
-        article.top_node = extractor.calculateBestNodeBasedOnClustering(article)
+        article.top_node = extractor.calculate_best_node(article)
         if article.top_node is not None:
             # TODO
             # movies and images
@@ -92,7 +92,7 @@ class Crawler(object):
                 image_extractor = self.get_image_extractor(article)
                 article.top_image = image_extractor.getBestImage(article.raw_doc, article.top_node)
 
-            article.top_node = extractor.postExtractionCleanup(article.top_node)
+            article.top_node = extractor.post_cleanup(article.top_node)
             article.cleaned_text = output_formatter.getFormattedText(article)
 
         # cleanup tmp file

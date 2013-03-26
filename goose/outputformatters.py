@@ -32,7 +32,7 @@ class OutputFormatter(object):
         self.config = config
         self.stopwords_class = config.stopwords_class
 
-    def getLanguage(self, article):
+    def get_language(self, article):
         """\
         Returns the language is by the article or
         the configuration language
@@ -102,7 +102,7 @@ class OutputFormatter(object):
         allNodes.reverse()
         for el in allNodes:
             text = Parser.getText(el)
-            stopWords = self.stopwords_class(language=self.getLanguage(article)).getStopWordCount(text)
+            stopWords = self.stopwords_class(language=self.get_language(article)).getStopWordCount(text)
             if stopWords.getStopWordCount() < 3 \
                 and len(Parser.getElementsByTag(el, tag='object')) == 0 \
                 and len(Parser.getElementsByTag(el, tag='embed')) == 0:
