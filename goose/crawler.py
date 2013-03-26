@@ -71,7 +71,7 @@ class Crawler(object):
         article.title = extractor.getTitle(article)
         # TODO
         # article.publish_date = config.publishDateExtractor.extract(doc)
-        # article.additional_data = config.getAdditionalDataExtractor.extract(doc)
+        # article.additional_data = config.get_additionaldata_extractor.extract(doc)
         article.meta_lang = extractor.getMetaLang(article)
         article.meta_favicon = extractor.getMetaFavicon(article)
         article.meta_description = extractor.getMetaDescription(article)
@@ -88,7 +88,7 @@ class Crawler(object):
             # TODO
             # movies and images
             # article.movies = extractor.extractVideos(article.top_node)
-            if self.config.enableImageFetching:
+            if self.config.enable_image_fetching:
                 imageExtractor = self.getImageExtractor(article)
                 article.top_image = imageExtractor.getBestImage(article.raw_doc, article.top_node)
 
@@ -126,7 +126,7 @@ class Crawler(object):
         return StandardContentExtractor(self.config)
 
     def releaseResources(self, article):
-        path = '%s/%s_*' % (self.config.localStoragePath, article.link_hash)
+        path = '%s/%s_*' % (self.config.local_storage_path, article.link_hash)
         for fname in glob.glob(path):
             try:
                 os.remove(fname)

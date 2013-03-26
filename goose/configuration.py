@@ -27,46 +27,46 @@ class Configuration(object):
     def __init__(self):
         # this is the local storage path used to place
         # images to inspect them, should be writable
-        self.localStoragePath = "/tmp/goosetmp"
+        self.local_storage_path = "/tmp/goosetmp"
 
         # What's the minimum bytes for an image we'd accept is,
         # alot of times we want to filter out the author's little images
         # in the beginning of the article
-        self.minBytesForImages = 4500
+        self.images_min_bytes = 4500
 
         # set this guy to false if you don't care about getting images,
         # otherwise you can either use the default
         # image extractor to implement the ImageExtractor
         # interface to build your own
-        self.enableImageFetching = True
+        self.enable_image_fetching = True
 
         # set this valriable to False if you want to force
         # the article language. OtherWise it will attempt to 
         # find meta language and use the correct stopwords dictionary
-        self.useMetaLanguge = True
+        self.use_meta_language = True
 
         # default language
         # it will be use as fallback
-        # if useMetaLanguge is set to false, targetlanguage will
+        # if use_meta_language is set to false, targetlanguage will
         # be use
-        self.targetLanguage = 'en'
+        self.target_language = 'en'
 
         # defautl stopwrods class
-        self.stopwordsCls = StopWords
+        self.stopwords_class = StopWords
 
         # path to your imagemagick convert executable,
         # on the mac using mac ports this is the default listed
-        self.imagemagickConvertPath = "/opt/local/bin/convert"
+        self.imagemagick_convert_path = "/opt/local/bin/convert"
 
         # path to your imagemagick identify executable
-        self.imagemagickIdentifyPath = "/opt/local/bin/identify"
+        self.imagemagick_identify_path = "/opt/local/bin/identify"
 
         # used as the user agent that
         # is sent with your web requests to extract an article
-        # self.browserUserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2)"\
+        # self.browser_user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2)"\
         #                         " AppleWebKit/534.52.7 (KHTML, like Gecko) "\
         #                         "Version/5.1.2 Safari/534.52.7"
-        self.browserUserAgent = 'Goose/1.0'
+        self.browser_user_agent = 'Goose/1.0'
 
         # debug mode
         # enable this to have additional debugging information
@@ -74,31 +74,31 @@ class Configuration(object):
         self.debug = False
 
         # TODO
-        self.publish_dateExtractor = None
+        self.extract_publishdate = None
 
         # TODO
-        self.additional_dataExtractor = None
+        self.additional_data_extractor = None
 
-    def getPublishDateExtractor(self):
-        return self.publish_dateExtractor
+    def get_publishdate_extractor(self):
+        return self.extract_publishdate
 
-    def setPublishDateExtractor(self, extractor):
+    def set_publishdate_extractor(self, extractor):
         """\
         Pass in to extract article publish dates.
         @param extractor a concrete instance of PublishDateExtractor
         """
         if not extractor:
             raise ValueError("extractor must not be null!")
-        self.publish_dateExtractor = extractor
+        self.extract_publishdate = extractor
 
-    def getAdditionalDataExtractor(self):
-        return self.additional_dataExtractor
+    def get_additionaldata_extractor(self):
+        return self.additional_data_extractor
 
-    def setAdditionalDataExtractor(self, extractor):
+    def set_additionaldata_extractor(self, extractor):
         """\
         Pass in to extract any additional data not defined within
         @param extractor a concrete instance of AdditionalDataExtractor
         """
         if not extractor:
             raise ValueError("extractor must not be null!")
-        self.additional_dataExtractor = extractor
+        self.additional_data_extractor = extractor

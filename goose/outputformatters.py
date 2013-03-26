@@ -30,7 +30,7 @@ class OutputFormatter(object):
     def __init__(self, config):
         self.top_node = None
         self.config = config
-        self.stopwordsCls = config.stopwordsCls
+        self.stopwords_class = config.stopwords_class
 
     def getLanguage(self, article):
         """\
@@ -39,10 +39,10 @@ class OutputFormatter(object):
         """
         # we don't want to force the target laguage
         # so we use the article.meta_lang
-        if self.config.useMetaLanguge == True:
+        if self.config.use_meta_language == True:
             if article.meta_lang:
                 return article.meta_lang[:2]
-        return self.config.targetLanguage
+        return self.config.target_language
 
     def getTopNode(self):
         return self.top_node
@@ -102,7 +102,7 @@ class OutputFormatter(object):
         allNodes.reverse()
         for el in allNodes:
             text = Parser.getText(el)
-            stopWords = self.stopwordsCls(language=self.getLanguage(article)).getStopWordCount(text)
+            stopWords = self.stopwords_class(language=self.getLanguage(article)).getStopWordCount(text)
             if stopWords.getStopWordCount() < 3 \
                 and len(Parser.getElementsByTag(el, tag='object')) == 0 \
                 and len(Parser.getElementsByTag(el, tag='embed')) == 0:

@@ -47,8 +47,8 @@ class ContentExtractor(object):
 
     def __init__(self, config):
         self.config = config
-        self.language = config.targetLanguage
-        self.stopwordsCls = config.stopwordsCls
+        self.language = config.target_language
+        self.stopwords_class = config.stopwords_class
 
     def getLanguage(self, article):
         """\
@@ -57,10 +57,10 @@ class ContentExtractor(object):
         """
         # we don't want to force the target laguage
         # so we use the article.meta_lang
-        if self.config.useMetaLanguge == True:
+        if self.config.use_meta_language == True:
             if article.meta_lang:
                 self.language = article.meta_lang[:2]
-        self.language = self.config.targetLanguage
+        self.language = self.config.target_language
 
     def getTitle(self, article):
         """\
@@ -242,7 +242,7 @@ class ContentExtractor(object):
 
         for node in nodesToCheck:
             nodeText = Parser.getText(node)
-            wordStats = self.stopwordsCls(language=self.language).getStopWordCount(nodeText)
+            wordStats = self.stopwords_class(language=self.language).getStopWordCount(nodeText)
             highLinkDensity = self.isHighLinkDensity(node)
             if wordStats.getStopWordCount() > 2 and not highLinkDensity:
                 nodesWithText.append(node)
@@ -268,7 +268,7 @@ class ContentExtractor(object):
                         boostScore = float(5)
 
             nodeText = Parser.getText(node)
-            wordStats = self.stopwordsCls(language=self.language).getStopWordCount(nodeText)
+            wordStats = self.stopwords_class(language=self.language).getStopWordCount(nodeText)
             upscore = int(wordStats.getStopWordCount() + boostScore)
 
             # parent node
@@ -323,7 +323,7 @@ class ContentExtractor(object):
                 if stepsAway >= maxStepsAwayFromNode:
                     return False
                 paraText = Parser.getText(currentNode)
-                wordStats = self.stopwordsCls(language=self.language).getStopWordCount(paraText)
+                wordStats = self.stopwords_class(language=self.language).getStopWordCount(paraText)
                 if wordStats.getStopWordCount() > minimumStopWordCount:
                     return True
                 stepsAway += 1
@@ -366,7 +366,7 @@ class ContentExtractor(object):
                 for firstParagraph in potentialParagraphs:
                     text = Parser.getText(firstParagraph)
                     if len(text) > 0:
-                        wordStats = self.stopwordsCls(language=self.language).getStopWordCount(text)
+                        wordStats = self.stopwords_class(language=self.language).getStopWordCount(text)
                         paragraphScore = wordStats.getStopWordCount()
                         siblingBaseLineScore = float(.30)
                         highLinkDensity = self.isHighLinkDensity(firstParagraph)
@@ -393,7 +393,7 @@ class ContentExtractor(object):
 
         for node in nodesToCheck:
             nodeText = Parser.getText(node)
-            wordStats = self.stopwordsCls(language=self.language).getStopWordCount(nodeText)
+            wordStats = self.stopwords_class(language=self.language).getStopWordCount(nodeText)
             highLinkDensity = self.isHighLinkDensity(node)
             if wordStats.getStopWordCount() > 2 and not highLinkDensity:
                 numberOfParagraphs += 1

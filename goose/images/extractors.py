@@ -61,7 +61,7 @@ class UpgradedImageIExtractor(ImageExtractor):
         self.config = config
 
         # What's the minimum bytes for an image we'd accept is
-        self.minBytesForImages = 4000
+        self.images_min_bytes = 4000
 
         # the webpage url that we're extracting content from
         self.targetUrl = article.final_url
@@ -277,7 +277,7 @@ class UpgradedImageIExtractor(ImageExtractor):
             locallyStoredImage = self.getLocallyStoredImage(imgSrc)
             if locallyStoredImage:
                 bytes = locallyStoredImage.bytes
-                if (bytes == 0 or bytes > self.minBytesForImages) \
+                if (bytes == 0 or bytes > self.images_min_bytes) \
                         and bytes < MAX_BYTES_SIZE:
                     goodImages.append(image)
                 else:

@@ -71,13 +71,13 @@ Some pages don't have correct meta language tags, you can force it using configu
 
     >>> from goose import Goose
     >>> url = 'http://www.elmundo.es/elmundo/2012/10/28/espana/1351388909.html'
-    >>> g = Goose({'useMetaLanguge': False, 'targetLanguage':'es'})
+    >>> g = Goose({'use_meta_language': False, 'target_language':'es'})
     >>> article = g.extractContent(url=url)
     >>> article.cleaned_text[:150]
     u'Importante golpe a la banda terrorista ETA en Francia. La Guardia Civil ha detenido en un hotel de Macon, a 70 kil\xf3metros de Lyon, a Izaskun Lesaka y '
 
 Passing 
-    {'useMetaLanguge': False, 'targetLanguage':'es'}
+    {'use_meta_language': False, 'target_language':'es'}
 will force as configuration will force the spanish language
 
 
@@ -88,7 +88,7 @@ Some users want to use Goose for chinese content. Chinese word segementation is 
     >>> from goose import Goose
     >>> from goose.text import StopWordsChinese
     >>> url  = 'http://www.bbc.co.uk/zhongwen/simp/chinese_news/2012/12/121210_hongkong_politics.shtml'
-    >>> g = Goose({'stopwordsCls': StopWordsChinese})
+    >>> g = Goose({'stopwords_class': StopWordsChinese})
     >>> article = g.extractContent(url=url)
     >>> print article.cleaned_text[:150]
     香港行政长官梁振英在各方压力下就其大宅的违章建筑（僭建）问题到立法会接受质询，并向香港民众道歉。
@@ -103,7 +103,7 @@ There is two way to pass configuration to goose. The first one is to pass to goo
 
 For instance, if you want to change the userAgent used by Goose juste pass :
 
-    >>> g = Goose({'browserUserAgent': 'Mozilla'})
+    >>> g = Goose({'browser_user_agent': 'Mozilla'})
 
 
 ##TODO

@@ -186,9 +186,9 @@ class TestExtractions(unittest.TestCase):
     def getArticle(self, url, rawHTML, language=None):
         config = Configuration()
         if language:
-            config.targetLanguage = language
-            config.useMetaLanguge = False
-        config.enableImageFetching = False
+            config.target_language = language
+            config.use_meta_language = False
+        config.enable_image_fetching = False
         g = Goose(config=config)
         article = g.extractContent(url=url, rawHTML=rawHTML)
         return article

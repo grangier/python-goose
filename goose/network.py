@@ -37,10 +37,10 @@ class HtmlFetcher(object):
         """
         if isinstance(url, unicode):
             url = url.encode('utf-8')
-        headers = {}  # 'User-Agent' : config.browserUserAgent }
+        headers = {}  # 'User-Agent' : config.browser_user_agent }
         request = urllib2.Request(url, None, headers)
         opener = urllib2.build_opener(urllib2.HTTPHandler(config.debug))
-        opener.addheaders = [('User-agent', config.browserUserAgent)]
+        opener.addheaders = [('User-agent', config.browser_user_agent)]
         try:
             htmlResult = opener.open(request).read()
         except:

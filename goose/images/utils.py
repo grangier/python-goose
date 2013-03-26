@@ -77,7 +77,7 @@ class ImageUtils(object):
     def readExistingFileInfo(self, linkhash, imageSrc, config):
         localImageName = self.getLocalFileName(linkhash, imageSrc, config)
         if os.path.isfile(localImageName):
-            identify = config.imagemagickIdentifyPath
+            identify = config.imagemagick_identify_path
             imageDetails = self.getImageDimensions(identify, localImageName)
             fileExtension = self.getFileExtensionName(imageDetails)
             bytes = os.path.getsize(localImageName)
@@ -103,7 +103,7 @@ class ImageUtils(object):
     @classmethod
     def getLocalFileName(self, linkhash, imageSrc, config):
         imageHash = hashlib.md5(smart_str(imageSrc)).hexdigest()
-        return config.localStoragePath + "/" + linkhash + "_py_" + imageHash
+        return config.local_storage_path + "/" + linkhash + "_py_" + imageHash
 
     @classmethod
     def cleanImageSrcString(self, imgSrc):
