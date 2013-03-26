@@ -183,14 +183,14 @@ class TestExtractions(unittest.TestCase):
     def getHtml(self, filename):
         return FileHelper.loadResourceFile(filename)
 
-    def getArticle(self, url, rawHTML, language=None):
+    def getArticle(self, url, raw_html, language=None):
         config = Configuration()
         if language:
             config.target_language = language
             config.use_meta_language = False
         config.enable_image_fetching = False
         g = Goose(config=config)
-        article = g.extract(url=url, rawHTML=rawHTML)
+        article = g.extract(url=url, raw_html=raw_html)
         return article
 
     def runArticleAssertions(self, article=None, expectedTitle=None,

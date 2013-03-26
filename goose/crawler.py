@@ -35,10 +35,10 @@ from goose.network import HtmlFetcher
 
 class CrawlCandidate(object):
 
-    def __init__(self, config, url, rawHTML):
+    def __init__(self, config, url, raw_html):
         self.config = config
         self.url = url
-        self.rawHTML = rawHTML
+        self.raw_html = raw_html
 
 
 class Crawler(object):
@@ -101,8 +101,8 @@ class Crawler(object):
         return article
 
     def getHTML(self, crawlCandidate, parsingCandidate):
-        if crawlCandidate.rawHTML:
-            return crawlCandidate.rawHTML
+        if crawlCandidate.raw_html:
+            return crawlCandidate.raw_html
         else:
             # fetch HTML
             html = HtmlFetcher().getHtml(self.config, parsingCandidate.url)
