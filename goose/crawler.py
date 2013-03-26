@@ -47,25 +47,25 @@ class Crawler(object):
         self.config = config
         self.logPrefix = "crawler:"
 
-    def crawl(self, crawlCandidate):
+    def crawl(self, crawl_candidate):
         article = Article()
 
-        parseCandidate = URLHelper.getCleanedUrl(crawlCandidate.url)
-        rawHtml = self.getHTML(crawlCandidate, parseCandidate)
+        parse_candidate = URLHelper.getCleanedUrl(crawl_candidate.url)
+        raw_html = self.get_html(crawl_candidate, parse_candidate)
 
-        if rawHtml is None:
+        if raw_html is None:
             return article
 
-        doc = self.getDocument(parseCandidate.url, rawHtml)
+        doc = self.get_document(parse_candidate.url, raw_html)
 
-        extractor = self.getExtractor()
-        docCleaner = self.getDocCleaner()
-        outputFormatter = self.getOutputFormatter()
+        extractor = self.get_extractor()
+        document_cleaner = self.get_document_cleaner()
+        output_formatter = self.get_output_formatter()
 
         # article
-        article.final_url = parseCandidate.url
-        article.link_hash = parseCandidate.link_hash
-        article.raw_html = rawHtml
+        article.final_url = parse_candidate.url
+        article.link_hash = parse_candidate.link_hash
+        article.raw_html = raw_html
         article.doc = doc
         article.raw_doc = deepcopy(doc)
         article.title = extractor.getTitle(article)
@@ -80,7 +80,7 @@ class Crawler(object):
         article.domain = extractor.getDomain(article.final_url)
         article.tags = extractor.extractTags(article)
         # # before we do any calcs on the body itself let's clean up the document
-        article.doc = docCleaner.clean(article)
+        article.doc = document_cleaner.clean(article)
 
         # big stuff
         article.top_node = extractor.calculateBestNodeBasedOnClustering(article)
@@ -89,43 +89,43 @@ class Crawler(object):
             # movies and images
             # article.movies = extractor.extractVideos(article.top_node)
             if self.config.enable_image_fetching:
-                imageExtractor = self.getImageExtractor(article)
-                article.top_image = imageExtractor.getBestImage(article.raw_doc, article.top_node)
+                image_extractor = self.get_image_extractor(article)
+                article.top_image = image_extractor.getBestImage(article.raw_doc, article.top_node)
 
             article.top_node = extractor.postExtractionCleanup(article.top_node)
-            article.cleaned_text = outputFormatter.getFormattedText(article)
+            article.cleaned_text = output_formatter.getFormattedText(article)
 
         # cleanup tmp file
-        self.releaseResources(article)
+        self.relase_resources(article)
 
         return article
 
-    def getHTML(self, crawlCandidate, parsingCandidate):
-        if crawlCandidate.raw_html:
-            return crawlCandidate.raw_html
+    def get_html(self, crawl_candidate, parsing_candidate):
+        if crawl_candidate.raw_html:
+            return crawl_candidate.raw_html
         else:
             # fetch HTML
-            html = HtmlFetcher().getHtml(self.config, parsingCandidate.url)
+            html = HtmlFetcher().getHtml(self.config, parsing_candidate.url)
             return html
 
-    def getImageExtractor(self, article):
+    def get_image_extractor(self, article):
         httpClient = None
         return UpgradedImageIExtractor(httpClient, article, self.config)
 
-    def getOutputFormatter(self):
+    def get_output_formatter(self):
         return StandardOutputFormatter(self.config)
 
-    def getDocCleaner(self):
+    def get_document_cleaner(self):
         return StandardDocumentCleaner()
 
-    def getDocument(self, url, rawHtml):
-        doc = Parser.fromstring(rawHtml)
+    def get_document(self, url, raw_html):
+        doc = Parser.fromstring(raw_html)
         return doc
 
-    def getExtractor(self):
+    def get_extractor(self):
         return StandardContentExtractor(self.config)
 
-    def releaseResources(self, article):
+    def relase_resources(self, article):
         path = '%s/%s_*' % (self.config.local_storage_path, article.link_hash)
         for fname in glob.glob(path):
             try:
