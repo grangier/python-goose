@@ -43,12 +43,12 @@ class Goose(object):
                     setattr(config, k, v)
             self.config = config
 
-    def extract(self, url=None, rawHTML=None):
+    def extract(self, url=None, raw_html=None):
         """\
         Main method to extract an article object from a URL,
         pass in a url and get back a Article
         """
-        cc = CrawlCandidate(self.config, url, rawHTML)
+        cc = CrawlCandidate(self.config, url, raw_html)
         return self.crawl(cc)
 
     def shutdown_network(self):
