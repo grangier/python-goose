@@ -105,7 +105,7 @@ class Crawler(object):
             return crawl_candidate.raw_html
         else:
             # fetch HTML
-            html = HtmlFetcher().getHtml(self.config, parsing_candidate.url)
+            html = HtmlFetcher().get_html(self.config, parsing_candidate.url)
             return html
 
     def get_image_extractor(self, article):

@@ -28,10 +28,10 @@ class HtmlFetcher(object):
     def __init__(self):
         pass
 
-    def getHttpClient(self):
+    def get_http_client(self):
         pass
 
-    def getHtml(self, config, url):
+    def get_html(self, config, url):
         """\
 
         """
@@ -42,9 +42,9 @@ class HtmlFetcher(object):
         opener = urllib2.build_opener(urllib2.HTTPHandler(config.debug))
         opener.addheaders = [('User-agent', config.browser_user_agent)]
         try:
-            htmlResult = opener.open(request).read()
+            result = opener.open(request).read()
         except:
             return None
         # urllib2.HTTPError
         # ValueError
-        return htmlResult
+        return result
