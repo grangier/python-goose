@@ -56,32 +56,32 @@ class WordStats(object):
     def __init__(self):
         # total number of stopwords or
         # good words that we can calculate
-        self.stopWordCount = 0
+        self.stop_word_count = 0
 
         # total number of words on a node
-        self.wordCount = 0
+        self.word_count = 0
 
         # holds an actual list
         # of the stop words we found
-        self.stopWords = []
+        self.stop_words = []
 
-    def getStopWords(self):
-        return self.stopWords
+    def get_stop_words(self):
+        return self.stop_words
 
-    def setStopWords(self, words):
-        self.stopWords = words
+    def set_stop_words(self, words):
+        self.stop_words = words
 
-    def getStopWordCount(self):
-        return self.stopWordCount
+    def get_stopword_count(self):
+        return self.stop_word_count
 
-    def setStopWordCount(self, wordcount):
-        self.stopWordCount = wordcount
+    def set_stopword_count(self, wordcount):
+        self.stop_word_count = wordcount
 
-    def getWordCount(self):
-        return self.wordCount
+    def get_word_count(self):
+        return self.word_count
 
-    def setWordCount(self, cnt):
-        self.wordCount = cnt
+    def set_word_count(self, cnt):
+        self.word_count = cnt
 
 
 class StopWords(object):
@@ -98,27 +98,27 @@ class StopWords(object):
             self._cached_stop_words[language] = set(FileHelper.loadResourceFile(path).splitlines())
         self.STOP_WORDS = self._cached_stop_words[language]
 
-    def removePunctuation(self, content):
+    def remove_punctuation(self, content):
         # code taken form
         # http://stackoverflow.com/questions/265960/best-way-to-strip-punctuation-from-a-string-in-python
         if isinstance(content, unicode):
             content = content.encode('utf-8')
         return content.translate(self.TRANS_TABLE, string.punctuation)
 
-    def getStopWordCount(self, content):
+    def get_stopword_count(self, content):
         if not content:
             return WordStats()
         ws = WordStats()
-        strippedInput = self.removePunctuation(content)
-        candidateWords = strippedInput.split(' ')
-        overlappingStopWords = []
-        for w in candidateWords:
+        stripped_input = self.remove_punctuation(content)
+        candiate_words = stripped_input.split(' ')
+        overlapping_stopwords = []
+        for w in candiate_words:
             if w.lower() in self.STOP_WORDS:
-                overlappingStopWords.append(w.lower())
+                overlapping_stopwords.append(w.lower())
 
-        ws.setWordCount(len(candidateWords))
-        ws.setStopWordCount(len(overlappingStopWords))
-        ws.setStopWords(overlappingStopWords)
+        ws.set_word_count(len(candiate_words))
+        ws.set_stopword_count(len(overlapping_stopwords))
+        ws.set_stop_words(overlapping_stopwords)
         return ws
 
 
@@ -134,7 +134,7 @@ class StopWordsChinese(StopWords):
             self._cached_stop_words[language] = set(FileHelper.loadResourceFile(path).splitlines())
         self.STOP_WORDS = self._cached_stop_words[language]
 
-    def getStopWordCount(self, content):
+    def get_stopword_count(self, content):
         # jieba build a tree that takes sometime
         # avoid building the tree if we don't use
         # chinese language
@@ -143,16 +143,16 @@ class StopWordsChinese(StopWords):
         if not content:
             return WordStats()
         ws = WordStats()
-        strippedInput = self.removePunctuation(content)
-        candidateWords = jieba.cut(strippedInput, cut_all=True)
-        overlappingStopWords = []
+        stripped_input = self.remove_punctuation(content)
+        candiate_words = jieba.cut(stripped_input, cut_all=True)
+        overlapping_stopwords = []
         c = 0
-        for w in candidateWords:
+        for w in candiate_words:
             c += 1
             if w.lower() in self.STOP_WORDS:
-                overlappingStopWords.append(w.lower())
+                overlapping_stopwords.append(w.lower())
 
-        ws.setWordCount(c)
-        ws.setStopWordCount(len(overlappingStopWords))
-        ws.setStopWords(overlappingStopWords)
+        ws.set_word_count(c)
+        ws.set_stopword_count(len(overlapping_stopwords))
+        ws.set_stop_words(overlapping_stopwords)
         return ws

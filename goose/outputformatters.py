@@ -102,8 +102,8 @@ class OutputFormatter(object):
         all_nodes.reverse()
         for el in all_nodes:
             text = Parser.getText(el)
-            stop_words = self.stopwords_class(language=self.get_language(article)).getStopWordCount(text)
-            if stop_words.getStopWordCount() < 3 \
+            stop_words = self.stopwords_class(language=self.get_language(article)).get_stopword_count(text)
+            if stop_words.get_stopword_count() < 3 \
                 and len(Parser.getElementsByTag(el, tag='object')) == 0 \
                 and len(Parser.getElementsByTag(el, tag='embed')) == 0:
                 Parser.remove(el)
