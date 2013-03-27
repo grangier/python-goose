@@ -50,7 +50,7 @@ class ImageExtractor(object):
 
 class UpgradedImageIExtractor(ImageExtractor):
 
-    def __init__(self, httpClient, article, config):
+    def __init__(self, http_client, article, config):
         self.customSiteMapping = {}
         self.loadCustomSiteMapping()
 
@@ -336,7 +336,7 @@ class UpgradedImageIExtractor(ImageExtractor):
         """\
         returns the bytes of the image file on disk
         """
-        locallyStoredImage = ImageUtils.storeImageToLocalFile(None,
+        locallyStoredImage = ImageUtils.store_image(None,
                                     self.link_hash, src, self.config)
         return locallyStoredImage
 

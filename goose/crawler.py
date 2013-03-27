@@ -109,8 +109,8 @@ class Crawler(object):
             return html
 
     def get_image_extractor(self, article):
-        httpClient = None
-        return UpgradedImageIExtractor(httpClient, article, self.config)
+        http_client = None
+        return UpgradedImageIExtractor(http_client, article, self.config)
 
     def get_output_formatter(self):
         return StandardOutputFormatter(self.config)

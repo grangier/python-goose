@@ -32,39 +32,39 @@ from goose.images.image import LocallyStoredImage
 class ImageUtils(object):
 
     @classmethod
-    def getImageDimensions(self, identifyProgram, filePath):
-        image = Image.open(filePath)
-        imageDetails = ImageDetails()
-        imageDetails.set_mime_type(image.format)
+    def get_image_dimensions(self, identify_program, path):
+        image = Image.open(path)
+        image_details = ImageDetails()
+        image_details.set_mime_type(image.format)
         width, height = image.size
-        imageDetails.set_width(width)
-        imageDetails.set_height(height)
-        return imageDetails
+        image_details.set_width(width)
+        image_details.set_height(height)
+        return image_details
 
     @classmethod
-    def storeImageToLocalFile(self, httpClient, link_hash, src, config):
+    def store_image(self, http_client, link_hash, src, config):
         """\
         Writes an image src http string to disk as a temporary file
         and returns the LocallyStoredImage object
         that has the info you should need on the image
         """
         # check for a cache hit already on disk
-        image = self.readExistingFileInfo(link_hash, src, config)
+        image = self.read_localfile(link_hash, src, config)
         if image:
             return image
 
         # no cache found download the image
-        data = self.fetchEntity(httpClient, src)
+        data = self.fetch(http_client, src)
         if data:
-            image = self.writeEntityContentsToDisk(data, link_hash, src, config)
+            image = self.write_localfile(data, link_hash, src, config)
             if image:
                 return image
 
         return None
 
     @classmethod
-    def getFileExtensionName(self, imageDetails):
-        mime_type = imageDetails.get_mime_type().lower()
+    def get_mime_type(self, image_details):
+        mime_type = image_details.get_mime_type().lower()
         mimes = {
             'png': '.png',
             'jpg': '.jpg',
@@ -74,43 +74,43 @@ class ImageUtils(object):
         return mimes.get(mime_type, 'NA')
 
     @classmethod
-    def readExistingFileInfo(self, link_hash, src, config):
-        localImageName = self.getLocalFileName(link_hash, src, config)
-        if os.path.isfile(localImageName):
+    def read_localfile(self, link_hash, src, config):
+        local_image_name = self.get_localfile_name(link_hash, src, config)
+        if os.path.isfile(local_image_name):
             identify = config.imagemagick_identify_path
-            imageDetails = self.getImageDimensions(identify, localImageName)
-            file_extension = self.getFileExtensionName(imageDetails)
-            bytes = os.path.getsize(localImageName)
+            image_details = self.get_image_dimensions(identify, local_image_name)
+            file_extension = self.get_mime_type(image_details)
+            bytes = os.path.getsize(local_image_name)
             return LocallyStoredImage(
                 src=src,
-                local_filename=localImageName,
+                local_filename=local_image_name,
                 link_hash=link_hash,
                 bytes=bytes,
                 file_extension=file_extension,
-                height=imageDetails.get_height(),
-                width=imageDetails.get_width()
+                height=image_details.get_height(),
+                width=image_details.get_width()
             )
         return None
 
     @classmethod
-    def writeEntityContentsToDisk(self, entity, link_hash, src, config):
-        localSrcPath = self.getLocalFileName(link_hash, src, config)
-        f = open(localSrcPath, 'w')
+    def write_localfile(self, entity, link_hash, src, config):
+        local_path = self.get_localfile_name(link_hash, src, config)
+        f = open(local_path, 'w')
         f.write(entity)
         f.close()
-        return self.readExistingFileInfo(link_hash, src, config)
+        return self.read_localfile(link_hash, src, config)
 
     @classmethod
-    def getLocalFileName(self, link_hash, src, config):
-        imageHash = hashlib.md5(smart_str(src)).hexdigest()
-        return config.local_storage_path + "/" + link_hash + "_py_" + imageHash
+    def get_localfile_name(self, link_hash, src, config):
+        image_hash = hashlib.md5(smart_str(src)).hexdigest()
+        return config.local_storage_path + "/" + link_hash + "_py_" + image_hash
 
     @classmethod
-    def cleanImageSrcString(self, src):
+    def clean_src_string(self, src):
         return src.replace(" ", "%20")
 
     @classmethod
-    def fetchEntity(self, httpClient, src):
+    def fetch(self, http_client, src):
         try:
             req = urllib2.Request(src)
             f = urllib2.urlopen(req)
