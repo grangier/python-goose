@@ -38,10 +38,10 @@ KNOWN_IMG_DOM_NAMES = [
 
 class DepthTraversal(object):
 
-    def __init__(self, node, parentDepth, siblingDepth):
+    def __init__(self, node, parent_depth, sibling_depth):
         self.node = node
-        self.parentDepth = parentDepth
-        self.siblingDepth = siblingDepth
+        self.parent_depth = parent_depth
+        self.sibling_depth = sibling_depth
 
 
 class ImageExtractor(object):
@@ -51,8 +51,8 @@ class ImageExtractor(object):
 class UpgradedImageIExtractor(ImageExtractor):
 
     def __init__(self, http_client, article, config):
-        self.customSiteMapping = {}
-        self.loadCustomSiteMapping()
+        self.custom_site_mapping = {}
+        self.load_customesite_mapping()
 
         # article
         self.article = article
@@ -78,29 +78,29 @@ class UpgradedImageIExtractor(ImageExtractor):
             "|mediaplex.com|adsatt|view.atdmt"
         )
 
-    def getBestImage(self, doc, topNode):
-        image = self.checkForKnownElements()
+    def get_best_image(self, doc, topNode):
+        image = self.check_known_elements()
         if image:
             return image
 
-        image = self.checkForLargeImages(topNode, 0, 0)
+        image = self.check_large_images(topNode, 0, 0)
         if image:
             return image
 
-        image = self.checkForMetaTag()
+        image = self.check_meta_tag()
         if image:
             return image
         return Image()
 
-    def checkForMetaTag(self):
-        image = self.checkForLinkTag()
+    def check_meta_tag(self):
+        image = self.check_link_tag()
         if image:
             return image
-        image = self.checkForOpenGraphTag()
+        image = self.check_opengraph_tag()
         if image:
             return image
 
-    def checkForLargeImages(self, node, parentDepthLevel, siblingDepthLevel):
+    def check_large_images(self, node, parent_depthLevel, sibling_depthLevel):
         """\
         although slow the best way to determine the best image is to download
         them and check the actual dimensions of the image when on disk
@@ -114,10 +114,10 @@ class UpgradedImageIExtractor(ImageExtractor):
         5. Score images based on different factors like height/width
            and possibly things like color density
         """
-        goodImages = self.getImageCandidates(node)
+        goodImages = self.get_image_candidates(node)
 
         if goodImages:
-            scoredImages = self.downloadImagesAndGetResults(goodImages, parentDepthLevel)
+            scoredImages = self.fetch_images(goodImages, parent_depthLevel)
             if scoredImages:
                 highScoreImage = sorted(scoredImages.items(),
                                         key=lambda x: x[1], reverse=True)[0][0]
@@ -128,28 +128,28 @@ class UpgradedImageIExtractor(ImageExtractor):
                                     if len(scoredImages) > 0 else 0
                 return mainImage
 
-        depthObj = self.getDepthLevel(node, parentDepthLevel, siblingDepthLevel)
+        depthObj = self.get_depth_level(node, parent_depthLevel, sibling_depthLevel)
         if depthObj:
-            return self.checkForLargeImages(depthObj.node,
-                            depthObj.parentDepth, depthObj.siblingDepth)
+            return self.check_large_images(depthObj.node,
+                            depthObj.parent_depth, depthObj.sibling_depth)
 
         return None
 
-    def getDepthLevel(self, node, parentDepth, siblingDepth):
+    def get_depth_level(self, node, parent_depth, sibling_depth):
         MAX_PARENT_DEPTH = 2
-        if parentDepth > MAX_PARENT_DEPTH:
+        if parent_depth > MAX_PARENT_DEPTH:
             return None
         else:
             siblingNode = Parser.previousSibling(node)
             if siblingNode is not None:
-                return DepthTraversal(siblingNode, parentDepth, siblingDepth + 1)
+                return DepthTraversal(siblingNode, parent_depth, sibling_depth + 1)
             elif node is not None:
                 parent = Parser.getParent(node)
                 if parent is not None:
-                    return DepthTraversal(parent, parentDepth + 1, 0)
+                    return DepthTraversal(parent, parent_depth + 1, 0)
         return None
 
-    def downloadImagesAndGetResults(self, images, depthLevel):
+    def fetch_images(self, images, depthLevel):
         """\
         download the images to temp disk and set their dimensions
         - we're going to score the images in the order in which
@@ -169,8 +169,8 @@ class UpgradedImageIExtractor(ImageExtractor):
         MIN_WIDTH = 50
         for image in images[:30]:
             src = Parser.getAttribute(image, attr='src')
-            src = self.buildImagePath(src)
-            locallyStoredImage = self.getLocallyStoredImage(src)
+            src = self.build_image_path(src)
+            locallyStoredImage = self.get_local_image(src)
             width = locallyStoredImage.width
             height = locallyStoredImage.height
             src = locallyStoredImage.src
@@ -178,7 +178,7 @@ class UpgradedImageIExtractor(ImageExtractor):
 
             if file_extension != '.gif' or file_extension != 'NA':
                 if (depthLevel >= 1 and locallyStoredImage.width > 300) or depthLevel < 1:
-                    if not self.isBannerDimensions(width, height):
+                    if not self.is_banner_dimensions(width, height):
                         if width > MIN_WIDTH:
                             sequenceScore = float(1.0 / cnt)
                             area = float(width * height)
@@ -196,10 +196,10 @@ class UpgradedImageIExtractor(ImageExtractor):
                             cnt += 1
         return imageResults
 
-    def getAllImages(self):
+    def get_images(self):
         return None
 
-    def isBannerDimensions(self, width, height):
+    def is_banner_dimensions(self, width, height):
         """\
         returns true if we think this is kind of a bannery dimension
         like 600 / 100 = 6 may be a fishy dimension for a good image
@@ -219,24 +219,24 @@ class UpgradedImageIExtractor(ImageExtractor):
 
         return False
 
-    def getImagesFromNode(self, node):
+    def get_node_images(self, node):
         images = Parser.getElementsByTag(node, tag='img')
         if images is not None and len(images) < 1:
             return None
         return images
 
-    def filterBadNames(self, images):
+    def filter_bad_names(self, images):
         """\
         takes a list of image elements
         and filters out the ones with bad names
         """
         goodImages = []
         for image in images:
-            if self.isOkImageFileName(image):
+            if self.is_valid_filename(image):
                 goodImages.append(image)
         return goodImages if len(goodImages) > 0 else None
 
-    def isOkImageFileName(self, imageNode):
+    def is_valid_filename(self, imageNode):
         """\
         will check the image src against a list
         of bad image files we know of like buttons, etc...
@@ -251,17 +251,17 @@ class UpgradedImageIExtractor(ImageExtractor):
 
         return True
 
-    def getImageCandidates(self, node):
+    def get_image_candidates(self, node):
         goodImages = []
         filteredImages = []
-        images = self.getImagesFromNode(node)
+        images = self.get_node_images(node)
         if images:
-            filteredImages = self.filterBadNames(images)
+            filteredImages = self.filter_bad_names(images)
         if filteredImages:
-            goodImages = self.findImagesThatPassByteSizeTest(filteredImages)
+            goodImages = self.get_images_bytesize_match(filteredImages)
         return goodImages
 
-    def findImagesThatPassByteSizeTest(self, images):
+    def get_images_bytesize_match(self, images):
         """\
         loop through all the images and find the ones
         that have the best bytez to even make them a candidate
@@ -273,8 +273,8 @@ class UpgradedImageIExtractor(ImageExtractor):
             if cnt > 30:
                 return goodImages
             src = Parser.getAttribute(image, attr='src')
-            src = self.buildImagePath(src)
-            locallyStoredImage = self.getLocallyStoredImage(src)
+            src = self.build_image_path(src)
+            locallyStoredImage = self.get_local_image(src)
             if locallyStoredImage:
                 bytes = locallyStoredImage.bytes
                 if (bytes == 0 or bytes > self.images_min_bytes) \
@@ -285,10 +285,10 @@ class UpgradedImageIExtractor(ImageExtractor):
             cnt += 1
         return goodImages if len(goodImages) > 0 else None
 
-    def getNode(self, node):
+    def get_node(self, node):
         return node if node else None
 
-    def checkForLinkTag(self):
+    def check_link_tag(self):
         """\
         checks to see if we were able to
         find open link_src on this page
@@ -302,7 +302,7 @@ class UpgradedImageIExtractor(ImageExtractor):
                 mainImage.src = href
                 mainImage.extraction_type = "linktag"
                 mainImage.confidence_score = 100
-                locallyStoredImage = self.getLocallyStoredImage(mainImage.src)
+                locallyStoredImage = self.get_local_image(mainImage.src)
                 if locallyStoredImage:
                     mainImage.bytes = locallyStoredImage.bytes
                     mainImage.height = locallyStoredImage.height
@@ -310,7 +310,7 @@ class UpgradedImageIExtractor(ImageExtractor):
                     return mainImage
         return None
 
-    def checkForOpenGraphTag(self):
+    def check_opengraph_tag(self):
         """\
         checks to see if we were able to
         find open graph tags on this page
@@ -324,7 +324,7 @@ class UpgradedImageIExtractor(ImageExtractor):
                 mainImage.src = href
                 mainImage.extraction_type = "opengraph"
                 mainImage.confidence_score = 100
-                locallyStoredImage = self.getLocallyStoredImage(mainImage.src)
+                locallyStoredImage = self.get_local_image(mainImage.src)
                 if locallyStoredImage:
                     mainImage.bytes = locallyStoredImage.bytes
                     mainImage.height = locallyStoredImage.height
@@ -332,7 +332,7 @@ class UpgradedImageIExtractor(ImageExtractor):
                     return mainImage
         return None
 
-    def getLocallyStoredImage(self, src):
+    def get_local_image(self, src):
         """\
         returns the bytes of the image file on disk
         """
@@ -340,10 +340,10 @@ class UpgradedImageIExtractor(ImageExtractor):
                                     self.link_hash, src, self.config)
         return locallyStoredImage
 
-    def getCleanDomain(self):
+    def get_clean_domain(self):
         return self.article.domain.replace('www.', '')
 
-    def checkForKnownElements(self):
+    def check_known_elements(self):
         """\
         in here we check for known image contains from sites
         we've checked out like yahoo, techcrunch, etc... that have
@@ -352,9 +352,9 @@ class UpgradedImageIExtractor(ImageExtractor):
           so people can define what the image ids/classes
           are on specific sites
         """
-        domain = self.getCleanDomain()
-        if domain in self.customSiteMapping.keys():
-            classes = self.customSiteMapping.get(domain).split('|')
+        domain = self.get_clean_domain()
+        if domain in self.custom_site_mapping.keys():
+            classes = self.custom_site_mapping.get(domain).split('|')
             for classname in classes:
                 KNOWN_IMG_DOM_NAMES.append(classname)
 
@@ -375,10 +375,10 @@ class UpgradedImageIExtractor(ImageExtractor):
         if knownImage is not None:
             knownImgSrc = Parser.getAttribute(knownImage, attr='src')
             mainImage = Image()
-            mainImage.src = self.buildImagePath(knownImgSrc)
+            mainImage.src = self.build_image_path(knownImgSrc)
             mainImage.extraction_type = "known"
             mainImage.confidence_score = 90
-            locallyStoredImage = self.getLocallyStoredImage(mainImage.src)
+            locallyStoredImage = self.get_local_image(mainImage.src)
             if locallyStoredImage:
                 mainImage.bytes = locallyStoredImage.bytes
                 mainImage.height = locallyStoredImage.height
@@ -386,7 +386,7 @@ class UpgradedImageIExtractor(ImageExtractor):
 
             return mainImage
 
-    def buildImagePath(self, src):
+    def build_image_path(self, src):
         """\
         This method will take an image path and build
         out the absolute path to that image
@@ -401,11 +401,11 @@ class UpgradedImageIExtractor(ImageExtractor):
         # we have a relative url
         return urljoin(self.targetUrl, src)
 
-    def loadCustomSiteMapping(self):
+    def load_customesite_mapping(self):
         # TODO
         path = os.path.join('images', 'known-image-css.txt')
         dataFile = FileHelper.loadResourceFile(path)
         lines = dataFile.splitlines()
         for line in lines:
             domain, css = line.split('^')
-            self.customSiteMapping.update({domain: css})
+            self.custom_site_mapping.update({domain: css})
