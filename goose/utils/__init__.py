@@ -78,9 +78,9 @@ class FileHelper(object):
 
 class ParsingCandidate(object):
 
-    def __init__(self, urlString, linkhash, url):
+    def __init__(self, urlString, link_hash, url):
         self.urlString = urlString
-        self.link_hash = linkhash
+        self.link_hash = link_hash
         self.url = url
 
 
@@ -93,9 +93,9 @@ class URLHelper(object):
         finalUrl = urlToCrawl.replace('#!', '?_escaped_fragment_=') \
                     if '#!' in urlToCrawl else urlToCrawl
 
-        linkhash = '%s.%s' % (hashlib.md5(finalUrl).hexdigest(), time.time())
+        link_hash = '%s.%s' % (hashlib.md5(finalUrl).hexdigest(), time.time())
 
-        return ParsingCandidate(finalUrl, linkhash, finalUrl)
+        return ParsingCandidate(finalUrl, link_hash, finalUrl)
 
 
 class StringSplitter(object):

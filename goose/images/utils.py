@@ -35,28 +35,28 @@ class ImageUtils(object):
     def getImageDimensions(self, identifyProgram, filePath):
         image = Image.open(filePath)
         imageDetails = ImageDetails()
-        imageDetails.setMimeType(image.format)
+        imageDetails.set_mime_type(image.format)
         width, height = image.size
-        imageDetails.setWidth(width)
-        imageDetails.setHeight(height)
+        imageDetails.set_width(width)
+        imageDetails.set_height(height)
         return imageDetails
 
     @classmethod
-    def storeImageToLocalFile(self, httpClient, linkhash, imageSrc, config):
+    def storeImageToLocalFile(self, httpClient, link_hash, src, config):
         """\
         Writes an image src http string to disk as a temporary file
         and returns the LocallyStoredImage object
         that has the info you should need on the image
         """
         # check for a cache hit already on disk
-        image = self.readExistingFileInfo(linkhash, imageSrc, config)
+        image = self.readExistingFileInfo(link_hash, src, config)
         if image:
             return image
 
         # no cache found download the image
-        data = self.fetchEntity(httpClient, imageSrc)
+        data = self.fetchEntity(httpClient, src)
         if data:
-            image = self.writeEntityContentsToDisk(data, linkhash, imageSrc, config)
+            image = self.writeEntityContentsToDisk(data, link_hash, src, config)
             if image:
                 return image
 
@@ -64,55 +64,55 @@ class ImageUtils(object):
 
     @classmethod
     def getFileExtensionName(self, imageDetails):
-        mimeType = imageDetails.getMimeType().lower()
+        mime_type = imageDetails.get_mime_type().lower()
         mimes = {
             'png': '.png',
             'jpg': '.jpg',
             'jpeg': '.jpg',
             'gif': '.gif',
         }
-        return mimes.get(mimeType, 'NA')
+        return mimes.get(mime_type, 'NA')
 
     @classmethod
-    def readExistingFileInfo(self, linkhash, imageSrc, config):
-        localImageName = self.getLocalFileName(linkhash, imageSrc, config)
+    def readExistingFileInfo(self, link_hash, src, config):
+        localImageName = self.getLocalFileName(link_hash, src, config)
         if os.path.isfile(localImageName):
             identify = config.imagemagick_identify_path
             imageDetails = self.getImageDimensions(identify, localImageName)
-            fileExtension = self.getFileExtensionName(imageDetails)
+            file_extension = self.getFileExtensionName(imageDetails)
             bytes = os.path.getsize(localImageName)
             return LocallyStoredImage(
-                imgSrc=imageSrc,
-                localFileName=localImageName,
-                linkhash=linkhash,
+                src=src,
+                local_filename=localImageName,
+                link_hash=link_hash,
                 bytes=bytes,
-                fileExtension=fileExtension,
-                height=imageDetails.getHeight(),
-                width=imageDetails.getWidth()
+                file_extension=file_extension,
+                height=imageDetails.get_height(),
+                width=imageDetails.get_width()
             )
         return None
 
     @classmethod
-    def writeEntityContentsToDisk(self, entity, linkhash, imageSrc, config):
-        localSrcPath = self.getLocalFileName(linkhash, imageSrc, config)
+    def writeEntityContentsToDisk(self, entity, link_hash, src, config):
+        localSrcPath = self.getLocalFileName(link_hash, src, config)
         f = open(localSrcPath, 'w')
         f.write(entity)
         f.close()
-        return self.readExistingFileInfo(linkhash, imageSrc, config)
+        return self.readExistingFileInfo(link_hash, src, config)
 
     @classmethod
-    def getLocalFileName(self, linkhash, imageSrc, config):
-        imageHash = hashlib.md5(smart_str(imageSrc)).hexdigest()
-        return config.local_storage_path + "/" + linkhash + "_py_" + imageHash
+    def getLocalFileName(self, link_hash, src, config):
+        imageHash = hashlib.md5(smart_str(src)).hexdigest()
+        return config.local_storage_path + "/" + link_hash + "_py_" + imageHash
 
     @classmethod
-    def cleanImageSrcString(self, imgSrc):
-        return imgSrc.replace(" ", "%20")
+    def cleanImageSrcString(self, src):
+        return src.replace(" ", "%20")
 
     @classmethod
-    def fetchEntity(self, httpClient, imageSrc):
+    def fetchEntity(self, httpClient, src):
         try:
-            req = urllib2.Request(imageSrc)
+            req = urllib2.Request(src)
             f = urllib2.urlopen(req)
             data = f.read()
             return data
