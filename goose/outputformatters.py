@@ -44,46 +44,46 @@ class OutputFormatter(object):
                 return article.meta_lang[:2]
         return self.config.target_language
 
-    def getTopNode(self):
+    def get_top_node(self):
         return self.top_node
 
-    def getFormattedText(self, article):
+    def get_formatted_text(self, article):
         self.top_node = article.top_node
-        self.removeNodesWithNegativeScores()
-        self.convertLinksToText()
-        self.replaceTagsWithText()
-        self.removeParagraphsWithFewWords(article)
-        return self.convertToText()
+        self.remove_negativescores_nodes()
+        self.links_to_text()
+        self.replace_with_text()
+        self.remove_fewwords_paragraphs(article)
+        return self.convert_to_text()
 
-    def convertToText(self):
+    def convert_to_text(self):
         txts = []
-        for node in list(self.getTopNode()):
+        for node in list(self.get_top_node()):
             txt = Parser.getText(node)
             if txt:
                 txt = HTMLParser().unescape(txt)
                 txts.append(innerTrim(txt))
         return '\n\n'.join(txts)
 
-    def convertLinksToText(self):
+    def links_to_text(self):
         """\
         cleans up and converts any nodes that
         should be considered text into text
         """
-        Parser.stripTags(self.getTopNode(), 'a')
+        Parser.stripTags(self.get_top_node(), 'a')
 
-    def removeNodesWithNegativeScores(self):
+    def remove_negativescores_nodes(self):
         """\
         if there are elements inside our top node
         that have a negative gravity score,
         let's give em the boot
         """
-        gravityItems = self.top_node.cssselect("*[gravityScore]")
-        for item in gravityItems:
+        gravity_items = self.top_node.cssselect("*[gravityScore]")
+        for item in gravity_items:
             score = int(item.attrib.get('gravityScore'), 0)
             if score < 1:
                 item.getparent().remove(item)
 
-    def replaceTagsWithText(self):
+    def replace_with_text(self):
         """\
         replace common tags with just
         text so we don't have any crazy formatting issues
@@ -91,19 +91,19 @@ class OutputFormatter(object):
         with whatever text is inside them
         code : http://lxml.de/api/lxml.etree-module.html#strip_tags
         """
-        Parser.stripTags(self.getTopNode(), 'b', 'strong', 'i', 'br', 'sup')
+        Parser.stripTags(self.get_top_node(), 'b', 'strong', 'i', 'br', 'sup')
 
-    def removeParagraphsWithFewWords(self, article):
+    def remove_fewwords_paragraphs(self, article):
         """\
         remove paragraphs that have less than x number of words,
         would indicate that it's some sort of link
         """
-        allNodes = Parser.getElementsByTags(self.getTopNode(), ['*'])  # .cssselect('*')
-        allNodes.reverse()
-        for el in allNodes:
+        all_nodes = Parser.getElementsByTags(self.get_top_node(), ['*'])  # .cssselect('*')
+        all_nodes.reverse()
+        for el in all_nodes:
             text = Parser.getText(el)
-            stopWords = self.stopwords_class(language=self.get_language(article)).getStopWordCount(text)
-            if stopWords.getStopWordCount() < 3 \
+            stop_words = self.stopwords_class(language=self.get_language(article)).getStopWordCount(text)
+            if stop_words.getStopWordCount() < 3 \
                 and len(Parser.getElementsByTag(el, tag='object')) == 0 \
                 and len(Parser.getElementsByTag(el, tag='embed')) == 0:
                 Parser.remove(el)

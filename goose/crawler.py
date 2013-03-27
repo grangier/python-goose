@@ -93,7 +93,7 @@ class Crawler(object):
                 article.top_image = image_extractor.getBestImage(article.raw_doc, article.top_node)
 
             article.top_node = extractor.post_cleanup(article.top_node)
-            article.cleaned_text = output_formatter.getFormattedText(article)
+            article.cleaned_text = output_formatter.get_formatted_text(article)
 
         # cleanup tmp file
         self.relase_resources(article)
