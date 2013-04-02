@@ -103,6 +103,7 @@ class ImageUtils(object):
     @classmethod
     def get_localfile_name(self, link_hash, src, config):
         image_hash = hashlib.md5(smart_str(src)).hexdigest()
+		# FIXEME : use os.path.join
         return config.local_storage_path + "/" + link_hash + "_py_" + image_hash
 
     @classmethod
