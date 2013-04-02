@@ -1,7 +1,10 @@
 from setuptools import setup, find_packages
+from imp import load_source
+
+version = load_source("version", os.path.join("goose", "version.py"))
 
 setup(name='goose',
-    version='0.2',
+    version=version.__version__,
     description="Html Content / Article Extractor",
     long_description="",
     keywords='',
