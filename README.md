@@ -25,6 +25,8 @@ The python version was rewrite by:
 
  - Xavier Grangier (Recrutae.com)
 
+ [![Build Status](https://www.travis-ci.org/xgdlm/python-goose.png?branch=master)](https://www.travis-ci.org/xgdlm/python-goose)
+
 ##Licensing
 If you find Goose useful or have issues please drop me a line, I'd love to hear how you're using it or what features should be improved
 
