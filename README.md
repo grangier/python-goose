@@ -107,11 +107,7 @@ For instance, if you want to change the userAgent used by Goose juste pass :
 
 
 ##TODO
-  - Camel Case method and variables : We have used camelcase code to reflect the orginal scala code.
-  - Move modules around.
-    This should be changed to a more pythonic naming.
   - Video extraction
-  - Fetch faveicon 
 
 ##Known issues
   - There is some issue with unicode URLs.
