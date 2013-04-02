@@ -100,7 +100,8 @@ class UpgradedImageIExtractor(ImageExtractor):
         if image:
             return image
 
-    def check_large_images(self, node, parent_depth_level, parent_depth_level):
+
+    def check_large_images(self, node, parent_depth_level, sibling_depth_level):
         """\
         although slow the best way to determine the best image is to download
         them and check the actual dimensions of the image when on disk
@@ -128,7 +129,7 @@ class UpgradedImageIExtractor(ImageExtractor):
                                     if len(scored_images) > 0 else 0
                 return main_image
 
-        depth_obj = self.get_depth_level(node, parent_depth_level, parent_depth_level)
+        depth_obj = self.get_depth_level(node, parent_depth_level, sibling_depth_level)
         if depth_obj:
             return self.check_large_images(depth_obj.node,
                             depth_obj.parent_depth, depth_obj.sibling_depth)
