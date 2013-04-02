@@ -20,20 +20,23 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import goose
-from goose.utils import FileHelper
+import os
+import unittest
+import pprint
 from goose import Goose
+from goose.utils import FileHelper
 from goose.article import Article
 from goose.parsers import Parser
 from goose.configuration import Configuration
-import unittest
-import pprint
+
+CURRENT_PATH = os.path.dirname(__file__)
 
 
 class TestParser(unittest.TestCase):
 
     def get_html(self, filename):
-        return FileHelper.loadResourceFile(filename)
+        path = os.path.join(CURRENT_PATH, 'data', filename)
+        return FileHelper.loadResourceFile(path)
 
     def test_childNodesWithText(self):
         html = '<html><body>'
@@ -67,7 +70,7 @@ class TestParser(unittest.TestCase):
         Parser.replaceTag(span[0], 'center')
         span = Parser.getElementsByTag(div, tag='span')
         self.assertEqual(len(span), 0)
-        centers =  Parser.getElementsByTag(div, tag='center')
+        centers = Parser.getElementsByTag(div, tag='center')
         self.assertEqual(len(centers), 1)
 
     def test_tostring(self):
@@ -181,7 +184,8 @@ class TestExtractions(unittest.TestCase):
         self.articleReport = ["=======================::. ARTICLE REPORT .::======================\n"]
 
     def get_html(self, filename):
-        return FileHelper.loadResourceFile(filename)
+        path = os.path.join(CURRENT_PATH, 'data', filename)
+        return FileHelper.loadResourceFile(path)
 
     def getArticle(self, url, raw_html, language=None):
         config = Configuration()
