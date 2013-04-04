@@ -342,7 +342,9 @@ class UpgradedImageIExtractor(ImageExtractor):
         return local_image
 
     def get_clean_domain(self):
-        return self.article.domain.replace('www.', '')
+        if self.article.domain:
+            return self.article.domain.replace('www.', '')
+        return None
 
     def check_known_elements(self):
         """\
