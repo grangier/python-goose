@@ -533,5 +533,26 @@ class TestExtractions(unittest.TestCase):
         self.runArticleAssertions(article=article, expectedStart=expected)
         self.printReport()
 
+
+class TestExtractionsRaw(TestExtractions):
+
+    def setUp(self):
+        self.articleReport = ["=======================::. ARTICLE REPORT .::======================\n"]
+
+    def get_html(self, filename):
+        path = os.path.join(CURRENT_PATH, 'data', filename)
+        return FileHelper.loadResourceFile(path)
+
+    def getArticle(self, url, raw_html, language=None):
+        config = Configuration()
+        if language:
+            config.target_language = language
+            config.use_meta_language = False
+        config.enable_image_fetching = False
+        g = Goose(config=config)
+        article = g.extract(raw_html=raw_html)
+        return article
+
+
 if __name__ == '__main__':
     unittest.main()

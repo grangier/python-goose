@@ -24,7 +24,7 @@ import os
 import glob
 from copy import deepcopy
 from goose.article import Article
-from goose.utils import URLHelper
+from goose.utils import URLHelper, RawHelper
 from goose.extractors import StandardContentExtractor
 from goose.cleaners import StandardDocumentCleaner
 from goose.outputformatters import StandardOutputFormatter
@@ -50,13 +50,13 @@ class Crawler(object):
     def crawl(self, crawl_candidate):
         article = Article()
 
-        parse_candidate = URLHelper.getCleanedUrl(crawl_candidate.url)
+        parse_candidate = self.get_parse_candidate(crawl_candidate)
         raw_html = self.get_html(crawl_candidate, parse_candidate)
 
         if raw_html is None:
             return article
 
-        doc = self.get_document(parse_candidate.url, raw_html)
+        doc = self.get_document(raw_html)
 
         extractor = self.get_extractor()
         document_cleaner = self.get_document_cleaner()
@@ -100,13 +100,17 @@ class Crawler(object):
 
         return article
 
+    def get_parse_candidate(self, crawl_candidate):
+        if crawl_candidate.raw_html:
+            return RawHelper.get_parsing_candidate(crawl_candidate.raw_html)
+        return URLHelper.get_parsing_candidate(crawl_candidate.url)
+
     def get_html(self, crawl_candidate, parsing_candidate):
         if crawl_candidate.raw_html:
             return crawl_candidate.raw_html
-        else:
-            # fetch HTML
-            html = HtmlFetcher().get_html(self.config, parsing_candidate.url)
-            return html
+        # fetch HTML
+        html = HtmlFetcher().get_html(self.config, parsing_candidate.url)
+        return html
 
     def get_image_extractor(self, article):
         http_client = None
@@ -118,7 +122,7 @@ class Crawler(object):
     def get_document_cleaner(self):
         return StandardDocumentCleaner()
 
-    def get_document(self, url, raw_html):
+    def get_document(self, raw_html):
         doc = Parser.fromstring(raw_html)
         return doc
 

@@ -78,24 +78,28 @@ class FileHelper(object):
 
 class ParsingCandidate(object):
 
-    def __init__(self, urlString, link_hash, url):
-        self.urlString = urlString
+    def __init__(self, urlString, link_hash):
+        self.urlString = self.url = urlString
         self.link_hash = link_hash
-        self.url = url
+
+
+class RawHelper(object):
+    @classmethod
+    def get_parsing_candidate(self, raw_html):
+        if isinstance(raw_html, unicode):
+            raw_html = raw_html.encode('utf-8')
+        link_hash = '%s.%s' % (hashlib.md5(raw_html).hexdigest(), time.time())
+        return ParsingCandidate(None, link_hash)
 
 
 class URLHelper(object):
-
     @classmethod
-    def getCleanedUrl(self, urlToCrawl):
-
+    def get_parsing_candidate(self, urlToCrawl):
         # replace shebang is urls
         finalUrl = urlToCrawl.replace('#!', '?_escaped_fragment_=') \
                     if '#!' in urlToCrawl else urlToCrawl
-
         link_hash = '%s.%s' % (hashlib.md5(finalUrl).hexdigest(), time.time())
-
-        return ParsingCandidate(finalUrl, link_hash, finalUrl)
+        return ParsingCandidate(finalUrl, link_hash)
 
 
 class StringSplitter(object):

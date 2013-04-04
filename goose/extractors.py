@@ -207,8 +207,10 @@ class ContentExtractor(object):
         return article.final_url
 
     def get_domain(self, url):
-        o = urlparse(url)
-        return o.hostname
+        if url:
+            o = urlparse(url)
+            return o.hostname
+        return None
 
     def extract_tags(self, article):
         node = article.doc
