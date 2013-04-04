@@ -94,10 +94,10 @@ class RawHelper(object):
 
 class URLHelper(object):
     @classmethod
-    def get_parsing_candidate(self, urlToCrawl):
+    def get_parsing_candidate(self, url_to_crawl):
         # replace shebang is urls
-        finalUrl = urlToCrawl.replace('#!', '?_escaped_fragment_=') \
-                    if '#!' in urlToCrawl else urlToCrawl
+        finalUrl = url_to_crawl.replace('#!', '?_escaped_fragment_=') \
+                    if '#!' in url_to_crawl else url_to_crawl
         link_hash = '%s.%s' % (hashlib.md5(finalUrl).hexdigest(), time.time())
         return ParsingCandidate(finalUrl, link_hash)
 
