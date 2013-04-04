@@ -28,6 +28,7 @@ from goose.utils import FileHelper
 from goose.article import Article
 from goose.parsers import Parser
 from goose.configuration import Configuration
+from goose.text import StopWordsChinese
 
 CURRENT_PATH = os.path.dirname(__file__)
 
@@ -178,7 +179,7 @@ class TestArticle(unittest.TestCase):
         self.assertEqual(isinstance(a, Article), True)
 
 
-class TestExtractions(unittest.TestCase):
+class TestExtractionBase(unittest.TestCase):
 
     def setUp(self):
         self.articleReport = ["=======================::. ARTICLE REPORT .::======================\n"]
@@ -273,6 +274,9 @@ class TestExtractions(unittest.TestCase):
 
     def printReport(self):
         pprint.pprint(self.articleReport)
+
+
+class TestExtractions(TestExtractionBase):
 
     def test_cnn1(self):
         html = self.get_html('statichtml/cnn1.txt')
@@ -534,14 +538,30 @@ class TestExtractions(unittest.TestCase):
         self.printReport()
 
 
+class TestExtractChinese(TestExtractionBase):
+
+    def getArticle(self, url, raw_html, language=None):
+        g = Goose({'stopwords_class': StopWordsChinese})
+        article = g.extract(url=url, raw_html=raw_html)
+        return article
+
+    def test_bbc_chinese(self):
+        html = self.get_html("statichtml/bbc_hongkong_politics.html")
+        url = "http://www.bbc.co.uk/zhongwen/simp/chinese_news/2012/12/121210_hongkong_politics.shtml"
+        expected = u"""香港行政长官梁振英在各方压力下就其大宅的违章建筑（僭建）问题到立法会接受质询，并向香港民众道歉。
+
+梁振英在星期二（12月10日）的答问大会开始之际在其演说中道歉，但强调他在违章建筑问题上没有隐瞒的意图和动机。
+
+一些亲北京阵营议员欢迎梁振英道歉，且认为应能获得香港民众接受，但这些议员也质问梁振英有"""
+        article = self.getArticle(url, html)
+        self.runArticleAssertions(article=article, expectedStart=expected)
+        self.printReport()
+
+
 class TestExtractionsRaw(TestExtractions):
 
     def setUp(self):
         self.articleReport = ["=======================::. ARTICLE REPORT .::======================\n"]
-
-    def get_html(self, filename):
-        path = os.path.join(CURRENT_PATH, 'data', filename)
-        return FileHelper.loadResourceFile(path)
 
     def getArticle(self, url, raw_html, language=None):
         config = Configuration()
