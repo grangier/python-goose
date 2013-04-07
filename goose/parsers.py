@@ -30,6 +30,10 @@ from goose.text import encodeValue
 class Parser(object):
 
     @classmethod
+    def css_select(self, node, selector):
+        return node.cssselect(selector)
+
+    @classmethod
     def fromstring(self, html):
         html = encodeValue(html)
         self.doc = lxml.html.fromstring(html)
@@ -62,8 +66,6 @@ class Parser(object):
         selector = 'descendant-or-self::%s' % (tag or '*')
         if attr and value:
             selector = '%s[re:test(@%s, "%s", "i")]' % (selector, attr, value)
-            #selector = '%s[%s="%s"]' % (selector, attr, value)
-        #elems = node.cssselect(selector)
         elems = node.xpath(selector, namespaces={"re": NS})
         # remove the root node
         # if we have a selection tag
@@ -109,7 +111,7 @@ class Parser(object):
     @classmethod
     def getElementsByTags(self, node, tags):
         selector = ','.join(tags)
-        elems = node.cssselect(selector)
+        elems = self.css_select(node, selector)
         # remove the root node
         # if we have a selection tag
         if node in elems:
