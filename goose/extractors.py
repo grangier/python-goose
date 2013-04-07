@@ -165,7 +165,7 @@ class ContentExtractor(object):
         """\
         Extract a given meta content form document
         """
-        meta = doc.cssselect(metaName)
+        meta = Parser.css_select(doc, metaName)
         content = None
 
         if meta is not None and len(meta) > 0:
@@ -219,7 +219,7 @@ class ContentExtractor(object):
         if len(list(node)) == 0:
             return NO_STRINGS
 
-        elements = node.cssselect(A_REL_TAG_SELECTOR)
+        elements = Parser.css_select(node, A_REL_TAG_SELECTOR)
         if elements is None:
             return NO_STRINGS
 

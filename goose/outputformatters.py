@@ -77,7 +77,7 @@ class OutputFormatter(object):
         that have a negative gravity score,
         let's give em the boot
         """
-        gravity_items = self.top_node.cssselect("*[gravityScore]")
+        gravity_items = Parser.css_select(self.top_node, "*[gravityScore]")
         for item in gravity_items:
             score = int(item.attrib.get('gravityScore'), 0)
             if score < 1:
@@ -98,7 +98,7 @@ class OutputFormatter(object):
         remove paragraphs that have less than x number of words,
         would indicate that it's some sort of link
         """
-        all_nodes = Parser.getElementsByTags(self.get_top_node(), ['*'])  # .cssselect('*')
+        all_nodes = Parser.getElementsByTags(self.get_top_node(), ['*'])
         all_nodes.reverse()
         for el in all_nodes:
             text = Parser.getText(el)
