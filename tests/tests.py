@@ -249,7 +249,7 @@ class TestExtractionBase(unittest.TestCase):
 
     def runArticleAssertions(self, article=None, expectedTitle=None,
             expectedStart=None, expectedImage=None,
-            expectedDescription=None, expectedKeywords=None):
+            expectedDescription=None, expectedKeywords=None, expectedCanonicalLink=None):
 
         self.articleReport.append("URL:         ")
         self.articleReport.append(article.final_url)
@@ -320,6 +320,13 @@ class TestExtractionBase(unittest.TestCase):
 
         if expectedKeywords:
             pass
+
+        if expectedCanonicalLink:
+            link = article.canonical_link
+            self.assertNotEqual(link, None, msg=u"Canonical Link was NULL!")
+            msg = u"Canonical link was not as expected!\nEXPECTED:%s\nGOT:%s" \
+                        % (expectedCanonicalLink, link)
+            self.assertEqual(link, expectedCanonicalLink)
 
     def printReport(self):
         pprint.pprint(self.articleReport)
@@ -544,6 +551,14 @@ class TestExtractions(TestExtractionBase):
         self.runArticleAssertions(article=article, expectedStart=content)
         self.printReport()
 
+    def test_marketplace(self):
+        html = self.get_html("statichtml/marketplace.txt")
+        url = "http://www.marketplace.org/shows/marketplace-tech-report/marketplace-tech-friday-april-19-2013"
+        content = "Gun control advocates are looking for new options, including some tech strategies. On Wednesday"
+        article = self.getArticle(url, html)
+        self.runArticleAssertions(article=article, expectedStart=content)
+        self.printReport()
+
     def test_issue24(self):
         html = self.get_html("statichtml/issue_24.txt")
         url = "http://danielspicar.github.com/goose-bug.html"
@@ -584,6 +599,17 @@ class TestExtractions(TestExtractionBase):
         expected = u"Exercice: apr\xe8s avoir attentivement lu cette br\xe8ve parue dans L'Express, vous expliquerez en quoi elle r\xe9sume une certaine id\xe9e de la France.\n\n\xabBernar"
         article = self.getArticle(url, html)
         self.runArticleAssertions(article=article, expectedStart=expected)
+        self.printReport()
+
+
+class TestExtractWithUrl(TestExtractionBase):
+    def test_get_canonical_url(self):
+        html = self.get_html("statichtml/marketplace.txt")
+        url = "http://www.marketplace.org/shows/marketplace-tech-report/marketplace-tech-friday-april-19-2013"
+        canonical_url = "http://www.marketplace.org/shows/marketplace-tech-report/marketplace-tech-friday-april-19-2013"
+        content = "Gun control advocates are looking for new options, including some tech strategies. On Wednesday"
+        article = self.getArticle(url, html)
+        self.runArticleAssertions(article=article, expectedStart=content, expectedCanonicalLink=canonical_url)
         self.printReport()
 
 

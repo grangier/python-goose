@@ -85,11 +85,11 @@ class ParsingCandidate(object):
 
 class RawHelper(object):
     @classmethod
-    def get_parsing_candidate(self, raw_html):
+    def get_parsing_candidate(self, url, raw_html):
         if isinstance(raw_html, unicode):
             raw_html = raw_html.encode('utf-8')
         link_hash = '%s.%s' % (hashlib.md5(raw_html).hexdigest(), time.time())
-        return ParsingCandidate(None, link_hash)
+        return ParsingCandidate(url, link_hash)
 
 
 class URLHelper(object):
