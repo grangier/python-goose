@@ -102,7 +102,7 @@ class Crawler(object):
 
     def get_parse_candidate(self, crawl_candidate):
         if crawl_candidate.raw_html:
-            return RawHelper.get_parsing_candidate(crawl_candidate.raw_html)
+            return RawHelper.get_parsing_candidate(crawl_candidate.url, crawl_candidate.raw_html)
         return URLHelper.get_parsing_candidate(crawl_candidate.url)
 
     def get_html(self, crawl_candidate, parsing_candidate):
