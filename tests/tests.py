@@ -554,12 +554,10 @@ class TestExtractions(TestExtractionBase):
     def test_marketplace(self):
         html = self.get_html("statichtml/marketplace.txt")
         url = "http://www.marketplace.org/shows/marketplace-tech-report/marketplace-tech-friday-april-19-2013"
-        canonical_url = "http://www.marketplace.org/shows/marketplace-tech-report/marketplace-tech-friday-april-19-2013"
         content = "Gun control advocates are looking for new options, including some tech strategies. On Wednesday"
         article = self.getArticle(url, html)
-        self.runArticleAssertions(article=article, expectedStart=content, expectedCanonicalLink=canonical_url)
+        self.runArticleAssertions(article=article, expectedStart=content)
         self.printReport()
-
 
     def test_issue24(self):
         html = self.get_html("statichtml/issue_24.txt")
@@ -604,6 +602,17 @@ class TestExtractions(TestExtractionBase):
         self.printReport()
 
 
+class TestExtractWithUrl(TestExtractionBase):
+    def test_get_canonical_url(self):
+        html = self.get_html("statichtml/marketplace.txt")
+        url = "http://www.marketplace.org/shows/marketplace-tech-report/marketplace-tech-friday-april-19-2013"
+        canonical_url = "http://www.marketplace.org/shows/marketplace-tech-report/marketplace-tech-friday-april-19-2013"
+        content = "Gun control advocates are looking for new options, including some tech strategies. On Wednesday"
+        article = self.getArticle(url, html)
+        self.runArticleAssertions(article=article, expectedStart=content, expectedCanonicalLink=canonical_url)
+        self.printReport()
+
+
 class TestExtractChinese(TestExtractionBase):
 
     def getArticle(self, url, raw_html, language=None):
@@ -636,7 +645,7 @@ class TestExtractionsRaw(TestExtractions):
             config.use_meta_language = False
         config.enable_image_fetching = False
         g = Goose(config=config)
-        article = g.extract(url=url, raw_html=raw_html)
+        article = g.extract(raw_html=raw_html)
         return article
 
 
