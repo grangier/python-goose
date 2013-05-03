@@ -95,7 +95,7 @@ class ImageUtils(object):
     @classmethod
     def write_localfile(self, entity, link_hash, src, config):
         local_path = self.get_localfile_name(link_hash, src, config)
-        f = open(local_path, 'w')
+        f = open(local_path, 'wb')
         f.write(entity)
         f.close()
         return self.read_localfile(link_hash, src, config)
