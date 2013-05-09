@@ -80,13 +80,13 @@ class DocumentCleaner(object):
         for node in ems:
             images = self.parser.getElementsByTag(node, tag='img')
             if len(images) == 0:
-                node.drop_tag()
+                Parser.drop_tag(node)
         return doc
 
     def remove_drop_caps(self, doc):
         items = self.parser.css_select(doc, "span[class~=dropcap], span[class~=drop_cap]")
         for item in items:
-            item.drop_tag()
+            Parser.drop_tag(item)
 
         return doc
 
@@ -109,22 +109,18 @@ class DocumentCleaner(object):
         return doc
 
     def clean_bad_tags(self, doc):
-
         # ids
-        naughty_list = doc.xpath(self.nauthy_ids_re,
-                                        namespaces={'re': self.regexp_namespace})
+        naughty_list = Parser.xpath_re(doc, self.nauthy_ids_re)
         for node in naughty_list:
             self.parser.remove(node)
 
         # class
-        naughty_classes = doc.xpath(self.nauthy_classes_re,
-                                        namespaces={'re': self.regexp_namespace})
+        naughty_classes = Parser.xpath_re(doc, self.nauthy_classes_re)
         for node in naughty_classes:
             self.parser.remove(node)
 
         # name
-        naughty_names = doc.xpath(self.nauthy_names_re,
-                                        namespaces={'re': self.regexp_namespace})
+        naughty_names = Parser.xpath_re(doc, self.nauthy_names_re)
         for node in naughty_names:
             self.parser.remove(node)
 
@@ -133,7 +129,7 @@ class DocumentCleaner(object):
     def remove_nodes_regex(self, doc, pattern):
         for selector in ['id', 'class']:
             reg = "//*[re:test(@%s, '%s', 'i')]" % (selector, pattern)
-            naughty_list = doc.xpath(reg, namespaces={'re': self.regexp_namespace})
+            naughty_list = Parser.xpath_re(doc, reg)
             for node in naughty_list:
                 self.parser.remove(node)
         return doc
@@ -141,7 +137,7 @@ class DocumentCleaner(object):
     def clean_para_spans(self, doc):
         spans = self.parser.css_select(doc, 'p > span')
         for item in spans:
-            item.drop_tag()
+            Parser.drop_tag(item)
         return doc
 
     def get_flushed_buffer(self, replacement_text, doc):

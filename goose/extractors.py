@@ -132,7 +132,7 @@ class ContentExtractor(object):
         kwargs = {'tag': 'link', 'attr': 'rel', 'value': 'icon'}
         meta = self.parser.getElementsByTag(article.doc, **kwargs)
         if meta:
-            favicon = meta[0].attrib.get('href')
+            favicon = Parser.getAttribute(meta[0], 'href')
             return favicon
         return ''
 
@@ -170,7 +170,7 @@ class ContentExtractor(object):
         content = None
 
         if meta is not None and len(meta) > 0:
-            content = meta[0].attrib.get('content')
+            content = Parser.getAttribute(meta[0], 'content')
 
         if content:
             return content.strip()
@@ -197,7 +197,7 @@ class ContentExtractor(object):
             kwargs = {'tag': 'link', 'attr': 'rel', 'value': 'canonical'}
             meta = self.parser.getElementsByTag(article.doc, **kwargs)
             if meta is not None and len(meta) > 0:
-                href = meta[0].attrib.get('href')
+                href = Parser.getAttribute(meta[0], 'href')
                 if href:
                     href = href.strip()
                     o = urlparse(href)
@@ -278,10 +278,10 @@ class ContentExtractor(object):
             # parent node
             parent_node = self.parser.getParent(node)
             self.update_score(parent_node, upscore)
-            self.update_node_count(node.getparent(), 1)
+            self.update_node_count(parent_node, 1)
 
-            if node.getparent() not in parent_nodes:
-                parent_nodes.append(node.getparent())
+            if parent_node not in parent_nodes:
+                parent_nodes.append(parent_node)
 
             # parentparent node
             parent_parent_node = self.parser.getParent(parent_node)
@@ -323,7 +323,8 @@ class ContentExtractor(object):
         nodes = self.walk_siblings(node)
         for current_node in nodes:
             # p
-            if current_node.tag == para:
+            current_node_tag = Parser.getTag(current_node)
+            if current_node_tag == para:
                 if steps_away >= max_stepsaway_from_node:
                     return False
                 paraText = self.parser.getText(current_node)
@@ -415,24 +416,24 @@ class ContentExtractor(object):
         we're passing in to the current
         """
         current_score = 0
-        score_string = node.attrib.get('gravityScore')
+        score_string = Parser.getAttribute(node, 'gravityScore')
         if score_string:
             current_score = int(score_string)
 
         new_score = current_score + addToScore
-        node.set("gravityScore", str(new_score))
+        Parser.setAttribute(node, "gravityScore", str(new_score))
 
     def update_node_count(self, node, add_to_count):
         """\
         stores how many decent nodes are under a parent node
         """
         current_score = 0
-        count_string = node.attrib.get('gravityNodes')
+        count_string = Parser.getAttribute(node, 'gravityNodes')
         if count_string:
             current_score = int(count_string)
 
         new_score = current_score + add_to_count
-        node.set("gravityNodes", str(new_score))
+        Parser.setAttribute(node, "gravityNodes", str(new_score))
 
     def is_highlink_density(self, e):
         """\
@@ -469,7 +470,7 @@ class ContentExtractor(object):
         return self.get_node_gravity_score(node) or 0
 
     def get_node_gravity_score(self, node):
-        grvScoreString = node.attrib.get('gravityScore')
+        grvScoreString = Parser.getAttribute(node, 'gravityScore')
         if not grvScoreString:
             return None
         return int(grvScoreString)
@@ -512,8 +513,9 @@ class ContentExtractor(object):
         clusters of links, or paras with no gusto
         """
         node = self.add_siblings(targetNode)
-        for e in node.getchildren():
-            if e.tag != 'p':
+        for e in Parser.getChildren(node):
+            e_tag = Parser.getTag(e)
+            if e_tag != 'p':
                 if self.is_highlink_density(e) \
                     or self.is_table_and_no_para_exist(e) \
                     or not self.is_nodescore_threshold_met(node, e):

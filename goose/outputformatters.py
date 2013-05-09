@@ -81,7 +81,8 @@ class OutputFormatter(object):
         """
         gravity_items = self.parser.css_select(self.top_node, "*[gravityScore]")
         for item in gravity_items:
-            score = int(item.attrib.get('gravityScore'), 0)
+            score = Parser.getAttribute(item, 'gravityScore')
+            score = int(score, 0)
             if score < 1:
                 item.getparent().remove(item)
 
