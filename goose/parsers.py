@@ -30,9 +30,18 @@ from goose.text import encodeValue
 class Parser(object):
 
     @classmethod
+    def xpath_re(self, node, expression):
+        regexp_namespace = "http://exslt.org/regular-expressions"
+        items = node.xpath(expression, namespaces={'re': regexp_namespace})
+        return items
+
+    @classmethod
     def drop_tag(self, nodes):
-        for node in nodes:
-            node.drop_tag()
+        if isinstance(nodes, list):
+            for node in nodes:
+                node.drop_tag()
+        else:
+            nodes.drop_tag()
 
     @classmethod
     def css_select(self, node, selector):

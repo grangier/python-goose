@@ -131,7 +131,7 @@ class ContentExtractor(object):
         kwargs = {'tag': 'link', 'attr': 'rel', 'value': 'icon'}
         meta = Parser.getElementsByTag(article.doc, **kwargs)
         if meta:
-            favicon = meta[0].attrib.get('href')
+            favicon = Parser.getAttribute(meta[0], 'href')
             return favicon
         return ''
 
@@ -169,7 +169,7 @@ class ContentExtractor(object):
         content = None
 
         if meta is not None and len(meta) > 0:
-            content = meta[0].attrib.get('content')
+            content = Parser.getAttribute(meta[0], 'content')
 
         if content:
             return content.strip()
@@ -196,7 +196,7 @@ class ContentExtractor(object):
             kwargs = {'tag': 'link', 'attr': 'rel', 'value': 'canonical'}
             meta = Parser.getElementsByTag(article.doc, **kwargs)
             if meta is not None and len(meta) > 0:
-                href = meta[0].attrib.get('href')
+                href = Parser.getAttribute(meta[0], 'href')
                 if href:
                     href = href.strip()
                     o = urlparse(href)
@@ -277,10 +277,10 @@ class ContentExtractor(object):
             # parent node
             parent_node = Parser.getParent(node)
             self.update_score(parent_node, upscore)
-            self.update_node_count(node.getparent(), 1)
+            self.update_node_count(parent_node, 1)
 
-            if node.getparent() not in parent_nodes:
-                parent_nodes.append(node.getparent())
+            if parent_node not in parent_nodes:
+                parent_nodes.append(parent_node)
 
             # parentparent node
             parent_parent_node = Parser.getParent(parent_node)
@@ -414,24 +414,24 @@ class ContentExtractor(object):
         we're passing in to the current
         """
         current_score = 0
-        score_string = node.attrib.get('gravityScore')
+        score_string = Parser.getAttribute(node, 'gravityScore')
         if score_string:
             current_score = int(score_string)
 
         new_score = current_score + addToScore
-        node.set("gravityScore", str(new_score))
+        Parser.setAttribute(node, "gravityScore", str(new_score))
 
     def update_node_count(self, node, add_to_count):
         """\
         stores how many decent nodes are under a parent node
         """
         current_score = 0
-        count_string = node.attrib.get('gravityNodes')
+        count_string = Parser.getAttribute(node, 'gravityNodes')
         if count_string:
             current_score = int(count_string)
 
         new_score = current_score + add_to_count
-        node.set("gravityNodes", str(new_score))
+        Parser.setAttribute(node, "gravityNodes", str(new_score))
 
     def is_highlink_density(self, e):
         """\
@@ -468,7 +468,7 @@ class ContentExtractor(object):
         return self.get_node_gravity_score(node) or 0
 
     def get_node_gravity_score(self, node):
-        grvScoreString = node.attrib.get('gravityScore')
+        grvScoreString = Parser.getAttribute(node, 'gravityScore')
         if not grvScoreString:
             return None
         return int(grvScoreString)
