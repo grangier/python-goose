@@ -322,7 +322,8 @@ class ContentExtractor(object):
         nodes = self.walk_siblings(node)
         for current_node in nodes:
             # p
-            if current_node.tag == para:
+            current_node_tag = Parser.getTag(current_node)
+            if current_node_tag == para:
                 if steps_away >= max_stepsaway_from_node:
                     return False
                 paraText = Parser.getText(current_node)
@@ -511,8 +512,9 @@ class ContentExtractor(object):
         clusters of links, or paras with no gusto
         """
         node = self.add_siblings(targetNode)
-        for e in node.getchildren():
-            if e.tag != 'p':
+        for e in Parser.getChildren(node):
+            e_tag = Parser.getTag(e)
+            if e_tag != 'p':
                 if self.is_highlink_density(e) \
                     or self.is_table_and_no_para_exist(e) \
                     or not self.is_nodescore_threshold_met(node, e):

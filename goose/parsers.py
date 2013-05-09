@@ -123,6 +123,10 @@ class Parser(object):
         return self.fromstring(text)
 
     @classmethod
+    def getChildren(self, node):
+        return node.getchildren()
+
+    @classmethod
     def getElementsByTags(self, node, tags):
         selector = ','.join(tags)
         elems = self.css_select(node, selector)
