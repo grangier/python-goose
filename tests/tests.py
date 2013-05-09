@@ -123,6 +123,35 @@ class TestParser(unittest.TestCase):
         centers = Parser.getElementsByTag(div, tag='center')
         self.assertEqual(len(centers), 1)
 
+    def test_droptag(self):
+        # test with 1 node
+        html = '<div>Hello <b>World!</b></div>'
+        expecte_html = '<div>Hello World!</div>'
+        doc = Parser.fromstring(html)
+        nodes = Parser.css_select(doc, "b")
+        self.assertEqual(len(nodes), 1)
+        Parser.drop_tag(nodes)
+
+        nodes = Parser.css_select(doc, "b")
+        self.assertEqual(len(nodes), 0)
+
+        result_html = Parser.nodeToString(doc)
+        self.assertEqual(expecte_html, result_html)
+
+        # test with 2 nodes
+        html = '<div>Hello <b>World!</b> bla <b>World!</b></div>'
+        expecte_html = '<div>Hello World! bla World!</div>'
+        doc = Parser.fromstring(html)
+        nodes = Parser.css_select(doc, "b")
+        self.assertEqual(len(nodes), 2)
+        Parser.drop_tag(nodes)
+
+        nodes = Parser.css_select(doc, "b")
+        self.assertEqual(len(nodes), 0)
+
+        result_html = Parser.nodeToString(doc)
+        self.assertEqual(expecte_html, result_html)
+
     def test_tostring(self):
         html = '<html><body>'
         html += '<p>this is a test <a>link</a> and this is <strong>strong</strong></p>'

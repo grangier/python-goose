@@ -30,6 +30,11 @@ from goose.text import encodeValue
 class Parser(object):
 
     @classmethod
+    def drop_tag(self, nodes):
+        for node in nodes:
+            node.drop_tag()
+
+    @classmethod
     def css_select(self, node, selector):
         return node.cssselect(selector)
 
