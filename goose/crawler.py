@@ -120,7 +120,7 @@ class Crawler(object):
         return StandardOutputFormatter(self.config)
 
     def get_document_cleaner(self):
-        return StandardDocumentCleaner()
+        return StandardDocumentCleaner(self.config)
 
     def get_document(self, raw_html):
         doc = Parser.fromstring(raw_html)

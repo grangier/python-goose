@@ -26,8 +26,8 @@ from goose.utils import ReplaceSequence
 
 class DocumentCleaner(object):
 
-    def __init__(self):
-
+    def __init__(self, config):
+        self.config = config
         self.remove_nodes_re = (
         "^side$|combx|retweet|mediaarticlerelated|menucontainer|navbar"
         "|comment|PopularQuestions|contact|foot|footer|Footer|footnote"
