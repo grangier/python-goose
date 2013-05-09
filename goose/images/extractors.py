@@ -24,7 +24,6 @@ import re
 import os
 from urlparse import urlparse, urljoin
 from goose.utils import FileHelper
-from goose.parsers import Parser
 from goose.images.image import Image
 from goose.images.utils import ImageUtils
 
@@ -59,6 +58,9 @@ class UpgradedImageIExtractor(ImageExtractor):
 
         # config
         self.config = config
+
+        # parser
+        self.parser = self.config.get_parser()
 
         # What's the minimum bytes for an image we'd accept is
         self.images_min_bytes = 4000
@@ -141,11 +143,11 @@ class UpgradedImageIExtractor(ImageExtractor):
         if parent_depth > MAX_PARENT_DEPTH:
             return None
         else:
-            sibling_node = Parser.previousSibling(node)
+            sibling_node = self.parser.previousSibling(node)
             if sibling_node is not None:
                 return DepthTraversal(sibling_node, parent_depth, sibling_depth + 1)
             elif node is not None:
-                parent = Parser.getParent(node)
+                parent = self.parser.getParent(node)
                 if parent is not None:
                     return DepthTraversal(parent, parent_depth + 1, 0)
         return None
@@ -169,7 +171,7 @@ class UpgradedImageIExtractor(ImageExtractor):
         cnt = float(1.0)
         MIN_WIDTH = 50
         for image in images[:30]:
-            src = Parser.getAttribute(image, attr='src')
+            src = self.parser.getAttribute(image, attr='src')
             src = self.build_image_path(src)
             local_image = self.get_local_image(src)
             width = local_image.width
@@ -221,7 +223,7 @@ class UpgradedImageIExtractor(ImageExtractor):
         return False
 
     def get_node_images(self, node):
-        images = Parser.getElementsByTag(node, tag='img')
+        images = self.parser.getElementsByTag(node, tag='img')
         if images is not None and len(images) < 1:
             return None
         return images
@@ -242,7 +244,7 @@ class UpgradedImageIExtractor(ImageExtractor):
         will check the image src against a list
         of bad image files we know of like buttons, etc...
         """
-        src = Parser.getAttribute(imageNode, attr='src')
+        src = self.parser.getAttribute(imageNode, attr='src')
 
         if not src:
             return False
@@ -273,7 +275,7 @@ class UpgradedImageIExtractor(ImageExtractor):
         for image in images:
             if cnt > 30:
                 return good_images
-            src = Parser.getAttribute(image, attr='src')
+            src = self.parser.getAttribute(image, attr='src')
             src = self.build_image_path(src)
             local_image = self.get_local_image(src)
             if local_image:
@@ -295,9 +297,9 @@ class UpgradedImageIExtractor(ImageExtractor):
         find open link_src on this page
         """
         node = self.article.raw_doc
-        meta = Parser.getElementsByTag(node, tag='link', attr='rel', value='image_src')
+        meta = self.parser.getElementsByTag(node, tag='link', attr='rel', value='image_src')
         for item in meta:
-            href = Parser.getAttribute(item, attr='href')
+            href = self.parser.getAttribute(item, attr='href')
             if href:
                 main_image = Image()
                 main_image.src = href
@@ -317,9 +319,9 @@ class UpgradedImageIExtractor(ImageExtractor):
         find open graph tags on this page
         """
         node = self.article.raw_doc
-        meta = Parser.getElementsByTag(node, tag='meta', attr='property', value='og:image')
+        meta = self.parser.getElementsByTag(node, tag='meta', attr='property', value='og:image')
         for item in meta:
-            href = Parser.getAttribute(item, attr='content')
+            href = self.parser.getAttribute(item, attr='content')
             if href:
                 main_image = Image()
                 main_image.src = href
@@ -364,19 +366,19 @@ class UpgradedImageIExtractor(ImageExtractor):
         known_image = None
 
         for known_name in KNOWN_IMG_DOM_NAMES:
-            known = Parser.getElementById(self.article.raw_doc, known_name)
+            known = self.parser.getElementById(self.article.raw_doc, known_name)
             if not known:
-                known = Parser.getElementsByTag(self.article.raw_doc,
+                known = self.parser.getElementsByTag(self.article.raw_doc,
                                                 attr='class', value=known_name)
                 if known:
                     known = known[0]
             if known:
-                main_image = Parser.getElementsByTag(known, tag='img')
+                main_image = self.parser.getElementsByTag(known, tag='img')
                 if main_image:
                     known_image = main_image[0]
 
         if known_image is not None:
-            known_image_source = Parser.getAttribute(known_image, attr='src')
+            known_image_source = self.parser.getAttribute(known_image, attr='src')
             main_image = Image()
             main_image.src = self.build_image_path(known_image_source)
             main_image.extraction_type = "known"

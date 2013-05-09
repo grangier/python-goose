@@ -27,7 +27,7 @@ from goose.text import innerTrim
 from goose.text import encodeValue
 
 
-class Parser(object):
+class ParserLXML(object):
 
     @classmethod
     def drop_tag(self, nodes):

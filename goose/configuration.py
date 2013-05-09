@@ -21,6 +21,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 from goose.text import StopWords
+from goose.parsers import ParserLXML
+
 
 class Configuration(object):
 
@@ -41,7 +43,7 @@ class Configuration(object):
         self.enable_image_fetching = True
 
         # set this valriable to False if you want to force
-        # the article language. OtherWise it will attempt to 
+        # the article language. OtherWise it will attempt to
         # find meta language and use the correct stopwords dictionary
         self.use_meta_language = True
 
@@ -78,6 +80,12 @@ class Configuration(object):
 
         # TODO
         self.additional_data_extractor = None
+
+        # Parser type
+        self.parser_class = 'lxml'
+
+    def get_parser(self):
+        return ParserLXML
 
     def get_publishdate_extractor(self):
         return self.extract_publishdate
