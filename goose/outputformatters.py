@@ -31,7 +31,6 @@ class OutputFormatter(object):
         self.config = config
         # parser
         self.parser = self.config.get_parser()
-        
         self.stopwords_class = config.stopwords_class
 
     def get_language(self, article):
@@ -81,7 +80,7 @@ class OutputFormatter(object):
         """
         gravity_items = self.parser.css_select(self.top_node, "*[gravityScore]")
         for item in gravity_items:
-            score = Parser.getAttribute(item, 'gravityScore')
+            score = self.parser.getAttribute(item, 'gravityScore')
             score = int(score, 0)
             if score < 1:
                 item.getparent().remove(item)

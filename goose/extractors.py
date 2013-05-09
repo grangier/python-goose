@@ -132,7 +132,7 @@ class ContentExtractor(object):
         kwargs = {'tag': 'link', 'attr': 'rel', 'value': 'icon'}
         meta = self.parser.getElementsByTag(article.doc, **kwargs)
         if meta:
-            favicon = Parser.getAttribute(meta[0], 'href')
+            favicon = self.parser.getAttribute(meta[0], 'href')
             return favicon
         return ''
 
@@ -170,7 +170,7 @@ class ContentExtractor(object):
         content = None
 
         if meta is not None and len(meta) > 0:
-            content = Parser.getAttribute(meta[0], 'content')
+            content = self.parser.getAttribute(meta[0], 'content')
 
         if content:
             return content.strip()
@@ -197,7 +197,7 @@ class ContentExtractor(object):
             kwargs = {'tag': 'link', 'attr': 'rel', 'value': 'canonical'}
             meta = self.parser.getElementsByTag(article.doc, **kwargs)
             if meta is not None and len(meta) > 0:
-                href = Parser.getAttribute(meta[0], 'href')
+                href = self.parser.getAttribute(meta[0], 'href')
                 if href:
                     href = href.strip()
                     o = urlparse(href)
@@ -323,7 +323,7 @@ class ContentExtractor(object):
         nodes = self.walk_siblings(node)
         for current_node in nodes:
             # p
-            current_node_tag = Parser.getTag(current_node)
+            current_node_tag = self.parser.getTag(current_node)
             if current_node_tag == para:
                 if steps_away >= max_stepsaway_from_node:
                     return False
@@ -416,24 +416,24 @@ class ContentExtractor(object):
         we're passing in to the current
         """
         current_score = 0
-        score_string = Parser.getAttribute(node, 'gravityScore')
+        score_string = self.parser.getAttribute(node, 'gravityScore')
         if score_string:
             current_score = int(score_string)
 
         new_score = current_score + addToScore
-        Parser.setAttribute(node, "gravityScore", str(new_score))
+        self.parser.setAttribute(node, "gravityScore", str(new_score))
 
     def update_node_count(self, node, add_to_count):
         """\
         stores how many decent nodes are under a parent node
         """
         current_score = 0
-        count_string = Parser.getAttribute(node, 'gravityNodes')
+        count_string = self.parser.getAttribute(node, 'gravityNodes')
         if count_string:
             current_score = int(count_string)
 
         new_score = current_score + add_to_count
-        Parser.setAttribute(node, "gravityNodes", str(new_score))
+        self.parser.setAttribute(node, "gravityNodes", str(new_score))
 
     def is_highlink_density(self, e):
         """\
@@ -470,7 +470,7 @@ class ContentExtractor(object):
         return self.get_node_gravity_score(node) or 0
 
     def get_node_gravity_score(self, node):
-        grvScoreString = Parser.getAttribute(node, 'gravityScore')
+        grvScoreString = self.parser.getAttribute(node, 'gravityScore')
         if not grvScoreString:
             return None
         return int(grvScoreString)
@@ -513,8 +513,8 @@ class ContentExtractor(object):
         clusters of links, or paras with no gusto
         """
         node = self.add_siblings(targetNode)
-        for e in Parser.getChildren(node):
-            e_tag = Parser.getTag(e)
+        for e in self.parser.getChildren(node):
+            e_tag = self.parser.getTag(e)
             if e_tag != 'p':
                 if self.is_highlink_density(e) \
                     or self.is_table_and_no_para_exist(e) \

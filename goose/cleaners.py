@@ -80,13 +80,13 @@ class DocumentCleaner(object):
         for node in ems:
             images = self.parser.getElementsByTag(node, tag='img')
             if len(images) == 0:
-                Parser.drop_tag(node)
+                self.parser.drop_tag(node)
         return doc
 
     def remove_drop_caps(self, doc):
         items = self.parser.css_select(doc, "span[class~=dropcap], span[class~=drop_cap]")
         for item in items:
-            Parser.drop_tag(item)
+            self.parser.drop_tag(item)
 
         return doc
 
@@ -110,17 +110,17 @@ class DocumentCleaner(object):
 
     def clean_bad_tags(self, doc):
         # ids
-        naughty_list = Parser.xpath_re(doc, self.nauthy_ids_re)
+        naughty_list = self.parser.xpath_re(doc, self.nauthy_ids_re)
         for node in naughty_list:
             self.parser.remove(node)
 
         # class
-        naughty_classes = Parser.xpath_re(doc, self.nauthy_classes_re)
+        naughty_classes = self.parser.xpath_re(doc, self.nauthy_classes_re)
         for node in naughty_classes:
             self.parser.remove(node)
 
         # name
-        naughty_names = Parser.xpath_re(doc, self.nauthy_names_re)
+        naughty_names = self.parser.xpath_re(doc, self.nauthy_names_re)
         for node in naughty_names:
             self.parser.remove(node)
 
@@ -129,7 +129,7 @@ class DocumentCleaner(object):
     def remove_nodes_regex(self, doc, pattern):
         for selector in ['id', 'class']:
             reg = "//*[re:test(@%s, '%s', 'i')]" % (selector, pattern)
-            naughty_list = Parser.xpath_re(doc, reg)
+            naughty_list = self.parser.xpath_re(doc, reg)
             for node in naughty_list:
                 self.parser.remove(node)
         return doc
@@ -137,7 +137,7 @@ class DocumentCleaner(object):
     def clean_para_spans(self, doc):
         spans = self.parser.css_select(doc, 'p > span')
         for item in spans:
-            Parser.drop_tag(item)
+            self.parser.drop_tag(item)
         return doc
 
     def get_flushed_buffer(self, replacement_text, doc):
