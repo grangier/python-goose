@@ -401,6 +401,14 @@ class TestExtractions(TestExtractionBase):
         self.runArticleAssertions(article=article, expectedStart=content)
         self.printReport()
 
+    def test_lefigaro(self):
+        html = self.get_html("statichtml/lefigaro1.txt")
+        url = 'http://www.lefigaro.fr/conjoncture/2013/04/05/20002-20130405ARTFIG00473-montebourg-envisage-des-privatisations-partielles.php'
+        content = u"Selon le ministre du Redressement productif interview\xe9 par le Wall Street Journal, le gouvernement"
+        article = self.getArticle(url, html, language='fr')
+        self.runArticleAssertions(article=article, expectedStart=content)
+        self.printReport()
+
     ########################################
     # makes lxml crash
     # python: double free or corruption
