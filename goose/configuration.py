@@ -21,7 +21,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 from goose.text import StopWords
-from goose.parsers import ParserLXML
+from goose.parsers import Parser
+from goose.parsers import ParserSoup
 
 
 class Configuration(object):
@@ -85,7 +86,7 @@ class Configuration(object):
         self.parser_class = 'lxml'
 
     def get_parser(self):
-        return ParserLXML
+        return Parser
 
     def get_publishdate_extractor(self):
         return self.extract_publishdate
