@@ -245,7 +245,7 @@ class TestParser(ParserBase):
     pass
 
 
-class TestParserBS4(ParserBase):
+class TestParserSoup(ParserBase):
     def setUp(self):
         self.parser = ParserSoup
 
