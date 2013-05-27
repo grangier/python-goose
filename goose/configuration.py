@@ -86,7 +86,7 @@ class Configuration(object):
         self.parser_class = 'lxml'
 
     def get_parser(self):
-        return Parser
+        return Parser if self.parser_class == 'lxml' else ParserSoup
 
     def get_publishdate_extractor(self):
         return self.extract_publishdate

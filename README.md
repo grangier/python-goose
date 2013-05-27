@@ -106,6 +106,12 @@ For instance, if you want to change the userAgent used by Goose juste pass :
     >>> g = Goose({'browser_user_agent': 'Mozilla'})
 
 
+Switching parser :
+Goose can now be use with lxml html parser or lxml soup parser. By default the html parser is used. If you want to use the soup parser passe it in the configuration dict :
+
+    >>> g = Goose({'browser_user_agent': 'Mozilla', 'parser_class':'soup'})
+
+
 ##TODO
   - Video extraction
 
