@@ -2,3 +2,4 @@ PIL
 lxml
 cssselect
 jieba
+beautifulsoup4

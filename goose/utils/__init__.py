@@ -65,8 +65,11 @@ class FileHelper(object):
 
     @classmethod
     def loadResourceFile(self, filename):
-        dirpath = os.path.dirname(goose.__file__)
-        path = os.path.join(dirpath, 'resources', filename)
+        if not os.path.isabs('filename'):
+            dirpath = os.path.dirname(goose.__file__)
+            path = os.path.join(dirpath, 'resources', filename)
+        else:
+            path = filename
         try:
             f = codecs.open(path, 'r', 'utf-8')
             content = f.read()

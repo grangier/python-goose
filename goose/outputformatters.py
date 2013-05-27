@@ -22,7 +22,6 @@ limitations under the License.
 """
 from HTMLParser import HTMLParser
 from goose.text import innerTrim
-from goose.parsers import Parser
 
 
 class OutputFormatter(object):
@@ -30,6 +29,8 @@ class OutputFormatter(object):
     def __init__(self, config):
         self.top_node = None
         self.config = config
+        # parser
+        self.parser = self.config.get_parser()
         self.stopwords_class = config.stopwords_class
 
     def get_language(self, article):
@@ -58,7 +59,7 @@ class OutputFormatter(object):
     def convert_to_text(self):
         txts = []
         for node in list(self.get_top_node()):
-            txt = Parser.getText(node)
+            txt = self.parser.getText(node)
             if txt:
                 txt = HTMLParser().unescape(txt)
                 txts.append(innerTrim(txt))
@@ -69,7 +70,7 @@ class OutputFormatter(object):
         cleans up and converts any nodes that
         should be considered text into text
         """
-        Parser.stripTags(self.get_top_node(), 'a')
+        self.parser.stripTags(self.get_top_node(), 'a')
 
     def remove_negativescores_nodes(self):
         """\
@@ -77,9 +78,10 @@ class OutputFormatter(object):
         that have a negative gravity score,
         let's give em the boot
         """
-        gravity_items = Parser.css_select(self.top_node, "*[gravityScore]")
+        gravity_items = self.parser.css_select(self.top_node, "*[gravityScore]")
         for item in gravity_items:
-            score = int(item.attrib.get('gravityScore'), 0)
+            score = self.parser.getAttribute(item, 'gravityScore')
+            score = int(score, 0)
             if score < 1:
                 item.getparent().remove(item)
 
@@ -91,28 +93,28 @@ class OutputFormatter(object):
         with whatever text is inside them
         code : http://lxml.de/api/lxml.etree-module.html#strip_tags
         """
-        Parser.stripTags(self.get_top_node(), 'b', 'strong', 'i', 'br', 'sup')
+        self.parser.stripTags(self.get_top_node(), 'b', 'strong', 'i', 'br', 'sup')
 
     def remove_fewwords_paragraphs(self, article):
         """\
         remove paragraphs that have less than x number of words,
         would indicate that it's some sort of link
         """
-        all_nodes = Parser.getElementsByTags(self.get_top_node(), ['*'])
+        all_nodes = self.parser.getElementsByTags(self.get_top_node(), ['*'])
         all_nodes.reverse()
         for el in all_nodes:
-            text = Parser.getText(el)
+            text = self.parser.getText(el)
             stop_words = self.stopwords_class(language=self.get_language(article)).get_stopword_count(text)
             if stop_words.get_stopword_count() < 3 \
-                and len(Parser.getElementsByTag(el, tag='object')) == 0 \
-                and len(Parser.getElementsByTag(el, tag='embed')) == 0:
-                Parser.remove(el)
+                and len(self.parser.getElementsByTag(el, tag='object')) == 0 \
+                and len(self.parser.getElementsByTag(el, tag='embed')) == 0:
+                self.parser.remove(el)
             # TODO
             # check if it is in the right place
             else:
-                trimmed = Parser.getText(el)
+                trimmed = self.parser.getText(el)
                 if trimmed.startswith("(") and trimmed.endswith(")"):
-                    Parser.remove(el)
+                    self.parser.remove(el)
 
 
 class StandardOutputFormatter(OutputFormatter):

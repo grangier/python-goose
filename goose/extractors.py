@@ -26,7 +26,6 @@ from urlparse import urlparse, urljoin
 from goose.utils import StringSplitter
 from goose.utils import StringReplacement
 from goose.utils import ReplaceSequence
-from goose.parsers import Parser
 
 MOTLEY_REPLACEMENT = StringReplacement("&#65533;", "")
 ESCAPED_FRAGMENT_REPLACEMENT = StringReplacement(u"#!", u"?_escaped_fragment_=")
@@ -47,6 +46,8 @@ class ContentExtractor(object):
 
     def __init__(self, config):
         self.config = config
+        # parser
+        self.parser = self.config.get_parser()
         self.language = config.target_language
         self.stopwords_class = config.stopwords_class
 
@@ -70,13 +71,13 @@ class ContentExtractor(object):
         title = ''
         doc = article.doc
 
-        title_element = Parser.getElementsByTag(doc, tag='title')
+        title_element = self.parser.getElementsByTag(doc, tag='title')
         # no title found
         if title_element is None or len(title_element) == 0:
             return title
 
         # title elem found
-        title_text = Parser.getText(title_element[0])
+        title_text = self.parser.getText(title_element[0])
         used_delimeter = False
 
         # split title with |
@@ -129,9 +130,9 @@ class ContentExtractor(object):
         <link rel="icon" type="image/png" href="favicon.png" />
         """
         kwargs = {'tag': 'link', 'attr': 'rel', 'value': 'icon'}
-        meta = Parser.getElementsByTag(article.doc, **kwargs)
+        meta = self.parser.getElementsByTag(article.doc, **kwargs)
         if meta:
-            favicon = meta[0].attrib.get('href')
+            favicon = self.parser.getAttribute(meta[0], 'href')
             return favicon
         return ''
 
@@ -140,7 +141,7 @@ class ContentExtractor(object):
         Extract content language from meta
         """
         # we have a lang attribute in html
-        attr = Parser.getAttribute(article.doc, attr='lang')
+        attr = self.parser.getAttribute(article.doc, attr='lang')
         if attr is None:
             # look up for a Content-Language in meta
             items = [
@@ -148,9 +149,9 @@ class ContentExtractor(object):
                 {'tag': 'meta', 'attr': 'name', 'value': 'lang'}
             ]
             for item in items:
-                meta = Parser.getElementsByTag(article.doc, **item)
+                meta = self.parser.getElementsByTag(article.doc, **item)
                 if meta:
-                    attr = Parser.getAttribute(meta[0], attr='content')
+                    attr = self.parser.getAttribute(meta[0], attr='content')
                     break
 
         if attr:
@@ -165,11 +166,11 @@ class ContentExtractor(object):
         """\
         Extract a given meta content form document
         """
-        meta = Parser.css_select(doc, metaName)
+        meta = self.parser.css_select(doc, metaName)
         content = None
 
         if meta is not None and len(meta) > 0:
-            content = meta[0].attrib.get('content')
+            content = self.parser.getAttribute(meta[0], 'content')
 
         if content:
             return content.strip()
@@ -194,9 +195,9 @@ class ContentExtractor(object):
         """
         if article.final_url:
             kwargs = {'tag': 'link', 'attr': 'rel', 'value': 'canonical'}
-            meta = Parser.getElementsByTag(article.doc, **kwargs)
+            meta = self.parser.getElementsByTag(article.doc, **kwargs)
             if meta is not None and len(meta) > 0:
-                href = meta[0].attrib.get('href')
+                href = self.parser.getAttribute(meta[0], 'href')
                 if href:
                     href = href.strip()
                     o = urlparse(href)
@@ -220,13 +221,13 @@ class ContentExtractor(object):
         if len(list(node)) == 0:
             return NO_STRINGS
 
-        elements = Parser.css_select(node, A_REL_TAG_SELECTOR)
+        elements = self.parser.css_select(node, A_REL_TAG_SELECTOR)
         if elements is None:
             return NO_STRINGS
 
         tags = []
         for el in elements:
-            tag = Parser.getText(el)
+            tag = self.parser.getText(el)
             if tag:
                 tags.append(tag)
 
@@ -244,7 +245,7 @@ class ContentExtractor(object):
         nodes_with_text = []
 
         for node in nodes_to_check:
-            text_node = Parser.getText(node)
+            text_node = self.parser.getText(node)
             word_stats = self.stopwords_class(language=self.language).get_stopword_count(text_node)
             high_link_density = self.is_highlink_density(node)
             if word_stats.get_stopword_count() > 2 and not high_link_density:
@@ -270,20 +271,20 @@ class ContentExtractor(object):
                     if negscore > 40:
                         boost_score = float(5)
 
-            text_node = Parser.getText(node)
+            text_node = self.parser.getText(node)
             word_stats = self.stopwords_class(language=self.language).get_stopword_count(text_node)
             upscore = int(word_stats.get_stopword_count() + boost_score)
 
             # parent node
-            parent_node = Parser.getParent(node)
+            parent_node = self.parser.getParent(node)
             self.update_score(parent_node, upscore)
-            self.update_node_count(node.getparent(), 1)
+            self.update_node_count(parent_node, 1)
 
-            if node.getparent() not in parent_nodes:
-                parent_nodes.append(node.getparent())
+            if parent_node not in parent_nodes:
+                parent_nodes.append(parent_node)
 
             # parentparent node
-            parent_parent_node = Parser.getParent(parent_node)
+            parent_parent_node = self.parser.getParent(parent_node)
             if parent_parent_node is not None:
                 self.update_node_count(parent_parent_node, 1)
                 self.update_score(parent_parent_node, upscore / 2)
@@ -322,10 +323,11 @@ class ContentExtractor(object):
         nodes = self.walk_siblings(node)
         for current_node in nodes:
             # p
-            if current_node.tag == para:
+            current_node_tag = self.parser.getTag(current_node)
+            if current_node_tag == para:
                 if steps_away >= max_stepsaway_from_node:
                     return False
-                paraText = Parser.getText(current_node)
+                paraText = self.parser.getText(current_node)
                 word_stats = self.stopwords_class(language=self.language).get_stopword_count(paraText)
                 if word_stats.get_stopword_count() > minimum_stopword_count:
                     return True
@@ -333,11 +335,11 @@ class ContentExtractor(object):
         return False
 
     def walk_siblings(self, node):
-        current_sibling = Parser.previousSibling(node)
+        current_sibling = self.parser.previousSibling(node)
         b = []
         while current_sibling is not None:
             b.append(current_sibling)
-            previousSibling = Parser.previousSibling(current_sibling)
+            previousSibling = self.parser.previousSibling(current_sibling)
             current_sibling = None if previousSibling is None else previousSibling
         return b
 
@@ -354,20 +356,20 @@ class ContentExtractor(object):
         """\
         adds any siblings that may have a decent score to this node
         """
-        if current_sibling.tag == 'p' and len(Parser.getText(current_sibling)) > 0:
+        if current_sibling.tag == 'p' and len(self.parser.getText(current_sibling)) > 0:
             e0 = current_sibling
             if e0.tail:
                 e0 = deepcopy(e0)
                 e0.tail = ''
             return [e0]
         else:
-            potential_paragraphs = Parser.getElementsByTag(current_sibling, tag='p')
+            potential_paragraphs = self.parser.getElementsByTag(current_sibling, tag='p')
             if potential_paragraphs is None:
                 return None
             else:
                 ps = []
                 for first_paragraph in potential_paragraphs:
-                    text = Parser.getText(first_paragraph)
+                    text = self.parser.getText(first_paragraph)
                     if len(text) > 0:
                         word_stats = self.stopwords_class(language=self.language).get_stopword_count(text)
                         paragraph_score = word_stats.get_stopword_count()
@@ -375,7 +377,7 @@ class ContentExtractor(object):
                         high_link_density = self.is_highlink_density(first_paragraph)
                         score = float(baselinescore_siblings_para * sibling_baseline_score)
                         if score < paragraph_score and not high_link_density:
-                            p = Parser.createElement(tag='p', text=text, tail=None)
+                            p = self.parser.createElement(tag='p', text=text, tail=None)
                             ps.append(p)
                 return ps
 
@@ -392,10 +394,10 @@ class ContentExtractor(object):
         base = 100000
         paragraphs_number = 0
         paragraphs_score = 0
-        nodes_to_check = Parser.getElementsByTag(top_node, tag='p')
+        nodes_to_check = self.parser.getElementsByTag(top_node, tag='p')
 
         for node in nodes_to_check:
-            text_node = Parser.getText(node)
+            text_node = self.parser.getText(node)
             word_stats = self.stopwords_class(language=self.language).get_stopword_count(text_node)
             high_link_density = self.is_highlink_density(node)
             if word_stats.get_stopword_count() > 2 and not high_link_density:
@@ -414,24 +416,24 @@ class ContentExtractor(object):
         we're passing in to the current
         """
         current_score = 0
-        score_string = node.attrib.get('gravityScore')
+        score_string = self.parser.getAttribute(node, 'gravityScore')
         if score_string:
             current_score = int(score_string)
 
         new_score = current_score + addToScore
-        node.set("gravityScore", str(new_score))
+        self.parser.setAttribute(node, "gravityScore", str(new_score))
 
     def update_node_count(self, node, add_to_count):
         """\
         stores how many decent nodes are under a parent node
         """
         current_score = 0
-        count_string = node.attrib.get('gravityNodes')
+        count_string = self.parser.getAttribute(node, 'gravityNodes')
         if count_string:
             current_score = int(count_string)
 
         new_score = current_score + add_to_count
-        node.set("gravityNodes", str(new_score))
+        self.parser.setAttribute(node, "gravityNodes", str(new_score))
 
     def is_highlink_density(self, e):
         """\
@@ -439,16 +441,16 @@ class ContentExtractor(object):
         is there not much text and most of it contains linky shit?
         if so it's no good
         """
-        links = Parser.getElementsByTag(e, tag='a')
+        links = self.parser.getElementsByTag(e, tag='a')
         if links is None or len(links) == 0:
             return False
 
-        text = Parser.getText(e)
+        text = self.parser.getText(e)
         words = text.split(' ')
         words_number = float(len(words))
         sb = []
         for link in links:
-            sb.append(Parser.getText(link))
+            sb.append(self.parser.getText(link))
 
         linkText = ''.join(sb)
         linkWords = linkText.split(' ')
@@ -468,7 +470,7 @@ class ContentExtractor(object):
         return self.get_node_gravity_score(node) or 0
 
     def get_node_gravity_score(self, node):
-        grvScoreString = node.attrib.get('gravityScore')
+        grvScoreString = self.parser.getAttribute(node, 'gravityScore')
         if not grvScoreString:
             return None
         return int(grvScoreString)
@@ -480,18 +482,18 @@ class ContentExtractor(object):
         """
         nodes_to_check = []
         for tag in ['p', 'pre', 'td']:
-            items = Parser.getElementsByTag(doc, tag=tag)
+            items = self.parser.getElementsByTag(doc, tag=tag)
             nodes_to_check += items
         return nodes_to_check
 
     def is_table_and_no_para_exist(self, e):
-        subParagraphs = Parser.getElementsByTag(e, tag='p')
+        subParagraphs = self.parser.getElementsByTag(e, tag='p')
         for p in subParagraphs:
-            txt = Parser.getText(p)
+            txt = self.parser.getText(p)
             if len(txt) < 25:
-                Parser.remove(p)
+                self.parser.remove(p)
 
-        subParagraphs2 = Parser.getElementsByTag(e, tag='p')
+        subParagraphs2 = self.parser.getElementsByTag(e, tag='p')
         if len(subParagraphs2) == 0 and e.tag is not "td":
             return True
         return False
@@ -511,12 +513,13 @@ class ContentExtractor(object):
         clusters of links, or paras with no gusto
         """
         node = self.add_siblings(targetNode)
-        for e in node.getchildren():
-            if e.tag != 'p':
+        for e in self.parser.getChildren(node):
+            e_tag = self.parser.getTag(e)
+            if e_tag != 'p':
                 if self.is_highlink_density(e) \
                     or self.is_table_and_no_para_exist(e) \
                     or not self.is_nodescore_threshold_met(node, e):
-                    Parser.remove(e)
+                    self.parser.remove(e)
         return node
 
 

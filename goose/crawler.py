@@ -28,7 +28,6 @@ from goose.utils import URLHelper, RawHelper
 from goose.extractors import StandardContentExtractor
 from goose.cleaners import StandardDocumentCleaner
 from goose.outputformatters import StandardOutputFormatter
-from goose.parsers import Parser
 from goose.images.extractors import UpgradedImageIExtractor
 from goose.network import HtmlFetcher
 
@@ -37,6 +36,8 @@ class CrawlCandidate(object):
 
     def __init__(self, config, url, raw_html):
         self.config = config
+        # parser
+        self.parser = self.config.get_parser()
         self.url = url
         self.raw_html = raw_html
 
@@ -45,6 +46,8 @@ class Crawler(object):
 
     def __init__(self, config):
         self.config = config
+        # parser
+        self.parser = self.config.get_parser()
         self.logPrefix = "crawler:"
 
     def crawl(self, crawl_candidate):
@@ -120,10 +123,10 @@ class Crawler(object):
         return StandardOutputFormatter(self.config)
 
     def get_document_cleaner(self):
-        return StandardDocumentCleaner()
+        return StandardDocumentCleaner(self.config)
 
     def get_document(self, raw_html):
-        doc = Parser.fromstring(raw_html)
+        doc = self.parser.fromstring(raw_html)
         return doc
 
     def get_extractor(self):
