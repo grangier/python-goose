@@ -37,9 +37,8 @@ ARROWS_SPLITTER = StringSplitter("»")
 COLON_SPLITTER = StringSplitter(":")
 SPACE_SPLITTER = StringSplitter(' ')
 NO_STRINGS = set()
-# TODO
-# A_REL_TAG_SELECTOR = "a[rel=tag], a[href*=/tag/]"
 A_REL_TAG_SELECTOR = "a[rel=tag]"
+A_HREF_TAG_SELECTOR = "a[href*='/tag/'], a[href*='/tags/']"
 RE_LANG = r'^[A-Za-z]{2}$'
 
 
@@ -221,8 +220,10 @@ class ContentExtractor(object):
             return NO_STRINGS
 
         elements = Parser.css_select(node, A_REL_TAG_SELECTOR)
-        if elements is None:
-            return NO_STRINGS
+        if not elements:
+            elements = Parser.css_select(node, A_HREF_TAG_SELECTOR)
+            if not elements:
+                return NO_STRINGS
 
         tags = []
         for el in elements:

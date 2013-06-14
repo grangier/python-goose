@@ -657,5 +657,38 @@ class TestExtractionsRaw(TestExtractions):
         return article
 
 
+class TestArticleTags(unittest.TestCase):
+    def get_html(self, filename):
+        path = os.path.join(CURRENT_PATH, 'data', filename)
+        return FileHelper.loadResourceFile(path)
+
+    def getArticle(self, url, raw_html, language=None):
+        config = Configuration()
+        config.enable_image_fetching = False
+        g = Goose(config=config)
+        article = g.extract(url=url, raw_html=raw_html)
+        return article
+
+    def test_kexp(self):
+        html = self.get_html('article_tags/kusp.txt')
+        url = "http://blogs.kusp.org/filmgang/2013/02/08/stand-up-guys/"
+        expected_tags = set([u'kusp film review', u'Stand Up Guys', u'film', u'Dennis Morton'])
+        article = self.getArticle(url, html)
+        self.assertEquals(article.tags, expected_tags)
+
+    def test_deadline(self):
+        html = self.get_html('article_tags/deadline.txt')
+        url = "http://www.deadline.com/2013/06/deadline-big-media-with-david-lieberman-episode-38/"
+        expected_tags = set([u'Deadline Big Media', u'TiVo', u'Amazon Prime', u'Steve Ballmer'])
+        article = self.getArticle(url, html)
+        self.assertEquals(article.tags, expected_tags)
+
+    def test_wnyc(self):
+        html = self.get_html('article_tags/wnyc.txt')
+        url = "http://www.wnyc.org/shows/heresthething/2013/may/27/"
+        expected_tags = set([u'Life', u'alec baldwin', u'other desert cities', u'News', u'Music', u'stacy keach'])
+        article = self.getArticle(url, html)
+        self.assertEquals(article.tags, expected_tags)
+
 if __name__ == '__main__':
     unittest.main()
