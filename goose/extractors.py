@@ -155,7 +155,6 @@ class ContentExtractor(object):
         if attr:
             value = attr[:2]
             if re.search(RE_LANG, value):
-                self.language = value.lower()
                 return value.lower()
 
         return None
