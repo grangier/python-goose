@@ -32,7 +32,7 @@ Goose is licensed by Gravity.com under the Apache 2.0 license, see the LICENSE f
 
 ##Setup
     mkvirtualenv --no-site-packages goose
-    git clone https://github.com/xgdlm/python-goose.git
+    git clone https://github.com/grangier/python-goose.git
     cd python-goose
     pip install -r requirements.txt
     python setup.py install
