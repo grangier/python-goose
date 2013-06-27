@@ -1,4 +1,4 @@
-PIL
+Pillow
 lxml
 cssselect
 jieba
