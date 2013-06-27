@@ -30,7 +30,7 @@ from goose.parsers import Parser
 from goose.configuration import Configuration
 from goose.text import StopWordsChinese
 
-CURRENT_PATH = os.path.dirname(__file__)
+CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 class TestParser(unittest.TestCase):
