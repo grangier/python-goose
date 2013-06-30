@@ -2,3 +2,4 @@ Pillow
 lxml
 cssselect
 jieba
+beautifulsoup4
