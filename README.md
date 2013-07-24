@@ -83,7 +83,7 @@ will force as configuration will force the spanish language
 
 
 ##Goose in Chinese
-Some users want to use Goose for chinese content. Chinese word segementation is way more difficult to deal with that occidental languages. Chinese needs a dedicated StopWord analyser thant need to be passed to the config object
+Some users want to use Goose for chinese content. Chinese word segementation is way more difficult to deal with that occidental languages. Chinese needs a dedicated StopWord analyser that need to be passed to the config object
 
     >>> from goose import Goose
     >>> from goose.text import StopWordsChinese
