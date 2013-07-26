@@ -33,6 +33,24 @@ from goose.text import StopWordsChinese
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
+class TestTempDir(unittest.TestCase):
+
+    def test_exception_if_temp_dir_doesnt_exist(self):
+        path = '/this/directory/does/not/exist/i/assume/'
+        config = Configuration()
+        config.local_storage_path = path
+        self.assertRaises(Exception, lambda: Goose(config=config))
+
+    def test_no_exception_if_temp_dir_exists(self):
+        import tempfile
+        config = Configuration()
+        config.local_storage_path = tempfile.gettempdir()
+        try:
+            Goose(config=config)
+        except:
+            self.fail()
+
+
 class TestParser(unittest.TestCase):
 
     def get_html(self, filename):

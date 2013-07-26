@@ -20,14 +20,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import tempfile
 from goose.text import StopWords
+
 
 class Configuration(object):
 
     def __init__(self):
         # this is the local storage path used to place
         # images to inspect them, should be writable
-        self.local_storage_path = "/tmp/goosetmp"
+        self.local_storage_path = tempfile.gettempdir()
 
         # What's the minimum bytes for an image we'd accept is,
         # alot of times we want to filter out the author's little images
