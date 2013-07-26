@@ -23,6 +23,8 @@ limitations under the License.
 import os
 import unittest
 import pprint
+import tempfile
+
 from goose import Goose
 from goose.utils import FileHelper
 from goose.article import Article
@@ -32,6 +34,16 @@ from goose.configuration import Configuration
 from goose.text import StopWordsChinese
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
+
+
+class TestTempDir(unittest.TestCase):
+
+    def test_tmp_not_overwritten(self):
+        path = '/this/directory/does/not/exist/i/assume/'
+        config = Configuration()
+        with self.assertRaises(AttributeError):
+            config.local_storage_path = path
+            Goose(config=config)
 
 
 class ParserBase(unittest.TestCase):

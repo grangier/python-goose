@@ -146,4 +146,3 @@ Installation Help:
 
 5. Once you install the egg you have to then copy the resources directory manually into the egg.  There is something screwy about the way its setup.
 
-6. Create and chown the Goose temp directory "/tmp/goosetmp"

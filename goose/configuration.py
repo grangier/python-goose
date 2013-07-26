@@ -20,6 +20,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import os
+import tempfile
 from goose.text import StopWords
 from goose.parsers import Parser
 from goose.parsers import ParserSoup
@@ -28,10 +30,6 @@ from goose.parsers import ParserSoup
 class Configuration(object):
 
     def __init__(self):
-        # this is the local storage path used to place
-        # images to inspect them, should be writable
-        self.local_storage_path = "/tmp/goosetmp"
-
         # What's the minimum bytes for an image we'd accept is,
         # alot of times we want to filter out the author's little images
         # in the beginning of the article
@@ -84,6 +82,10 @@ class Configuration(object):
 
         # Parser type
         self.parser_class = 'lxml'
+
+    @property
+    def local_storage_path(self):
+        return os.path.join(tempfile.gettempdir(), 'goose')
 
     def get_parser(self):
         return Parser if self.parser_class == 'lxml' else ParserSoup
