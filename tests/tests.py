@@ -23,7 +23,6 @@ limitations under the License.
 import os
 import unittest
 import pprint
-import tempfile
 
 from goose import Goose
 from goose.utils import FileHelper
@@ -41,9 +40,7 @@ class TestTempDir(unittest.TestCase):
     def test_tmp_not_overwritten(self):
         path = '/this/directory/does/not/exist/i/assume/'
         config = Configuration()
-        with self.assertRaises(AttributeError):
-            config.local_storage_path = path
-            Goose(config=config)
+        self.assertRaises(AttributeError, lambda: setattr(config, 'local_storage_path', path))
 
 
 class ParserBase(unittest.TestCase):
