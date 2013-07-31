@@ -37,7 +37,7 @@ COLON_SPLITTER = StringSplitter(":")
 SPACE_SPLITTER = StringSplitter(' ')
 NO_STRINGS = set()
 A_REL_TAG_SELECTOR = "a[rel=tag]"
-A_HREF_TAG_SELECTOR = "a[href*='/tag/'], a[href*='/tags/']"
+A_HREF_TAG_SELECTOR = "a[href*='/tag/'], a[href*='/tags/'], a[href*='?keyword=']"
 RE_LANG = r'^[A-Za-z]{2}$'
 
 
@@ -219,7 +219,7 @@ class ContentExtractor(object):
         if len(list(node)) == 0:
             return NO_STRINGS
 
-	elements = self.parser.css_select(node, A_REL_TAG_SELECTOR)
+        elements = self.parser.css_select(node, A_REL_TAG_SELECTOR)
         if not elements:
             elements = self.parser.css_select(node, A_HREF_TAG_SELECTOR)
             if not elements:

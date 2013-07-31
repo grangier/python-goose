@@ -729,5 +729,12 @@ class TestArticleTags(unittest.TestCase):
         article = self.getArticle(url, html)
         self.assertEquals(article.tags, expected_tags)
 
+    def test_cnet(self):
+        html = self.get_html('article_tags/cnet.txt')
+        url = "http://www.cnet.com/8301-13952_1-57596170-81/the-404-1310-where-its-love-at-first-swipe-podcast/"
+        expected_tags = set([u'purgatory', u'USDATE', u'Pope', u'online dating', u'leftovers', u'app', u'Yahoo', u'OKCupid', u'romance', u'Pontifex', u'Tinder', u'Leftover Swap', u'Match.com', u'Twitter', u'Marc Maron'])
+        article = self.getArticle(url, html)
+        self.assertEquals(article.tags, expected_tags)
+
 if __name__ == '__main__':
     unittest.main()
