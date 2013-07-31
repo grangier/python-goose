@@ -373,6 +373,15 @@ class TestExtractionBase(unittest.TestCase):
 
 class TestExtractions(TestExtractionBase):
 
+    def test_allnewlyrics1(self):
+        html = self.get_html('statichtml/allnewlyrics1.txt')
+        url = "http://allnewlyrics.com/only-one-lyrics-pj-morton-ft-stevie-wonder.html"
+        title = "PJ Morton (Ft. Stevie Wonder)"
+        content = u"PJ Morton – Only One Lyrics (Ft. Stevie Wonder)\n\nI’m pretty sure I don’t need anything else\n\n This is the best feeling I’ve ever felt"
+        article = self.getArticle(url, html)
+        self.runArticleAssertions(article=article, expectedTitle=title, expectedStart=content)
+        self.printReport()
+
     def test_cnn1(self):
         html = self.get_html('statichtml/cnn1.txt')
         url = "http://www.cnn.com/2010/POLITICS/08/13/democrats.social.security/index.html"

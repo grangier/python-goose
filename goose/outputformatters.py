@@ -52,6 +52,7 @@ class OutputFormatter(object):
         self.top_node = article.top_node
         self.remove_negativescores_nodes()
         self.links_to_text()
+        self.add_newline_to_br()
         self.replace_with_text()
         self.remove_fewwords_paragraphs(article)
         return self.convert_to_text()
@@ -62,8 +63,13 @@ class OutputFormatter(object):
             txt = self.parser.getText(node)
             if txt:
                 txt = HTMLParser().unescape(txt)
-                txts.append(innerTrim(txt))
+                txt_lis = innerTrim(txt).split(r'\n')
+                txts.extend(txt_lis)
         return '\n\n'.join(txts)
+
+    def add_newline_to_br(self):
+        for e in self.parser.getElementsByTag(self.top_node, tag='br'):
+            e.text = r'\n'
 
     def links_to_text(self):
         """\
@@ -103,9 +109,10 @@ class OutputFormatter(object):
         all_nodes = self.parser.getElementsByTags(self.get_top_node(), ['*'])
         all_nodes.reverse()
         for el in all_nodes:
+            tag = self.parser.getTag(el)
             text = self.parser.getText(el)
             stop_words = self.stopwords_class(language=self.get_language(article)).get_stopword_count(text)
-            if stop_words.get_stopword_count() < 3 \
+            if (tag != 'br' or text != '\\r') and stop_words.get_stopword_count() < 3 \
                 and len(self.parser.getElementsByTag(el, tag='object')) == 0 \
                 and len(self.parser.getElementsByTag(el, tag='embed')) == 0:
                 self.parser.remove(el)
