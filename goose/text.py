@@ -124,29 +124,8 @@ class StopWords(object):
         ws.set_word_count(c)
         ws.set_stopword_count(len(overlapping_stopwords))
         ws.set_stop_words(overlapping_stopwords)
-        print vars(ws)
         return hgws
 
-
-
-
-class StopWordsArabic(StopWords):
-    """
-    Arabic stopwords class
-    """
-    def __init__(self, language='ar'):
-        # force zh languahe code
-        super(StopWordsArabic, self).__init__(language='ar')
-
-    def candiate_words(self, stripped_input):
-        # jieba build a tree that takes sometime
-        # avoid building the tree if we don't use
-        # chinese language
-        from tashaphyne import ArabicLightStemmer
-        stem = ArabicLightStemmer()
-        candiate_words = stem.token_pat.split(stripped_input)
-        print candiate_words
-        return candiate_words
 
 class StopWordsChinese(StopWords):
     """
