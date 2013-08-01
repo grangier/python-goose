@@ -124,7 +124,7 @@ class StopWords(object):
         ws.set_word_count(c)
         ws.set_stopword_count(len(overlapping_stopwords))
         ws.set_stop_words(overlapping_stopwords)
-        return hgws
+        return ws
 
 
 class StopWordsChinese(StopWords):
