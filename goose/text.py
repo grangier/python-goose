@@ -105,42 +105,15 @@ class StopWords(object):
             content = content.encode('utf-8')
         return content.translate(self.TRANS_TABLE, string.punctuation)
 
+    def candiate_words(self, stripped_input):
+        return stripped_input.split(' ')
+
     def get_stopword_count(self, content):
         if not content:
             return WordStats()
         ws = WordStats()
         stripped_input = self.remove_punctuation(content)
-        candiate_words = stripped_input.split(' ')
-        overlapping_stopwords = []
-        for w in candiate_words:
-            if w.lower() in self.STOP_WORDS:
-                overlapping_stopwords.append(w.lower())
-
-        ws.set_word_count(len(candiate_words))
-        ws.set_stopword_count(len(overlapping_stopwords))
-        ws.set_stop_words(overlapping_stopwords)
-        return ws
-
-
-class StopWordsChinese(StopWords):
-    """
-
-    """
-    def __init__(self, language='zh'):
-        # force zh languahe code
-        super(StopWordsChinese, self).__init__(language='zh')
-
-    def get_stopword_count(self, content):
-        # jieba build a tree that takes sometime
-        # avoid building the tree if we don't use
-        # chinese language
-        import jieba
-
-        if not content:
-            return WordStats()
-        ws = WordStats()
-        stripped_input = self.remove_punctuation(content)
-        candiate_words = jieba.cut(stripped_input, cut_all=True)
+        candiate_words = self.candiate_words(stripped_input)
         overlapping_stopwords = []
         c = 0
         for w in candiate_words:
@@ -151,4 +124,41 @@ class StopWordsChinese(StopWords):
         ws.set_word_count(c)
         ws.set_stopword_count(len(overlapping_stopwords))
         ws.set_stop_words(overlapping_stopwords)
-        return ws
+        print vars(ws)
+        return hgws
+
+
+
+
+class StopWordsArabic(StopWords):
+    """
+    Arabic stopwords class
+    """
+    def __init__(self, language='ar'):
+        # force zh languahe code
+        super(StopWordsArabic, self).__init__(language='ar')
+
+    def candiate_words(self, stripped_input):
+        # jieba build a tree that takes sometime
+        # avoid building the tree if we don't use
+        # chinese language
+        from tashaphyne import ArabicLightStemmer
+        stem = ArabicLightStemmer()
+        candiate_words = stem.token_pat.split(stripped_input)
+        print candiate_words
+        return candiate_words
+
+class StopWordsChinese(StopWords):
+    """
+    Chinese segmentation
+    """
+    def __init__(self, language='zh'):
+        # force zh languahe code
+        super(StopWordsChinese, self).__init__(language='zh')
+
+    def candiate_words(self, stripped_input):
+        # jieba build a tree that takes sometime
+        # avoid building the tree if we don't use
+        # chinese language
+        import jieba
+        return jieba.cut(stripped_input, cut_all=True)
