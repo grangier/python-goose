@@ -128,11 +128,7 @@ class StopWordsChinese(StopWords):
     """
     def __init__(self, language='zh'):
         # force zh languahe code
-        language = 'zh'
-        if not language in self._cached_stop_words:
-            path = os.path.join('text', 'stopwords-%s.txt' % language)
-            self._cached_stop_words[language] = set(FileHelper.loadResourceFile(path).splitlines())
-        self.STOP_WORDS = self._cached_stop_words[language]
+        super(StopWordsChinese, self).__init__(language='zh')
 
     def get_stopword_count(self, content):
         # jieba build a tree that takes sometime
