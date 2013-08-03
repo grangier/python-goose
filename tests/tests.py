@@ -745,5 +745,15 @@ class TestArticleTags(unittest.TestCase):
         article = self.getArticle(url, html)
         self.assertEquals(article.tags, expected_tags)
 
+    def test_abcau(self):
+        """
+        Test ABC Australia page with "topics" tags
+        """
+        html = self.get_html('article_tags/abcau.txt')
+        url = "http://www.abc.net.au/news/2013-04-22/swimming-greats-say-cuts-a-shame/4644544"
+        expected_tags = set([u'olympics-summer', u'australia', u'swimming'])
+        article = self.getArticle(url, html)
+        self.assertEquals(article.tags, expected_tags)
+
 if __name__ == '__main__':
     unittest.main()
