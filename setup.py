@@ -16,6 +16,6 @@ setup(name='goose',
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
-    install_requires=['Pillow', 'lxml', 'cssselect', 'jieba', 'beautifulsoup'],
+    install_requires=['Pillow', 'lxml', 'cssselect', 'jieba', 'beautifulsoup', 'nltk'],
     test_suite="tests"
 )

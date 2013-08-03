@@ -98,6 +98,20 @@ Some users want to use Goose for chinese content. Chinese word segementation is 
     一些亲北京阵营议员欢迎梁振英道歉，且认为应能获得香港民众接受，但这些议员也质问梁振英有
 
 
+
+##Goose in Arabic
+In order to use Goose in Arabic you have to use the StopWordsArabic class.
+
+    >>> from goose import Goose
+    >>> from goose.text import StopWordsArabic
+    >>> url = 'http://arabic.cnn.com/2013/middle_east/8/3/syria.clashes/index.html'
+    >>> g = Goose({'stopwords_class': StopWordsArabic})
+    >>> article = g.extract(url=url)
+    >>> print article.cleaned_text[:150]
+    دمشق، سوريا (CNN) -- أكدت جهات سورية معارضة أن فصائل مسلحة معارضة لنظام الرئيس بشار الأسد وعلى صلة بـ"الجيش الحر" تمكنت من السيطرة على مستودعات للأسل
+
+
+
 ##Configuration
 There is two way to pass configuration to goose. The first one is to pass to goose a Configuration() object. The second one is to pass a configuration dict
 

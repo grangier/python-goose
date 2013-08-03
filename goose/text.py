@@ -141,3 +141,23 @@ class StopWordsChinese(StopWords):
         # chinese language
         import jieba
         return jieba.cut(stripped_input, cut_all=True)
+
+
+class StopWordsArabic(StopWords):
+    """
+    Arabic segmentation
+    """
+    def __init__(self, language='ar'):
+        # force zh languahe code
+        super(StopWordsArabic, self).__init__(language='ar')
+
+    def remove_punctuation(self, content):
+        return content
+
+    def candiate_words(self, stripped_input):
+        import nltk
+        s = nltk.stem.isri.ISRIStemmer()
+        words = []
+        for word in nltk.tokenize.wordpunct_tokenize(stripped_input):
+            words.append(s.stem(word))
+        return words
