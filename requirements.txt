@@ -3,3 +3,4 @@ lxml
 cssselect
 jieba
 beautifulsoup
+nltk
