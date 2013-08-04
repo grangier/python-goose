@@ -20,7 +20,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import os
 import unittest
 
-if __name__ == '__main__':
-    unittest.main()
+from goose.configuration import Configuration
+
+
+class TestTempDir(unittest.TestCase):
+
+    def test_tmp_not_overwritten(self):
+        path = '/this/directory/does/not/exist/i/assume/'
+        config = Configuration()
+        self.assertRaises(AttributeError, lambda: setattr(config, 'local_storage_path', path))
