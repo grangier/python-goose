@@ -148,7 +148,7 @@ class StopWordsArabic(StopWords):
     Arabic segmentation
     """
     def __init__(self, language='ar'):
-        # force zh languahe code
+        # force ar languahe code
         super(StopWordsArabic, self).__init__(language='ar')
 
     def remove_punctuation(self, content):
