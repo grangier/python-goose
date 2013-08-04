@@ -30,7 +30,7 @@ from goose.article import Article
 from goose.parsers import Parser
 from goose.parsers import ParserSoup
 from goose.configuration import Configuration
-from goose.text import StopWordsChinese
+from goose.text import StopWordsChinese, StopWordsArabic
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -684,6 +684,22 @@ class TestExtractChinese(TestExtractionBase):
 梁振英在星期二（12月10日）的答问大会开始之际在其演说中道歉，但强调他在违章建筑问题上没有隐瞒的意图和动机。
 
 一些亲北京阵营议员欢迎梁振英道歉，且认为应能获得香港民众接受，但这些议员也质问梁振英有"""
+        article = self.getArticle(url, html)
+        self.runArticleAssertions(article=article, expectedStart=expected)
+        self.printReport()
+
+
+class TestExtractArabic(TestExtractionBase):
+
+    def getArticle(self, url, raw_html, language=None):
+        g = Goose({'stopwords_class': StopWordsArabic})
+        article = g.extract(url=url, raw_html=raw_html)
+        return article
+
+    def test_bbc_chinese(self):
+        html = self.get_html("statichtml/cnn_arabic.html")
+        url = "http://arabic.cnn.com/2013/middle_east/8/3/syria.clashes/index.html"
+        expected = u"""دمشق، سوريا (CNN) -- أكدت جهات سورية معارضة أن فصائل مسلحة معارضة لنظام الرئيس بشار الأسد وعلى صلة بـ"الجيش الحر" تمكنت من السيطرة على مستودعات للأسل"""
         article = self.getArticle(url, html)
         self.runArticleAssertions(article=article, expectedStart=expected)
         self.printReport()
