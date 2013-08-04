@@ -20,7 +20,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import unittest
 
-if __name__ == '__main__':
-    unittest.main()
+import unittest
+from goose.article import Article
+
+
+class TestArticle(unittest.TestCase):
+
+    def test_instance(self):
+        a = Article()
+        self.assertEqual(isinstance(a, Article), True)
