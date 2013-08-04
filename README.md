@@ -55,6 +55,20 @@ Goose is licensed by Gravity.com under the Apache 2.0 license, see the LICENSE f
     http://i2.cdn.turner.com/cnn/dam/assets/111017024308-occupy-london-st-paul-s-cathedral-story-top.jpg
 
 
+##Configuration
+There is two way to pass configuration to goose. The first one is to pass to goose a Configuration() object. The second one is to pass a configuration dict
+
+For instance, if you want to change the userAgent used by Goose juste pass :
+
+    >>> g = Goose({'browser_user_agent': 'Mozilla'})
+
+
+Switching parser :
+Goose can now be use with lxml html parser or lxml soup parser. By default the html parser is used. If you want to use the soup parser passe it in the configuration dict :
+
+    >>> g = Goose({'browser_user_agent': 'Mozilla', 'parser_class':'soup'})
+
+
 ##Goose is now language aware
 For exemple scrapping a spanish content page with correct meta language tags
 
@@ -109,21 +123,6 @@ In order to use Goose in Arabic you have to use the StopWordsArabic class.
     >>> article = g.extract(url=url)
     >>> print article.cleaned_text[:150]
     دمشق، سوريا (CNN) -- أكدت جهات سورية معارضة أن فصائل مسلحة معارضة لنظام الرئيس بشار الأسد وعلى صلة بـ"الجيش الحر" تمكنت من السيطرة على مستودعات للأسل
-
-
-
-##Configuration
-There is two way to pass configuration to goose. The first one is to pass to goose a Configuration() object. The second one is to pass a configuration dict
-
-For instance, if you want to change the userAgent used by Goose juste pass :
-
-    >>> g = Goose({'browser_user_agent': 'Mozilla'})
-
-
-Switching parser :
-Goose can now be use with lxml html parser or lxml soup parser. By default the html parser is used. If you want to use the soup parser passe it in the configuration dict :
-
-    >>> g = Goose({'browser_user_agent': 'Mozilla', 'parser_class':'soup'})
 
 
 ##TODO
