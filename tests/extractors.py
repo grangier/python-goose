@@ -26,7 +26,6 @@ import pprint
 
 from goose import Goose
 from goose.utils import FileHelper
-from goose.article import Article
 from goose.configuration import Configuration
 from goose.text import StopWordsChinese, StopWordsArabic
 
