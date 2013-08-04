@@ -676,7 +676,7 @@ class TestExtractChinese(TestExtractionBase):
         article = g.extract(url=url, raw_html=raw_html)
         return article
 
-    def test_bbc_chinese(self):
+    def test_cnn_chinese(self):
         html = self.get_html("statichtml/bbc_hongkong_politics.html")
         url = "http://www.bbc.co.uk/zhongwen/simp/chinese_news/2012/12/121210_hongkong_politics.shtml"
         expected = u"""香港行政长官梁振英在各方压力下就其大宅的违章建筑（僭建）问题到立法会接受质询，并向香港民众道歉。
@@ -696,7 +696,7 @@ class TestExtractArabic(TestExtractionBase):
         article = g.extract(url=url, raw_html=raw_html)
         return article
 
-    def test_bbc_chinese(self):
+    def test_cnn_arabic(self):
         html = self.get_html("statichtml/cnn_arabic.html")
         url = "http://arabic.cnn.com/2013/middle_east/8/3/syria.clashes/index.html"
         expected = u"""دمشق، سوريا (CNN) -- أكدت جهات سورية معارضة أن فصائل مسلحة معارضة لنظام الرئيس بشار الأسد وعلى صلة بـ"الجيش الحر" تمكنت من السيطرة على مستودعات للأسل"""
