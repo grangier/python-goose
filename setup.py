@@ -44,13 +44,18 @@ CLASSIFIERS = [
     'Topic :: Utilities',
     'Topic :: Software Development :: Libraries :: Python Modules']
 
+description = "Html Content / Article Extractor, web scrapping"
+
 # read long description
-with open(os.path.join(os.path.dirname(__file__), 'README.md')) as f:
-    long_description = f.read()
+try:
+    with open(os.path.join(os.path.dirname(__file__), 'README.md')) as f:
+        long_description = f.read()
+except:
+    long_description = description
 
 setup(name='goose-extractor',
     version=version.__version__,
-    description="Html Content / Article Extractor, web scrapping",
+    description=description,
     long_description=long_description,
     keywords='scrapping, extractor, web scrapping',
     classifiers=CLASSIFIERS,
