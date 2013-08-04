@@ -38,7 +38,6 @@ class ParserBase(unittest.TestCase):
     def get_html(self, filename):
         path = os.path.join(CURRENT_PATH, 'data', filename)
         path = os.path.abspath(path)
-        print "CURRENT_PATH %s" % path
         return FileHelper.loadResourceFile(path)
 
     def test_cssselect(self):
