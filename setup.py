@@ -48,7 +48,7 @@ CLASSIFIERS = [
 with open(os.path.join(os.path.dirname(__file__), 'README.md')) as f:
     long_description = f.read()
 
-setup(name='goose',
+setup(name='goose-extractor',
     version=version.__version__,
     description="Html Content / Article Extractor, web scrapping",
     long_description=long_description,
