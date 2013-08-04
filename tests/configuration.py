@@ -22,5 +22,12 @@ limitations under the License.
 """
 import unittest
 
-if __name__ == '__main__':
-    unittest.main()
+from goose.configuration import Configuration
+
+
+class TestTempDir(unittest.TestCase):
+
+    def test_tmp_not_overwritten(self):
+        path = '/this/directory/does/not/exist/i/assume/'
+        config = Configuration()
+        self.assertRaises(AttributeError, lambda: setattr(config, 'local_storage_path', path))
