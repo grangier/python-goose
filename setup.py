@@ -48,7 +48,7 @@ description = "Html Content / Article Extractor, web scrapping"
 
 # read long description
 try:
-    with open(os.path.join(os.path.dirname(__file__), 'README.md')) as f:
+    with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as f:
         long_description = f.read()
 except:
     long_description = description
