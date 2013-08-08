@@ -29,7 +29,7 @@ from goose.extractors import StandardContentExtractor
 from goose.cleaners import StandardDocumentCleaner
 from goose.outputformatters import StandardOutputFormatter
 from goose.images.extractors import UpgradedImageIExtractor
-from goose.network import HtmlFetcher
+from goose.network import HttpClient
 
 
 class CrawlCandidate(object):
@@ -44,11 +44,12 @@ class CrawlCandidate(object):
 
 class Crawler(object):
 
-    def __init__(self, config):
+    def __init__(self, config, http_client):
         self.config = config
         # parser
         self.parser = self.config.get_parser()
         self.logPrefix = "crawler:"
+        self.http_client = http_client
 
     def crawl(self, crawl_candidate):
         article = Article()
@@ -112,12 +113,11 @@ class Crawler(object):
         if crawl_candidate.raw_html:
             return crawl_candidate.raw_html
         # fetch HTML
-        html = HtmlFetcher().get_html(self.config, parsing_candidate.url)
+        html = HttpClient().get_html(self.config, parsing_candidate.url)
         return html
 
     def get_image_extractor(self, article):
-        http_client = None
-        return UpgradedImageIExtractor(http_client, article, self.config)
+        return UpgradedImageIExtractor(self.http_client, article, self.config)
 
     def get_output_formatter(self):
         return StandardOutputFormatter(self.config)

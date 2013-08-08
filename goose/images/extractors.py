@@ -80,6 +80,9 @@ class UpgradedImageIExtractor(ImageExtractor):
             "|mediaplex.com|adsatt|view.atdmt"
         )
 
+        # network.HttpClient usually
+        self.http_client = http_client
+
     def get_best_image(self, doc, topNode):
         image = self.check_known_elements()
         if image:
@@ -339,7 +342,7 @@ class UpgradedImageIExtractor(ImageExtractor):
         """\
         returns the bytes of the image file on disk
         """
-        local_image = ImageUtils.store_image(None,
+        local_image = ImageUtils.store_image(self.http_client,
                                     self.link_hash, src, self.config)
         return local_image
 

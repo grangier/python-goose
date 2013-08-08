@@ -23,13 +23,19 @@ limitations under the License.
 import urllib2
 
 
-class HtmlFetcher(object):
+class HttpClient(object):
 
     def __init__(self):
         pass
 
-    def get_http_client(self):
-        pass
+    def get_binary(self, url):
+        try:
+            req = urllib2.Request(url)
+            f = urllib2.urlopen(req)
+            data = f.read()
+            return data
+        except:
+            return None
 
     def get_html(self, config, url):
         """\
