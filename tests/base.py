@@ -61,7 +61,7 @@ class MockHTTPHandler(urllib2.HTTPHandler, urllib2.HTTPSHandler):
         return r.response(req)
 
     @staticmethod
-    def patch(cls):     #def patch(func_name, callback):
+    def patch(cls):
         opener = urllib2.build_opener(MockHTTPHandler)
         urllib2.install_opener(opener)
         # dirty !
@@ -82,7 +82,6 @@ class BaseMockTests(unittest.TestCase):
     callback = MockResponse
 
     def setUp(self):
-        #MockHTTPHandler.patch(self._get_current_testname(), self.callback)
         MockHTTPHandler.patch(self)
 
     def tearDown(self):
