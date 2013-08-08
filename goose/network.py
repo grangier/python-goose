@@ -23,7 +23,7 @@ limitations under the License.
 import urllib2
 
 
-class HtmlFetcher(object):
+class HttpClient(object):
 
     def __init__(self):
         pass
