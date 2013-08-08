@@ -54,7 +54,7 @@ class ImageUtils(object):
             return image
 
         # no cache found download the image
-        data = self.fetch(http_client, src)
+        data = http_client.get_binary(src)
         if data:
             image = self.write_localfile(data, link_hash, src, config)
             if image:
@@ -108,13 +108,3 @@ class ImageUtils(object):
     @classmethod
     def clean_src_string(self, src):
         return src.replace(" ", "%20")
-
-    @classmethod
-    def fetch(self, http_client, src):
-        try:
-            req = urllib2.Request(src)
-            f = urllib2.urlopen(req)
-            data = f.read()
-            return data
-        except:
-            return None

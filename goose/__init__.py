@@ -25,14 +25,16 @@ from goose.version import version_info, __version__
 from goose.configuration import Configuration
 from goose.crawler import CrawlCandidate
 from goose.crawler import Crawler
+from goose.network import HttpClient
 
 
 class Goose(object):
     """\
 
     """
-    def __init__(self, config=None):
+    def __init__(self, config=None, http_client=None):
         self.config = config or Configuration()
+        self.http_client = http_client or HttpClient()
         self.extend_config()
         self.initialize()
 
@@ -56,7 +58,7 @@ class Goose(object):
         pass
 
     def crawl(self, crawl_candiate):
-        crawler = Crawler(self.config)
+        crawler = Crawler(self.config, self.http_client)
         article = crawler.crawl(crawl_candiate)
         return article
 

@@ -44,11 +44,12 @@ class CrawlCandidate(object):
 
 class Crawler(object):
 
-    def __init__(self, config):
+    def __init__(self, config, http_client):
         self.config = config
         # parser
         self.parser = self.config.get_parser()
         self.logPrefix = "crawler:"
+        self.http_client = http_client
 
     def crawl(self, crawl_candidate):
         article = Article()
@@ -116,8 +117,7 @@ class Crawler(object):
         return html
 
     def get_image_extractor(self, article):
-        http_client = None
-        return UpgradedImageIExtractor(http_client, article, self.config)
+        return UpgradedImageIExtractor(self.http_client, article, self.config)
 
     def get_output_formatter(self):
         return StandardOutputFormatter(self.config)
