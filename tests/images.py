@@ -20,14 +20,28 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import urllib2
+import os
 
+from goose import Goose
+from goose.configuration import Configuration
+from goose.utils import FileHelper
 from base import BaseMockTests, MockResponse
+
+CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
+
+FILE_PATH = {
+    'test_1': 'extractors/businessweek2.txt',
+    'test_2': 'extractors/cnn1.txt'
+}
 
 
 class MockResponseImage(MockResponse):
     def content(self):
-        return "response image"
+        print "TO"
+        filename = FILE_PATH[self.cls._get_current_testname()]
+        path = os.path.join(CURRENT_PATH, 'data', filename)
+        path = os.path.abspath(path)
+        return FileHelper.loadResourceFile(path)
 
 
 class ImageTests(BaseMockTests):
@@ -36,12 +50,24 @@ class ImageTests(BaseMockTests):
     """
     callback = MockResponseImage
 
+    def getArticle(self, url, language=None):
+        config = Configuration()
+        if language:
+            config.target_language = language
+            config.use_meta_language = False
+        config.enable_image_fetching = False
+        g = Goose(config=config)
+        article = g.extract(url=url)
+        return article
+
     def test_1(self):
-        req = urllib2.Request('http://www.google.com/')
-        r = urllib2.urlopen(req)
-        print r.readlines()
+        url = "http://www.businessweek.com/management/five-social-media-lessons-for-business-09202011.html"
+        article = self.getArticle(url)
+        #print "--------------------"
+        #print article.cleaned_text
 
     def test_2(self):
-        req = urllib2.Request('http://www.google.com/')
-        r = urllib2.urlopen(req)
-        print r.readlines()
+        url = "http://www.cnn.com/2010/POLITICS/08/13/democrats.social.security/index.html"
+        article = self.getArticle(url)
+        #print "--------------------"
+        #print article.cleaned_text

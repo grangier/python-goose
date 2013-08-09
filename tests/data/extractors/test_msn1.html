@@ -28,25 +28,25 @@
 
 </script>
 <script type="text/javascript">
-	var scp_UserRating=-1;
-	down_arrow_hover= new Image();
-	down_arrow_hover.src = 'http://blu.stc.s-msn.com/br/scp/css/15/decoration/toolbar/rating/down_hover.gif';
-	down_arrow_normal= new Image();
-	down_arrow_normal.src = 'http://blu.stc.s-msn.com/br/scp/css/15/decoration/toolbar/rating/down_normal.gif';
-	up_arrow_hover= new Image();
-	up_arrow_hover.src = 'http://blu.stc.s-msn.com/br/scp/css/15/decoration/toolbar/rating/up_hover.gif';
-	up_arrow_normal= new Image();
-	up_arrow_normal.src = 'http://blu.stc.s-msn.com/br/scp/css/15/decoration/toolbar/rating/up_normal.gif';
-	var scp_thankyoutext = 'Recommendation added';
-	var scp_thankyoualttext = 'You have voted on this';
-	var scp_votestext = '{0} votes';
-	var scp_votescount = 0;
-	var scp_errmsg = 'Errors occured while saving your rating. Please try again later.';
-	var scp_yesvotes = 0;
-	var scp_jsurl='MSNRRV2.aspx';
-	var scp_jsargs='rrct\x3doE0QuuCFWRgt\x252fxpt\x252fkHSJlq\x252fUYmae5oK1xCKYvC29BF\x252bVw3Hx9\x252br9Fg8ZPSB65WBzDOei47RCMiyUGgw8Z1grFkVwJ\x252fB5wFkogYVMW6Yq4qN97d5wpKwMHXxqBVT1u88ZjuQtRWg03l0HRZB0hVxZ6p1\x252baWisqTu8RQEtI73N1DkWrG63FQpyucfwEbGJbFk\x26values\x3dshFp7XlTQbexq2I491\x252fdUQ\x253d\x253d\x26rritemId\x3dTZsRd4pyoJ1qQ2wcthY8upl\x252fHmm\x252fgGDZKC5fCoBtR\x252bvBx3INGLkQnZxdmmiOUO1hXGcj9rJcS1xo9pqnXqS5KQ\x253d\x253d\x26rrpurl\x3dhttp\x253a\x252f\x252flifestyle.msn.com\x252fyour-life\x252fyour-money-today\x252farticle.aspx\x253fcp-documentid\x253d31244150';
-	var scp_itemid = 'scp\x3abbcdiscussion\x3a254447ca-6778-4b68-9bb9-0ebaf43a7430';
-	function BinaryRatingToolBar(ratingValue){scpjs.toolbar.handleBinaryRating(ratingValue);}
+    var scp_UserRating=-1;
+    down_arrow_hover= new Image();
+    down_arrow_hover.src = 'http://blu.stc.s-msn.com/br/scp/css/15/decoration/toolbar/rating/down_hover.gif';
+    down_arrow_normal= new Image();
+    down_arrow_normal.src = 'http://blu.stc.s-msn.com/br/scp/css/15/decoration/toolbar/rating/down_normal.gif';
+    up_arrow_hover= new Image();
+    up_arrow_hover.src = 'http://blu.stc.s-msn.com/br/scp/css/15/decoration/toolbar/rating/up_hover.gif';
+    up_arrow_normal= new Image();
+    up_arrow_normal.src = 'http://blu.stc.s-msn.com/br/scp/css/15/decoration/toolbar/rating/up_normal.gif';
+    var scp_thankyoutext = 'Recommendation added';
+    var scp_thankyoualttext = 'You have voted on this';
+    var scp_votestext = '{0} votes';
+    var scp_votescount = 0;
+    var scp_errmsg = 'Errors occured while saving your rating. Please try again later.';
+    var scp_yesvotes = 0;
+    var scp_jsurl='MSNRRV2.aspx';
+    var scp_jsargs='rrct\x3doE0QuuCFWRgt\x252fxpt\x252fkHSJlq\x252fUYmae5oK1xCKYvC29BF\x252bVw3Hx9\x252br9Fg8ZPSB65WBzDOei47RCMiyUGgw8Z1grFkVwJ\x252fB5wFkogYVMW6Yq4qN97d5wpKwMHXxqBVT1u88ZjuQtRWg03l0HRZB0hVxZ6p1\x252baWisqTu8RQEtI73N1DkWrG63FQpyucfwEbGJbFk\x26values\x3dshFp7XlTQbexq2I491\x252fdUQ\x253d\x253d\x26rritemId\x3dTZsRd4pyoJ1qQ2wcthY8upl\x252fHmm\x252fgGDZKC5fCoBtR\x252bvBx3INGLkQnZxdmmiOUO1hXGcj9rJcS1xo9pqnXqS5KQ\x253d\x253d\x26rrpurl\x3dhttp\x253a\x252f\x252flifestyle.msn.com\x252fyour-life\x252fyour-money-today\x252farticle.aspx\x253fcp-documentid\x253d31244150';
+    var scp_itemid = 'scp\x3abbcdiscussion\x3a254447ca-6778-4b68-9bb9-0ebaf43a7430';
+    function BinaryRatingToolBar(ratingValue){scpjs.toolbar.handleBinaryRating(ratingValue);}
 
 </script><div class="rrbmain"><span class="rrbrec">Recommend</span><span id="rrBCount" class="rrbcount">&nbsp;</span><div class="rrbyes rrbcyes" onmouseover="highlight(up_arrow_hover, 'ratCntrlBinaryYesButton');" onmouseout="highlight(up_arrow_normal, 'ratCntrlBinaryYesButton');" id="rrBCYes"><a id="rrBCYesA" onclick="SetBinaryRating(this,'ratCntrlBinary', 'True','1');" href="http://lifestyle.msn.com/your-life/your-money-today/article.aspx?cp-documentid=31244150&amp;rrurt=1&amp;rrcontrolId=ratCntrlBinary" title="You recommend this" rel="nofollow"><img id="ratCntrlBinaryYesButton" class="rrimg" src="http://blu.stc.s-msn.com/br/scp/css/15/decoration/toolbar/rating/up_normal.gif" title="You recommend this" alt="You recommend this" /><span id="rrBCYesPer" class="rrbpercent">0%
               </span><span class="rnrhide">

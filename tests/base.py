@@ -23,16 +23,21 @@ limitations under the License.
 
 import urllib2
 import unittest
+import socket
 
 from StringIO import StringIO
 
 
+# Response
 class MockResponse():
     """\
     Base mock response class
     """
     code = 200
     msg = "OK"
+
+    def __init__(self, cls):
+        self.cls = cls
 
     def content(self):
         return "response"
@@ -50,14 +55,13 @@ class MockHTTPHandler(urllib2.HTTPHandler, urllib2.HTTPSHandler):
     """\
     Mocked HTTPHandler in order to query APIs locally
     """
-    def __init__(self, debuglevel=0):
-        urllib2.HTTPHandler.__init__(self, debuglevel)
+    cls = None
 
     def https_open(self, req):
         return self.http_open(req)
 
     def http_open(self, req):
-        r = self.cls.callback()
+        r = self.cls.callback(self.cls)
         return r.response(req)
 
     @staticmethod
@@ -72,6 +76,7 @@ class MockHTTPHandler(urllib2.HTTPHandler, urllib2.HTTPSHandler):
 
     @staticmethod
     def unpatch():
+        # urllib2
         urllib2._opener = None
 
 
@@ -79,13 +84,21 @@ class BaseMockTests(unittest.TestCase):
     """\
     Base Mock test case
     """
-    callback = MockResponse
+    #callback = MockResponse
 
     def setUp(self):
+        # patch DNS
+        self.original_getaddrinfo = socket.getaddrinfo
+        socket.getaddrinfo = self.new_getaddrinfo
         MockHTTPHandler.patch(self)
 
     def tearDown(self):
         MockHTTPHandler.unpatch()
+        # DNS
+        socket.getaddrinfo = self.original_getaddrinfo
+
+    def new_getaddrinfo(self, *args):
+        return [(2, 1, 6, '', ('127.0.0.1', 0))]
 
     def _get_current_testname(self):
         return self.id().split('.')[-1:][0]
