@@ -37,14 +37,13 @@ class HtmlFetcher(object):
         """
         if isinstance(url, unicode):
             url = url.encode('utf-8')
-        headers = {}  # 'User-Agent' : config.browser_user_agent }
-        request = urllib2.Request(url, None, headers)
-        opener = urllib2.build_opener(urllib2.HTTPHandler(config.debug))
-        opener.addheaders = [('User-agent', config.browser_user_agent)]
+
+        headers = {'User-agent': config.browser_user_agent}
+        request = urllib2.Request(url, headers=headers)
+
         try:
-            result = opener.open(request).read()
+            result = urllib2.urlopen(request).read()
         except:
             return None
-        # urllib2.HTTPError
-        # ValueError
+
         return result
