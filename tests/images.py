@@ -37,7 +37,6 @@ FILE_PATH = {
 
 class MockResponseImage(MockResponse):
     def content(self):
-        print "TO"
         filename = FILE_PATH[self.cls._get_current_testname()]
         path = os.path.join(CURRENT_PATH, 'data', filename)
         path = os.path.abspath(path)
@@ -63,11 +62,7 @@ class ImageTests(BaseMockTests):
     def test_1(self):
         url = "http://www.businessweek.com/management/five-social-media-lessons-for-business-09202011.html"
         article = self.getArticle(url)
-        #print "--------------------"
-        #print article.cleaned_text
 
     def test_2(self):
         url = "http://www.cnn.com/2010/POLITICS/08/13/democrats.social.security/index.html"
         article = self.getArticle(url)
-        #print "--------------------"
-        #print article.cleaned_text
