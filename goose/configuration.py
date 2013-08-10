@@ -25,6 +25,7 @@ import tempfile
 from goose.text import StopWords
 from goose.parsers import Parser
 from goose.parsers import ParserSoup
+from goose.version import __version__
 
 
 class Configuration(object):
@@ -67,7 +68,7 @@ class Configuration(object):
         # self.browser_user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2)"\
         #                         " AppleWebKit/534.52.7 (KHTML, like Gecko) "\
         #                         "Version/5.1.2 Safari/534.52.7"
-        self.browser_user_agent = 'Goose/1.0'
+        self.browser_user_agent = 'Goose/%s' % __version__
 
         # debug mode
         # enable this to have additional debugging information
