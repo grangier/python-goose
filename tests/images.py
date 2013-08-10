@@ -29,6 +29,7 @@ from base import MockResponse
 from extractors import TestExtractionBase
 
 from goose import Goose
+from goose.images.image import ImageDetails
 from goose.images.utils import ImageUtils
 from goose.utils import FileHelper
 
@@ -99,22 +100,36 @@ class ImageExtractionTests(TestExtractionBase):
 
 class ImageUtilsTests(unittest.TestCase):
 
-    def test_detail(self):
-        path = 'tests/data/images/test_basic_image/50850547cc7310bc53e30e802c6318f1'
-        image_detail = ImageUtils.get_image_dimensions(None, path)
-
-        expected_results = {
+    def setUp(self):
+        self.path = 'tests/data/images/test_basic_image/50850547cc7310bc53e30e802c6318f1'
+        self.expected_results = {
             'width': 476,
             'height': 317,
             'mime_type': 'JPEG'
         }
 
+    def test_utils_get_image_dimensions(self):
+        image_detail = ImageUtils.get_image_dimensions(None, self.path)
+
+        # test if we have an ImageDetails instance
+        self.assertTrue(isinstance(image_detail, ImageDetails))
+
         # test image_detail attribute
-        for k, v in expected_results.items():
+        for k, v in self.expected_results.items():
+            self.assertEqual(getattr(image_detail, k), v)
+
+    def test_detail(self):
+        image_detail = ImageUtils.get_image_dimensions(None, self.path)
+
+        # test if we have an ImageDetails instance
+        self.assertTrue(isinstance(image_detail, ImageDetails))
+
+        # test image_detail attribute
+        for k, v in self.expected_results.items():
             self.assertEqual(getattr(image_detail, k), v)
 
         # test image_detail get_ methode
-        for k, v in expected_results.items():
+        for k, v in self.expected_results.items():
             attr = 'get_%s' % k
             self.assertEqual(getattr(image_detail, attr)(), v)
 
