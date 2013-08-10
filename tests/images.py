@@ -93,6 +93,3 @@ class ImageTests(TestExtractionBase):
         article = self.getArticle()
         fields = ['top_image']
         self.runArticleAssertions(article=article, fields=fields)
-
-    # def test_2(self):
-    #     article = self.getArticle()
