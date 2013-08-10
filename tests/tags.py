@@ -43,28 +43,28 @@ class TestArticleTags(unittest.TestCase):
         return article
 
     def test_kexp(self):
-        html = self.get_html('tags/kusp.txt')
+        html = self.get_html('tags/test_kexp.html')
         url = "http://blogs.kusp.org/filmgang/2013/02/08/stand-up-guys/"
         expected_tags = set([u'kusp film review', u'Stand Up Guys', u'film', u'Dennis Morton'])
         article = self.getArticle(url, html)
         self.assertEquals(article.tags, expected_tags)
 
     def test_deadline(self):
-        html = self.get_html('tags/deadline.txt')
+        html = self.get_html('tags/test_deadline.html')
         url = "http://www.deadline.com/2013/06/deadline-big-media-with-david-lieberman-episode-38/"
         expected_tags = set([u'Deadline Big Media', u'TiVo', u'Amazon Prime', u'Steve Ballmer'])
         article = self.getArticle(url, html)
         self.assertEquals(article.tags, expected_tags)
 
     def test_wnyc(self):
-        html = self.get_html('tags/wnyc.txt')
+        html = self.get_html('tags/test_wnyc.html')
         url = "http://www.wnyc.org/shows/heresthething/2013/may/27/"
         expected_tags = set([u'Life', u'alec baldwin', u'other desert cities', u'News', u'Music', u'stacy keach'])
         article = self.getArticle(url, html)
         self.assertEquals(article.tags, expected_tags)
 
     def test_cnet(self):
-        html = self.get_html('tags/cnet.txt')
+        html = self.get_html('tags/test_cnet.html')
         url = "http://www.cnet.com/8301-13952_1-57596170-81/the-404-1310-where-its-love-at-first-swipe-podcast/"
         expected_tags = set([u'purgatory', u'USDATE', u'Pope', u'online dating', u'leftovers', u'app', u'Yahoo', u'OKCupid', u'romance', u'Pontifex', u'Tinder', u'Leftover Swap', u'Match.com', u'Twitter', u'Marc Maron'])
         article = self.getArticle(url, html)
@@ -74,7 +74,7 @@ class TestArticleTags(unittest.TestCase):
         """
         Test ABC Australia page with "topics" tags
         """
-        html = self.get_html('tags/abcau.txt')
+        html = self.get_html('tags/test_abcau.html')
         url = "http://www.abc.net.au/news/2013-04-22/swimming-greats-say-cuts-a-shame/4644544"
         expected_tags = set([u'olympics-summer', u'australia', u'swimming'])
         article = self.getArticle(url, html)
