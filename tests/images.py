@@ -57,7 +57,7 @@ class MockResponseImage(MockResponse):
         return self.image_content(req)
 
 
-class ImageTests(TestExtractionBase):
+class ImageExtractionTests(TestExtractionBase):
     """\
     Base Mock test case
     """
