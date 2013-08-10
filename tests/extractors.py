@@ -70,6 +70,7 @@ class TestExtractionBase(BaseMockTests):
         """\
 
         """
+        # TODO : handle verbose level in tests
         # print "\n=======================::. ARTICLE REPORT %s .::======================\n" % self.id()
         # print 'expected_value (%s) \n' % len(expected_value)
         # print expected_value
