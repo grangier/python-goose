@@ -23,11 +23,13 @@ limitations under the License.
 import os
 import json
 import hashlib
+import unittest
 
 from base import MockResponse
 from extractors import TestExtractionBase
 
 from goose import Goose
+from goose.images.utils import ImageUtils
 from goose.utils import FileHelper
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -93,3 +95,40 @@ class ImageExtractionTests(TestExtractionBase):
         article = self.getArticle()
         fields = ['top_image']
         self.runArticleAssertions(article=article, fields=fields)
+
+
+class ImageUtilsTests(unittest.TestCase):
+
+    def test_detail(self):
+        path = 'tests/data/images/test_basic_image/50850547cc7310bc53e30e802c6318f1'
+        image_detail = ImageUtils.get_image_dimensions(None, path)
+
+        expected_results = {
+            'width': 476,
+            'height': 317,
+            'mime_type': 'JPEG'
+        }
+
+        # test image_detail attribute
+        for k, v in expected_results.items():
+            self.assertEqual(getattr(image_detail, k), v)
+
+        # test image_detail get_ methode
+        for k, v in expected_results.items():
+            attr = 'get_%s' % k
+            self.assertEqual(getattr(image_detail, attr)(), v)
+
+        # test image_detail set_ methode
+        expected_results = {
+            'width': 10,
+            'height': 10,
+            'mime_type': 'PNG'
+        }
+
+        for k, v in expected_results.items():
+            attr = 'set_%s' % k
+            getattr(image_detail, attr)(v)
+
+        for k, v in expected_results.items():
+            attr = 'get_%s' % k
+            self.assertEqual(getattr(image_detail, attr)(), v)
