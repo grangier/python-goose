@@ -84,7 +84,7 @@ class BaseMockTests(unittest.TestCase):
     """\
     Base Mock test case
     """
-    #callback = MockResponse
+    callback = MockResponse
 
     def setUp(self):
         # patch DNS
