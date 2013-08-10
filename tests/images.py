@@ -24,11 +24,11 @@ import os
 import json
 import hashlib
 
-from goose import Goose
-from goose.configuration import Configuration
-from goose.utils import FileHelper
-from base import BaseMockTests, MockResponse
+from base import MockResponse
 from extractors import TestExtractionBase
+
+from goose import Goose
+from goose.utils import FileHelper
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
