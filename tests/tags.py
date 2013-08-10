@@ -21,61 +21,51 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import os
-import unittest
 
-from goose import Goose
+from base import MockResponse
+from extractors import TestExtractionBase
 from goose.utils import FileHelper
-from goose.configuration import Configuration
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
-class TestArticleTags(unittest.TestCase):
-    def get_html(self, filename):
-        path = os.path.join(CURRENT_PATH, 'data', filename)
-        return FileHelper.loadResourceFile(path)
+class MockResponseTags(MockResponse):
+    def content(self):
+        current_test = self.cls._get_current_testname()
+        path = os.path.join(CURRENT_PATH, "data", "tags", "%s.html" % current_test)
+        path = os.path.abspath(path)
+        content = FileHelper.loadResourceFile(path)
+        return content
 
-    def getArticle(self, url, raw_html, language=None):
-        config = Configuration()
-        config.enable_image_fetching = False
-        g = Goose(config=config)
-        article = g.extract(url=url, raw_html=raw_html)
-        return article
 
-    def test_kexp(self):
-        html = self.get_html('tags/test_kexp.html')
-        url = "http://blogs.kusp.org/filmgang/2013/02/08/stand-up-guys/"
-        expected_tags = set([u'kusp film review', u'Stand Up Guys', u'film', u'Dennis Morton'])
-        article = self.getArticle(url, html)
-        self.assertEquals(article.tags, expected_tags)
+class TestArticleTags(TestExtractionBase):
 
-    def test_deadline(self):
-        html = self.get_html('tags/test_deadline.html')
-        url = "http://www.deadline.com/2013/06/deadline-big-media-with-david-lieberman-episode-38/"
-        expected_tags = set([u'Deadline Big Media', u'TiVo', u'Amazon Prime', u'Steve Ballmer'])
-        article = self.getArticle(url, html)
-        self.assertEquals(article.tags, expected_tags)
+    callback = MockResponseTags
 
-    def test_wnyc(self):
-        html = self.get_html('tags/test_wnyc.html')
-        url = "http://www.wnyc.org/shows/heresthething/2013/may/27/"
-        expected_tags = set([u'Life', u'alec baldwin', u'other desert cities', u'News', u'Music', u'stacy keach'])
-        article = self.getArticle(url, html)
-        self.assertEquals(article.tags, expected_tags)
+    def test_tags_kexp(self):
+        article = self.getArticle()
+        fields = ['tags']
+        self.runArticleAssertions(article=article, fields=fields)
 
-    def test_cnet(self):
-        html = self.get_html('tags/test_cnet.html')
-        url = "http://www.cnet.com/8301-13952_1-57596170-81/the-404-1310-where-its-love-at-first-swipe-podcast/"
-        expected_tags = set([u'purgatory', u'USDATE', u'Pope', u'online dating', u'leftovers', u'app', u'Yahoo', u'OKCupid', u'romance', u'Pontifex', u'Tinder', u'Leftover Swap', u'Match.com', u'Twitter', u'Marc Maron'])
-        article = self.getArticle(url, html)
-        self.assertEquals(article.tags, expected_tags)
+    def test_tags_deadline(self):
+        article = self.getArticle()
+        fields = ['tags']
+        self.runArticleAssertions(article=article, fields=fields)
 
-    def test_abcau(self):
+    def test_tags_wnyc(self):
+        article = self.getArticle()
+        fields = ['tags']
+        self.runArticleAssertions(article=article, fields=fields)
+
+    def test_tags_cnet(self):
+        article = self.getArticle()
+        fields = ['tags']
+        self.runArticleAssertions(article=article, fields=fields)
+
+    def test_tags_abcau(self):
         """
         Test ABC Australia page with "topics" tags
         """
-        html = self.get_html('tags/test_abcau.html')
-        url = "http://www.abc.net.au/news/2013-04-22/swimming-greats-say-cuts-a-shame/4644544"
-        expected_tags = set([u'olympics-summer', u'australia', u'swimming'])
-        article = self.getArticle(url, html)
-        self.assertEquals(article.tags, expected_tags)
+        article = self.getArticle()
+        fields = ['tags']
+        self.runArticleAssertions(article=article, fields=fields)
