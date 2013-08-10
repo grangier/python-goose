@@ -21,48 +21,78 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import os
+import json
+import hashlib
 
 from goose import Goose
 from goose.configuration import Configuration
 from goose.utils import FileHelper
 from base import BaseMockTests, MockResponse
+from extractors import TestExtractionBase
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
-FILE_PATH = {
-    'test_1': 'extractors/businessweek2.txt',
-    'test_2': 'extractors/cnn1.txt'
-}
-
 
 class MockResponseImage(MockResponse):
-    def content(self):
-        filename = FILE_PATH[self.cls._get_current_testname()]
-        path = os.path.join(CURRENT_PATH, 'data', filename)
+
+    def image_content(self, req):
+        md5_hash = hashlib.md5(req.get_full_url()).hexdigest()
+        current_test = self.cls._get_current_testname()
+        path = os.path.join(CURRENT_PATH, "data", "images", current_test, md5_hash)
+        path = os.path.abspath(path)
+        f = open(path, 'rb')
+        content = f.read()
+        f.close()
+        return content
+
+    def html_content(self, req):
+        current_test = self.cls._get_current_testname()
+        path = os.path.join(CURRENT_PATH, "data", "images", current_test, "%s.html" % current_test)
         path = os.path.abspath(path)
         return FileHelper.loadResourceFile(path)
 
+    def content(self, req):
+        if self.cls.data['url'] == req.get_full_url():
+            return self.html_content(req)
+        return self.image_content(req)
 
-class ImageTests(BaseMockTests):
+
+class ImageTests(TestExtractionBase):
     """\
     Base Mock test case
     """
     callback = MockResponseImage
 
-    def getArticle(self, url, language=None):
-        config = Configuration()
-        if language:
-            config.target_language = language
-            config.use_meta_language = False
-        config.enable_image_fetching = False
+    def loadData(self):
+        """\
+
+        """
+        suite, module, cls, func = self.id().split('.')
+        path = os.path.join(CURRENT_PATH, "data", module, func, "%s.json" % func)
+        path = os.path.abspath(path)
+        content = FileHelper.loadResourceFile(path)
+        self.data = json.loads(content)
+
+    def getArticle(self):
+        """\
+
+        """
+        # load test case data
+        self.loadData()
+
+        # basic configuration
+        # no image fetching
+        config = self.getConfig()
+        config.enable_image_fetching = True
+
+        # run goose
         g = Goose(config=config)
-        article = g.extract(url=url)
-        return article
+        return self.extract(g)
 
-    def test_1(self):
-        url = "http://www.businessweek.com/management/five-social-media-lessons-for-business-09202011.html"
-        article = self.getArticle(url)
+    def test_basic_image(self):
+        article = self.getArticle()
+        fields = ['top_image']
+        self.runArticleAssertions(article=article, fields=fields)
 
-    def test_2(self):
-        url = "http://www.cnn.com/2010/POLITICS/08/13/democrats.social.security/index.html"
-        article = self.getArticle(url)
+    # def test_2(self):
+    #     article = self.getArticle()

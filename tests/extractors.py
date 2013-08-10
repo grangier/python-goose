@@ -26,6 +26,7 @@ import json
 from base import BaseMockTests, MockResponse
 
 from goose import Goose
+from goose.images.image import Image
 from goose.utils import FileHelper
 from goose.configuration import Configuration
 from goose.text import StopWordsChinese, StopWordsArabic
@@ -35,7 +36,7 @@ CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 class MockResponseExtractors(MockResponse):
-    def content(self):
+    def content(self, req):
         current_test = self.cls._get_current_testname()
         path = os.path.join(CURRENT_PATH, "data", "extractors", "%s.html" % current_test)
         path = os.path.abspath(path)
@@ -107,13 +108,26 @@ class TestExtractionBase(BaseMockTests):
         for tag in result_value:
             self.assertTrue(tag in expected_value)
 
+    def assert_top_image(self, field, expected_value, result_value):
+        # test if the result value
+        # is an Goose Image instance
+        msg = u"Result value is not a Goose Image instance"
+        self.assertTrue(isinstance(result_value, Image), msg=msg)
+
+        # result_value should be the image src
+        result_value = result_value.src
+
+        # check
+        msg = u"Returned Image is not the one expected"
+        self.assertEqual(expected_value, result_value, msg=msg)
+
     def runArticleAssertions(self, article, fields):
         """\
 
         """
         for field in fields:
             expected_value = self.data['expected'][field]
-            result_value = getattr(article, field)
+            result_value = getattr(article, field, None)
 
             # custom assertion for a given field
             assertion = 'assert_%s' % field

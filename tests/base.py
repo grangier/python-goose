@@ -43,7 +43,7 @@ class MockResponse():
         return "response"
 
     def response(self, req):
-        data = self.content()
+        data = self.content(req)
         url = req.get_full_url()
         resp = urllib2.addinfourl(StringIO(data), data, url)
         resp.code = self.code
