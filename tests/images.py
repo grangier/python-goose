@@ -28,7 +28,7 @@ import unittest
 from base import MockResponse
 from extractors import TestExtractionBase
 
-from goose import Goose
+from goose.configuration import Configuration
 from goose.images.image import ImageDetails
 from goose.images.utils import ImageUtils
 from goose.utils import FileHelper
@@ -76,21 +76,10 @@ class ImageExtractionTests(TestExtractionBase):
         content = FileHelper.loadResourceFile(path)
         self.data = json.loads(content)
 
-    def getArticle(self):
-        """\
-
-        """
-        # load test case data
-        self.loadData()
-
-        # basic configuration
-        # no image fetching
-        config = self.getConfig()
+    def getConfig(self):
+        config = Configuration()
         config.enable_image_fetching = True
-
-        # run goose
-        g = Goose(config=config)
-        return self.extract(g)
+        return config
 
     def test_basic_image(self):
         article = self.getArticle()

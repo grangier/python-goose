@@ -144,7 +144,9 @@ class TestExtractionBase(BaseMockTests):
         return article
 
     def getConfig(self):
-        return Configuration()
+        config = Configuration()
+        config.enable_image_fetching = False
+        return config
 
     def getArticle(self):
         """\
@@ -156,7 +158,6 @@ class TestExtractionBase(BaseMockTests):
         # basic configuration
         # no image fetching
         config = self.getConfig()
-        config.enable_image_fetching = False
 
         # target language
         # needed for non english language most of the time
@@ -352,7 +353,7 @@ class TestExtractWithUrl(TestExtractionBase):
 class TestExtractChinese(TestExtractionBase):
 
     def getConfig(self):
-        config = Configuration()
+        config = super(TestExtractChinese, self).getConfig()
         config.stopwords_class = StopWordsChinese
         return config
 
@@ -365,7 +366,7 @@ class TestExtractChinese(TestExtractionBase):
 class TestExtractArabic(TestExtractionBase):
 
     def getConfig(self):
-        config = Configuration()
+        config = super(TestExtractArabic, self).getConfig()
         config.stopwords_class = StopWordsArabic
         return config
 
