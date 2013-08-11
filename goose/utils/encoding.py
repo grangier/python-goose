@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 import types
-import urllib
-import locale
 import datetime
-import codecs
 from decimal import Decimal
 
 
@@ -133,61 +130,3 @@ def smart_str(s, encoding='utf-8', strings_only=False, errors='strict'):
         return s.decode('utf-8', errors).encode(encoding, errors)
     else:
         return s
-
-
-def iri_to_uri(iri):
-    """
-    Convert an Internationalized Resource Identifier (IRI) portion to a URI
-    portion that is suitable for inclusion in a URL.
-
-    This is the algorithm from section 3.1 of RFC 3987.  However, since we are
-    assuming input is either UTF-8 or unicode already, we can simplify things a
-    little from the full method.
-
-    Returns an ASCII string containing the encoded result.
-    """
-    # The list of safe characters here is constructed from the "reserved" and
-    # "unreserved" characters specified in sections 2.2 and 2.3 of RFC 3986:
-    #     reserved    = gen-delims / sub-delims
-    #     gen-delims  = ":" / "/" / "?" / "#" / "[" / "]" / "@"
-    #     sub-delims  = "!" / "$" / "&" / "'" / "(" / ")"
-    #                   / "*" / "+" / "," / ";" / "="
-    #     unreserved  = ALPHA / DIGIT / "-" / "." / "_" / "~"
-    # Of the unreserved characters, urllib.quote already considers all but
-    # the ~ safe.
-    # The % character is also added to the list of safe characters here, as the
-    # end of section 3.1 of RFC 3987 specifically mentions that % must not be
-    # converted.
-    if iri is None:
-        return iri
-    return urllib.quote(smart_str(iri), safe="/#%[]=:;$&()+,!?*@'~")
-
-
-def filepath_to_uri(path):
-    """Convert an file system path to a URI portion that is suitable for
-    inclusion in a URL.
-
-    We are assuming input is either UTF-8 or unicode already.
-
-    This method will encode certain chars that would normally be recognized as
-    special chars for URIs.  Note that this method does not encode the '
-    character, as it is a valid character within URIs.  See
-    encodeURIComponent() JavaScript function for more details.
-
-    Returns an ASCII string containing the encoded result.
-    """
-    if path is None:
-        return path
-    # I know about `os.sep` and `os.altsep` but I want to leave
-    # some flexibility for hardcoding separators.
-    return urllib.quote(smart_str(path).replace("\\", "/"), safe="/~!*()'")
-
-
-# The encoding of the default system locale but falls back to the
-# given fallback encoding if the encoding is unsupported by python or could
-# not be determined.  See tickets #10335 and #5846
-try:
-    DEFAULT_LOCALE_ENCODING = locale.getdefaultlocale()[1] or 'ascii'
-    codecs.lookup(DEFAULT_LOCALE_ENCODING)
-except:
-    DEFAULT_LOCALE_ENCODING = 'ascii'
