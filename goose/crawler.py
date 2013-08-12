@@ -29,6 +29,7 @@ from goose.extractors import StandardContentExtractor
 from goose.cleaners import StandardDocumentCleaner
 from goose.outputformatters import StandardOutputFormatter
 from goose.images.extractors import UpgradedImageIExtractor
+from goose.videos.extractors import VideoExtractor
 from goose.network import HtmlFetcher
 
 
@@ -88,14 +89,16 @@ class Crawler(object):
         # big stuff
         article.top_node = extractor.calculate_best_node(article)
         if article.top_node is not None:
-            # TODO
-            # movies and images
-            # article.movies = extractor.extractVideos(article.top_node)
+            # video handeling
+            video_extractor = self.get_video_extractor(article)
+            video_extractor.get_videos()
+            # image handeling
             if self.config.enable_image_fetching:
                 image_extractor = self.get_image_extractor(article)
                 article.top_image = image_extractor.get_best_image(article.raw_doc, article.top_node)
-
+            # post cleanup
             article.top_node = extractor.post_cleanup(article.top_node)
+            # clean_text
             article.cleaned_text = output_formatter.get_formatted_text(article)
 
         # cleanup tmp file
@@ -118,6 +121,9 @@ class Crawler(object):
     def get_image_extractor(self, article):
         http_client = None
         return UpgradedImageIExtractor(http_client, article, self.config)
+
+    def get_video_extractor(self, article):
+        return VideoExtractor(article, self.config)
 
     def get_output_formatter(self):
         return StandardOutputFormatter(self.config)
