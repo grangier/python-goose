@@ -121,6 +121,30 @@ configuration :
 Passing {'use\_meta\_language': False, 'target\_language':'es'} will
 force as configuration will force the spanish language
 
+
+Video extraction
+----------------
+
+::
+
+    >>> import goose
+    >>> url = 'http://www.liberation.fr/politiques/2013/08/12/journee-de-jeux-pour-ayrault-dans-les-jardins-de-matignon_924350'
+    >>> g = goose.Goose({'target_language':'fr'})
+    >>> article = g.extract(url=url)
+    >>> article.movies
+    [<goose.videos.videos.Video object at 0x25f60d0>]
+    >>> article.movies[0].src
+    'http://sa.kewego.com/embed/vp/?language_code=fr&playerKey=1764a824c13c&configKey=dcc707ec373f&suffix=&sig=9bc77afb496s&autostart=false'
+    >>> article.movies[0].embed_code
+    '<iframe src="http://sa.kewego.com/embed/vp/?language_code=fr&amp;playerKey=1764a824c13c&amp;configKey=dcc707ec373f&amp;suffix=&amp;sig=9bc77afb496s&amp;autostart=false" frameborder="0" scrolling="no" width="476" height="357"/>'
+    >>> article.movies[0].embed_type
+    'iframe'
+    >>> article.movies[0].width
+    '476'
+    >>> article.movies[0].height
+    '357'
+
+
 Goose in Chinese
 ----------------
 
@@ -162,7 +186,7 @@ class.
 TODO
 ----
 
--  Video extraction
+-  Video html5 tag extraction
 
 Known issues
 ------------
