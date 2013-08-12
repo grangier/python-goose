@@ -65,10 +65,10 @@ class VideoExtractor(object):
         # and check if src attribute belongs to a video provider
         for candidate in candidates:
             src = self.parser.getAttribute(candidate, 'src')
-            print src
-            for provider in VIDEO_PROVIDERS:
-                if provider in src:
-                    movies.append(self.get_video(candidate, provider))
+            if src:
+                for provider in VIDEO_PROVIDERS:
+                    if provider in src:
+                        movies.append(self.get_video(candidate, provider))
         self.article.movies = movies
 
         
