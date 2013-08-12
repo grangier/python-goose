@@ -21,10 +21,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+from goose.videos.videos import Video
+
 VIDEOS_TAGS = ['iframe', 'embed', 'object']
 VIDEO_PROVIDERS = ['youtube', 'vimeo', 'dailymotion', 'kewego']
 
-from goose.videos.videos import Video
 
 class VideoExtractor(object):
     """\
