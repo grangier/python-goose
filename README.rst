@@ -16,7 +16,7 @@ Goose will try to extract the following information:
 
 -  Main text of an article
 -  Main image of article
--  Any Youtube/Vimeo movies embedded in article (TODO)
+-  Any Youtube/Vimeo movies embedded in article
 -  Meta Description
 -  Meta tags
 
