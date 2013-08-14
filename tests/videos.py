@@ -22,15 +22,10 @@ limitations under the License.
 """
 import os
 import json
-import hashlib
-import unittest
 
-from base import MockResponse
-from extractors import TestExtractionBase
+from .base import MockResponse
+from .extractors import TestExtractionBase
 
-from goose.configuration import Configuration
-from goose.images.image import ImageDetails
-from goose.images.utils import ImageUtils
 from goose.utils import FileHelper
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -84,4 +79,7 @@ class ImageExtractionTests(TestExtractionBase):
         fields = ['movies']
         self.runArticleAssertions(article=article, fields=fields)
 
-
+    def test_object(self):
+        article = self.getArticle()
+        fields = ['movies']
+        self.runArticleAssertions(article=article, fields=fields)

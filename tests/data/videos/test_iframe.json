@@ -4,7 +4,7 @@
         "movies": [
             {
                 "src": "http://www.dailymotion.com/embed/video/x130bpf", 
-                "embed_code": "<iframe frameborder=\"0\" width=\"480\" height=\"270\" src=\"http://www.dailymotion.com/embed/video/x130bpf\"/>\n            ", 
+                "embed_code": "<iframe frameborder=\"0\" width=\"480\" height=\"270\" src=\"http://www.dailymotion.com/embed/video/x130bpf\"/>", 
                 "height": "270", 
                 "width": "480", 
                 "provider": "dailymotion", 
@@ -12,7 +12,7 @@
             },
             {
                 "src": "http://www.dailymotion.com/embed/video/x130bpf", 
-                "embed_code": "<iframe frameborder=\"0\" width=\"480\" height=\"270\" src=\"http://www.dailymotion.com/embed/video/x130bpf\"/>\n            ", 
+                "embed_code": "<iframe frameborder=\"0\" width=\"480\" height=\"270\" src=\"http://www.dailymotion.com/embed/video/x130bpf\"/>", 
                 "height": "270", 
                 "width": "480", 
                 "provider": "dailymotion", 
