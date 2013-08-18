@@ -5,7 +5,7 @@ Intro
 -----
 
 Goose was originally an article extractor written in Java that has most
-recently (aug2011) converted to a scala project by Gravity.com
+recently (aug2011) converted to a `scala project <https://github.com/GravityLabs/goose>`_.
 
 This is a complete rewrite in python. The aim of the software is is to
 take any news article or article type web page and not only extract what
@@ -20,14 +20,9 @@ Goose will try to extract the following information:
 -  Meta Description
 -  Meta tags
 
-Originally, Goose was open sourced by Gravity.com in 2011
-
--  Lead Programmer: Jim Plush (Gravity.com)
--  Contributers: Robbie Coleman (Gravity.com)
-
 The python version was rewrite by:
 
--  Xavier Grangier (Recrutae.com)
+-  Xavier Grangier
 
 Licensing
 ---------
