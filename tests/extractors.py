@@ -26,7 +26,6 @@ import json
 from base import BaseMockTests, MockResponse
 
 from goose import Goose
-from goose.images.image import Image
 from goose.utils import FileHelper
 from goose.configuration import Configuration
 from goose.text import StopWordsChinese, StopWordsArabic
@@ -109,19 +108,6 @@ class TestExtractionBase(BaseMockTests):
         for tag in result_value:
             self.assertTrue(tag in expected_value)
 
-    def assert_top_image(self, field, expected_value, result_value):
-        # test if the result value
-        # is an Goose Image instance
-        msg = u"Result value is not a Goose Image instance"
-        self.assertTrue(isinstance(result_value, Image), msg=msg)
-
-        # result_value should be the image src
-        result_value = result_value.src
-
-        # check
-        msg = u"Returned Image is not the one expected"
-        self.assertEqual(expected_value, result_value, msg=msg)
-
     def runArticleAssertions(self, article, fields):
         """\
 
@@ -159,6 +145,7 @@ class TestExtractionBase(BaseMockTests):
         # basic configuration
         # no image fetching
         config = self.getConfig()
+        self.parser = config.get_parser()
 
         # target language
         # needed for non english language most of the time
