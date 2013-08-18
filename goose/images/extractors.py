@@ -102,7 +102,6 @@ class UpgradedImageIExtractor(ImageExtractor):
         if image:
             return image
 
-
     def check_large_images(self, node, parent_depth_level, sibling_depth_level):
         """\
         although slow the best way to determine the best image is to download
