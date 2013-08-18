@@ -215,6 +215,13 @@ class Parser(object):
         return attr
 
     @classmethod
+    def delAttribute(self, node, attr=None):
+        if attr:
+            _attr = node.attrib.get(attr, None)
+            if _attr:
+                del node.attrib[attr]
+
+    @classmethod
     def setAttribute(self, node, attr=None, value=None):
         if attr and value:
             node.set(attr, value)

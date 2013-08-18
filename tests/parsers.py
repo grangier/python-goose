@@ -235,6 +235,25 @@ class ParserBase(unittest.TestCase):
         elements = self.parser.getElementsByTag(elem, tag="strong", attr="class", value="link")
         self.assertEqual(len(elements), 1)
 
+    def test_delAttribute(self):
+        html = self.get_html('parser/test1.html')
+        doc = self.parser.fromstring(html)
+
+        # find div element with class foo
+        elements = self.parser.getElementsByTag(doc, tag="div", attr="class", value="foo")
+        self.assertEqual(len(elements), 1)
+
+        # remove the attribute class
+        div = elements[0]
+        self.parser.delAttribute(div,  attr="class")
+
+        # find div element with class foo
+        elements = self.parser.getElementsByTag(doc, tag="div", attr="class", value="foo")
+        self.assertEqual(len(elements), 0)
+
+        # remove an unexistant attribute
+        self.parser.delAttribute(div,  attr="bla")
+
 
 class TestParser(ParserBase):
     pass
