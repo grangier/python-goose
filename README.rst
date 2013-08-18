@@ -192,6 +192,19 @@ Known issues
 ------------
 
 -  There is some issue with unicode URLs.
+- Cookie handeling : Some website needs cookie handeling. At the moment the only work around is to use the raw_html extraction. For instance ;
+
+    >>> import urllib2
+    >>> import goose
+    >>> url = "http://www.nytimes.com/2013/08/18/world/middleeast/pressure-by-us-failed-to-sway-egypts-leaders.html?hp"
+    >>> opener = urllib2.build_opener(urllib2.HTTPCookieProcessor())
+    >>> response = opener.open(url)
+    >>> raw_html = response.read()
+    >>> g = goose.Goose()
+    >>> a = g.extract(raw_html=raw_html)
+    >>> a.cleaned_text
+    u'CAIRO \u2014 For a moment, at least, American and European diplomats trying to defuse the volatile standoff in Egypt thought they had a breakthrough.\n\nAs t'
+
 
 OS X 10.7 Install Instructions
 ------------------------------
