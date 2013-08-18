@@ -39,7 +39,7 @@ class DocumentCleaner(object):
         "|communitypromo|runaroundLeft|subscribe|vcard|articleheadings"
         "|date|^print$|popup|author-dropdown|tools|socialtools|byline"
         "|konafilter|KonaFilter|breadcrumbs|^fn$|wp-caption-text"
-        "|legende|ajoutVideo|timestamp"
+        "|legende|ajoutVideo|timestamp|js_replies"
         )
         self.regexp_namespace = "http://exslt.org/regular-expressions"
         self.nauthy_ids_re = "//*[re:test(@id, '%s', 'i')]" % self.remove_nodes_re
@@ -60,6 +60,7 @@ class DocumentCleaner(object):
     def clean(self, article):
 
         doc_to_clean = article.doc
+        doc_to_clean = self.clean_article_tags(doc_to_clean)
         doc_to_clean = self.clean_em_tags(doc_to_clean)
         doc_to_clean = self.remove_drop_caps(doc_to_clean)
         doc_to_clean = self.remove_scripts_styles(doc_to_clean)
@@ -74,6 +75,13 @@ class DocumentCleaner(object):
         doc_to_clean = self.div_to_para(doc_to_clean, 'div')
         doc_to_clean = self.div_to_para(doc_to_clean, 'span')
         return doc_to_clean
+
+    def clean_article_tags(self, doc):
+        articles = self.parser.getElementsByTag(doc, tag='article')
+        for article in articles:
+            for attr in ['id', 'name', 'class']:
+                self.parser.delAttribute(article, attr=attr)
+        return doc
 
     def clean_em_tags(self, doc):
         ems = self.parser.getElementsByTag(doc, tag='em')
