@@ -71,13 +71,14 @@ class TestExtractionBase(BaseMockTests):
         """\
 
         """
-        # TODO : handle verbose level in tests
+        # # TODO : handle verbose level in tests
         # print "\n=======================::. ARTICLE REPORT %s .::======================\n" % self.id()
         # print 'expected_value (%s) \n' % len(expected_value)
         # print expected_value
         # print "-------"
         # print 'result_value (%s) \n' % len(result_value)
         # print result_value
+
         # cleaned_text is Null
         msg = u"Resulting article text was NULL!"
         self.assertNotEqual(result_value, None, msg=msg)
@@ -339,6 +340,11 @@ class TestExtractions(TestExtractionBase):
     def test_issue4(self):
         article = self.getArticle()
         fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
+    def test_gizmodo1(self):
+        article = self.getArticle()
+        fields = ['cleaned_text', 'meta_description', 'meta_keywords']
         self.runArticleAssertions(article=article, fields=fields)
 
 
