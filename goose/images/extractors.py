@@ -95,9 +95,12 @@ class UpgradedImageIExtractor(ImageExtractor):
         return Image()
 
     def check_meta_tag(self):
+        # check link tag
         image = self.check_link_tag()
         if image:
             return image
+
+        # check opengraph tag
         image = self.check_opengraph_tag()
         if image:
             return image
@@ -309,7 +312,7 @@ class UpgradedImageIExtractor(ImageExtractor):
                     main_image.bytes = local_image.bytes
                     main_image.height = local_image.height
                     main_image.width = local_image.width
-                    return main_image
+                return main_image
         return None
 
     def check_opengraph_tag(self):
@@ -331,7 +334,7 @@ class UpgradedImageIExtractor(ImageExtractor):
                     main_image.bytes = local_image.bytes
                     main_image.height = local_image.height
                     main_image.width = local_image.width
-                    return main_image
+                return main_image
         return None
 
     def get_local_image(self, src):
