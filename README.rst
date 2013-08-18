@@ -178,10 +178,6 @@ class.
     >>> print article.cleaned_text[:150]
     دمشق، سوريا (CNN) -- أكدت جهات سورية معارضة أن فصائل مسلحة معارضة لنظام الرئيس بشار الأسد وعلى صلة بـ"الجيش الحر" تمكنت من السيطرة على مستودعات للأسل
 
-TODO
-----
-
--  Video html5 tag extraction
 
 Known issues
 ------------
@@ -200,43 +196,11 @@ Known issues
     >>> a.cleaned_text
     u'CAIRO \u2014 For a moment, at least, American and European diplomats trying to defuse the volatile standoff in Egypt thought they had a breakthrough.\n\nAs t'
 
+TODO
+----
 
-OS X 10.7 Install Instructions
-------------------------------
+-  Video html5 tag extraction
 
-Installation Help:
-
-1. Install python-devel if you don't have it
-2. Install libjpeg brew install libjpeg
-
-3. You need to install the python imaging library. We wont be using it,
-   but its a dependency deep in the goose egg (fun!).
-
-a. download
-
-   ::
-
-       curl -O -L http://effbot.org/downloads/Imaging-1.1.7.tar.gz
-
-b. extract
-
-   ::
-
-       tar -xzf Imaging-1.1.7.tar.gz
-       cd Imaging-1.1.7
-
-c. build and install
-
-   ::
-
-       python setup.py build
-       sudo python setup.py install
-
-4. Next up clone this repo and install the egg.
-
-5. Once you install the egg you have to then copy the resources
-   directory manually into the egg. There is something screwy about the
-   way its setup.
 
 .. |Build Status| image:: https://www.travis-ci.org/xgdlm/python-goose.png?branch=master
    :target: https://www.travis-ci.org/xgdlm/python-goose
