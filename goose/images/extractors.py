@@ -201,8 +201,24 @@ class UpgradedImageIExtractor(ImageExtractor):
                             cnt += 1
         return image_results
 
-    def get_images(self):
-        return None
+    def get_image(self, element, src, score=100, extraction_type="N/A"):
+        # build the Image object
+        image = Image()
+        image.src = self.build_image_path(src)
+        image.extraction_type = extraction_type
+        image.confidence_score = score
+
+        # check if we have a local image
+        # in order to add more information
+        # on the Image object
+        local_image = self.get_local_image(image.src)
+        if local_image:
+            image.bytes = local_image.bytes
+            image.height = local_image.height
+            image.width = local_image.width
+
+        # return the image
+        return image
 
     def is_banner_dimensions(self, width, height):
         """\
@@ -301,18 +317,9 @@ class UpgradedImageIExtractor(ImageExtractor):
         node = self.article.raw_doc
         meta = self.parser.getElementsByTag(node, tag='link', attr='rel', value='image_src')
         for item in meta:
-            href = self.parser.getAttribute(item, attr='href')
-            if href:
-                main_image = Image()
-                main_image.src = href
-                main_image.extraction_type = "linktag"
-                main_image.confidence_score = 100
-                local_image = self.get_local_image(main_image.src)
-                if local_image:
-                    main_image.bytes = local_image.bytes
-                    main_image.height = local_image.height
-                    main_image.width = local_image.width
-                return main_image
+            src = self.parser.getAttribute(item, attr='href')
+            if src:
+                return self.get_image(item, src, extraction_type='linktag')
         return None
 
     def check_opengraph_tag(self):
@@ -323,18 +330,9 @@ class UpgradedImageIExtractor(ImageExtractor):
         node = self.article.raw_doc
         meta = self.parser.getElementsByTag(node, tag='meta', attr='property', value='og:image')
         for item in meta:
-            href = self.parser.getAttribute(item, attr='content')
-            if href:
-                main_image = Image()
-                main_image.src = href
-                main_image.extraction_type = "opengraph"
-                main_image.confidence_score = 100
-                local_image = self.get_local_image(main_image.src)
-                if local_image:
-                    main_image.bytes = local_image.bytes
-                    main_image.height = local_image.height
-                    main_image.width = local_image.width
-                return main_image
+            src = self.parser.getAttribute(item, attr='content')
+            if src:
+                return self.get_image(item, src, extraction_type='opengraph')
         return None
 
     def get_local_image(self, src):
@@ -365,33 +363,40 @@ class UpgradedImageIExtractor(ImageExtractor):
             for classname in classes:
                 KNOWN_IMG_DOM_NAMES.append(classname)
 
-        known_image = None
+        image = None
+        doc = self.article.raw_doc
 
-        for known_name in KNOWN_IMG_DOM_NAMES:
-            known = self.parser.getElementById(self.article.raw_doc, known_name)
-            if not known:
-                known = self.parser.getElementsByTag(self.article.raw_doc,
-                                                attr='class', value=known_name)
-                if known:
-                    known = known[0]
-            if known:
-                main_image = self.parser.getElementsByTag(known, tag='img')
-                if main_image:
-                    known_image = main_image[0]
+        def _check_elements(elements):
+            image = None
+            for element in elements:
+                tag = self.parser.getTag(element)
+                if tag == 'img':
+                    image = element
+                    return image
+                else:
+                    images = self.parser.getElementsByTag(element, tag='img')
+                    if images:
+                        image = images[0]
+                        return image
+            return image
 
-        if known_image is not None:
-            known_image_source = self.parser.getAttribute(known_image, attr='src')
-            main_image = Image()
-            main_image.src = self.build_image_path(known_image_source)
-            main_image.extraction_type = "known"
-            main_image.confidence_score = 90
-            local_image = self.get_local_image(main_image.src)
-            if local_image:
-                main_image.bytes = local_image.bytes
-                main_image.height = local_image.height
-                main_image.width = local_image.width
+        # check for elements with known id
+        for css in KNOWN_IMG_DOM_NAMES:
+            elements = self.parser.getElementsByTag(doc, attr="id", value=css)
+            image = _check_elements(elements)
+            if image is not None:
+                src = self.parser.getAttribute(image, attr='src')
+                return self.get_image(image, src, score=90, extraction_type='known')
 
-            return main_image
+        # check for elements with known classes
+        for css in KNOWN_IMG_DOM_NAMES:
+            elements = self.parser.getElementsByTag(doc, attr='class', value=css)
+            image = _check_elements(elements)
+            if image is not None:
+                src = self.parser.getAttribute(image, attr='src')
+                return self.get_image(image, src, score=90, extraction_type='known')
+
+        return image
 
     def build_image_path(self, src):
         """\
