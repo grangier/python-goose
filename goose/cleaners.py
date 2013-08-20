@@ -25,10 +25,17 @@ from goose.utils import ReplaceSequence
 
 class DocumentCleaner(object):
 
-    def __init__(self, config):
+    def __init__(self, config, article):
+        # config
         self.config = config
+
         # parser
         self.parser = self.config.get_parser()
+
+        # article
+        self.article = article
+
+        # nodes to remove regexp
         self.remove_nodes_re = (
         "^side$|combx|retweet|mediaarticlerelated|menucontainer|navbar"
         "|comment|PopularQuestions|contact|foot|footer|Footer|footnote"
@@ -57,9 +64,9 @@ class DocumentCleaner(object):
                                             .append("\t")\
                                             .append("^\\s+$")
 
-    def clean(self, article):
+    def clean(self):
 
-        doc_to_clean = article.doc
+        doc_to_clean = self.article.doc
         doc_to_clean = self.clean_article_tags(doc_to_clean)
         doc_to_clean = self.clean_em_tags(doc_to_clean)
         doc_to_clean = self.remove_drop_caps(doc_to_clean)

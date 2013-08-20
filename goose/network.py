@@ -25,25 +25,32 @@ import urllib2
 
 class HtmlFetcher(object):
 
-    def __init__(self):
-        pass
-
-    def get_http_client(self):
-        pass
-
-    def get_html(self, config, url):
-        """\
-
-        """
+    def __init__(self, config, url):
+        # utf-8 encode unicode url
         if isinstance(url, unicode):
             url = url.encode('utf-8')
 
-        headers = {'User-agent': config.browser_user_agent}
-        request = urllib2.Request(url, headers=headers)
+        # set header
+        self.headers = {'User-agent': config.browser_user_agent}
 
+        # set request
+        self.request = urllib2.Request(url, headers=self.headers)
+
+        # do request
         try:
-            result = urllib2.urlopen(request).read()
+            self.result = urllib2.urlopen(self.request)
         except:
-            return None
+            self.result = None
 
-        return result
+    def get_url(self):
+        # if we have a result
+        # get the final_url
+        if self.result is not None:
+            return self.result.geturl()
+        return None
+
+    def get_html(self):
+        # read the result content
+        if self.result is not None:
+            return self.result.read()
+        return None

@@ -31,7 +31,7 @@ class VideoExtractor(object):
     """\
     Extracts a list of video from Article top node
     """
-    def __init__(self, article, config):
+    def __init__(self, config, article):
         # article
         self.article = article
 
