@@ -136,6 +136,14 @@ class ImageExtractionTests(TestExtractionBase):
         article = self.getArticle()
         self._test_known_image_css(article)
 
+    def test_known_image_css_class(self):
+        article = self.getArticle()
+        self._test_known_image_css(article)
+
+    def test_known_image_css_id(self):
+        article = self.getArticle()
+        self._test_known_image_css(article)
+
     def test_opengraph_tag(self):
         article = self.getArticle()
         self._test_known_image_css(article)
