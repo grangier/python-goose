@@ -100,15 +100,22 @@ class ImageExtractionTests(TestExtractionBase):
         self.assertTrue(isinstance(expected_image, Image), msg=msg)
 
         # check
-        msg = u"Returned Image is not the one expected"
+        msg = u"Returned Image (%s) is not the one expected" % result_image.src
         self.assertEqual(expected_image.src, result_image.src, msg=msg)
 
         fields = vars(expected_image)
         for k, v in fields.items():
-            msg = u"Returned Image attribute %s is not the one expected" % k
-            self.assertEqual(getattr(expected_image, k), getattr(result_image, k), msg=msg)
+            expected = getattr(expected_image, k)
+            result = getattr(result_image, k)
+            msg = u"Returned Image attribute %s (=%s) is not the one expected (=%s)" % (k, result, expected)
+            self.assertEqual(expected, result, msg=msg)
 
     def test_basic_image(self):
+        article = self.getArticle()
+        fields = ['top_image']
+        self.runArticleAssertions(article=article, fields=fields)
+
+    def test_timeforkids_image(self):
         article = self.getArticle()
         fields = ['top_image']
         self.runArticleAssertions(article=article, fields=fields)
