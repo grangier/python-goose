@@ -111,8 +111,17 @@ class OutputFormatter(object):
         for el in all_nodes:
             tag = self.parser.getTag(el)
             text = self.parser.getText(el)
-            stop_words = self.stopwords_class(language=self.get_language(article)).get_stopword_count(text)
-            if (tag != 'br' or text != '\\r') and stop_words.get_stopword_count() < 3 \
+
+            counted = False
+
+            try:
+                stop_words = self.stopwords_class(language=self.get_language(article)).get_stopword_count(text)
+                counted = True
+            except:
+                pass
+
+
+            if (tag != 'br' or text != '\\r') and counted and stop_words.get_stopword_count() < 3 \
                 and len(self.parser.getElementsByTag(el, tag='object')) == 0 \
                 and len(self.parser.getElementsByTag(el, tag='embed')) == 0:
                 self.parser.remove(el)
