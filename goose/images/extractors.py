@@ -386,7 +386,8 @@ class UpgradedImageIExtractor(ImageExtractor):
             image = _check_elements(elements)
             if image is not None:
                 src = self.parser.getAttribute(image, attr='src')
-                return self.get_image(image, src, score=90, extraction_type='known')
+                if src:
+                    return self.get_image(image, src, score=90, extraction_type='known')
 
         # check for elements with known classes
         for css in KNOWN_IMG_DOM_NAMES:
@@ -394,9 +395,10 @@ class UpgradedImageIExtractor(ImageExtractor):
             image = _check_elements(elements)
             if image is not None:
                 src = self.parser.getAttribute(image, attr='src')
-                return self.get_image(image, src, score=90, extraction_type='known')
+                if src:
+                    return self.get_image(image, src, score=90, extraction_type='known')
 
-        return image
+        return None
 
     def build_image_path(self, src):
         """\
