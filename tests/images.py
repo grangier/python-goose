@@ -144,6 +144,11 @@ class ImageExtractionTests(TestExtractionBase):
         article = self.getArticle()
         self._test_known_image_css(article)
 
+    def test_known_image_empty_src(self):
+        'Tests that img tags for known image sources with empty src attributes are skipped.'
+        article = self.getArticle()
+        self._test_known_image_css(article)
+
     def test_opengraph_tag(self):
         article = self.getArticle()
         self._test_known_image_css(article)
