@@ -129,9 +129,6 @@ class ContentExtractor(object):
 
         for attr in ATTRS:
             for val in VALS:
-                # Not using getElemsByTag b/c it checks if a token
-                # is contained in a class vs if it's a class
-
                 # found = doc.xpath('//*[@%s="%s"]' % (attr, val))
                 found = self.parser.getElementsByTag(doc, attr=attr, value=val)
                 matches.extend(found)
