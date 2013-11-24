@@ -76,6 +76,7 @@ class Crawler(object):
         # TODO
         # article.publish_date = config.publishDateExtractor.extract(doc)
         # article.additional_data = config.get_additionaldata_extractor.extract(doc)
+        article.authors = extractor.get_authors(article)
         article.meta_lang = extractor.get_meta_lang(article)
         article.meta_favicon = extractor.get_favicon(article)
         article.meta_description = extractor.get_meta_description(article)

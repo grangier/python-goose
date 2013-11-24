@@ -92,5 +92,9 @@ class Article(object):
         # the publish date of an article was
         self.publish_date = None
 
+        # Returns a list of authors who have published
+        # the current article, default empty
+        self.authors = []
+
         # A property bucket for consumers of goose to store custom data extractions.
         self.additional_data = {}
