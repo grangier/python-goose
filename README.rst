@@ -202,5 +202,4 @@ TODO
 -  Video html5 tag extraction
 
 
-.. |Build Status| image:: https://www.travis-ci.org/xgdlm/python-goose.png?branch=master
-   :target: https://www.travis-ci.org/xgdlm/python-goose
+.. |Build Status| image:: https://travis-ci.org/grangier/python-goose.png?branch=develop   :target: https://travis-ci.org/grangier/python-goose
