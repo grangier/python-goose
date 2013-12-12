@@ -2,7 +2,9 @@ Python-Goose - Article Extractor |Build Status|
 ===============================================
 
 Try to add Korean support for Goose. 
+
 Example:
+
 Goose in Korean
 ----------------
 
