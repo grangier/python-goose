@@ -16,7 +16,7 @@ However, it is working right now.
     >>> from goose import Goose
     >>> from goose.text import StopWordsKorean
     >>> url='http://news.donga.com/3/all/20131023/58406128/1'
-    >>> g = Goose({'stopwords_class': StopWordsChinese})
+    >>> g = Goose({'stopwords_class':StopWordsKorean})
     >>> article = g.extract(url=url)
     >>> print article.cleaned_text[:150]
     경기도 용인에 자리 잡은 민간 시험인증 전문기업 ㈜디지털이엠씨(www.digitalemc.com). 
