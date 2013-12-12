@@ -1,6 +1,26 @@
 Python-Goose - Article Extractor |Build Status|
 ===============================================
 
+Try to add Korean support for Goose. 
+Example:
+Goose in Korean
+----------------
+
+Right now, it is not utilizing stopword correctly because of 
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xea in position 0: ordinal not in range(128)
+However, it is working right now.
+::
+
+    >>> from goose import Goose
+    >>> from goose.text import StopWordsKorean
+    >>> url='http://news.chosun.com/site/data/html_dir/2013/12/12/2013121200226.html?news_top'>>> g = Goose({'stopwords_class': StopWordsChinese})
+    >>> article = g.extract(url=url)
+    >>> print article.cleaned_text[:150]
+    장성택 숙청사건의 직접적 계기는 국방위원회 산하 54국(54부)의 김정은 명령 무시사건 때문이라는 관측이 대두하고 있다.
+    54국은 북한군 부대와 관련 기관에 전력·석탄·연유·피복·생활필수품 등을 공급하는 기관이다. 
+    원래 인민군 총정치국 산하 기관인데 장성택이 국방위원회
+
+
 Intro
 -----
 
