@@ -13,12 +13,14 @@ However, it is working right now.
 
     >>> from goose import Goose
     >>> from goose.text import StopWordsKorean
-    >>> url='http://news.chosun.com/site/data/html_dir/2013/12/12/2013121200226.html?news_top'>>> g = Goose({'stopwords_class': StopWordsChinese})
+    >>> url='http://news.donga.com/3/all/20131023/58406128/1'
+    >>> g = Goose({'stopwords_class': StopWordsChinese})
     >>> article = g.extract(url=url)
     >>> print article.cleaned_text[:150]
-    장성택 숙청사건의 직접적 계기는 국방위원회 산하 54국(54부)의 김정은 명령 무시사건 때문이라는 관측이 대두하고 있다.
-    54국은 북한군 부대와 관련 기관에 전력·석탄·연유·피복·생활필수품 등을 공급하는 기관이다. 
-    원래 인민군 총정치국 산하 기관인데 장성택이 국방위원회
+    경기도 용인에 자리 잡은 민간 시험인증 전문기업 ㈜디지털이엠씨(www.digitalemc.com). 
+    14년째 세계 각국의 통신·안전·전파 규격 시험과 인증 한 우물만 파고 있는 이 회사 박채규 대표가 만나기로 한 주인공이다. 
+    그는 전기전자·무선통신·자동차 전장품 분야에
+
 
 
 Intro
