@@ -28,7 +28,7 @@ from base import BaseMockTests, MockResponse
 from goose import Goose
 from goose.utils import FileHelper
 from goose.configuration import Configuration
-from goose.text import StopWordsChinese, StopWordsArabic
+from goose.text import StopWordsChinese, StopWordsArabic, StopWordsKorean
 
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -367,6 +367,19 @@ class TestExtractArabic(TestExtractionBase):
         article = self.getArticle()
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
+
+class TestExtractKorean(TestExtractionBase):
+
+    def getConfig(self):
+        config = super(TestExtractKorean, self).getConfig()
+        config.stopwords_class = StopWordsKorean
+        return config
+
+    def test_donga_korean(self):
+        article = self.getArticle()
+        fields = ['cleaned_text', 'meta_description', 'meta_keywords']
+        self.runArticleAssertions(article=article, fields=fields)
+
 
 
 class TestExtractionsRaw(TestExtractions):
