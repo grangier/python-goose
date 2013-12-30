@@ -130,7 +130,7 @@ class UpgradedImageIExtractor(ImageExtractor):
                 main_image.src = highscore_image.src
                 main_image.width = highscore_image.width
                 main_image.height = highscore_image.height
-		main_image.extraction_type = "bigimage"
+                main_image.extraction_type = "bigimage"
                 main_image.confidence_score = 100 / len(scored_images) \
                                     if len(scored_images) > 0 else 0
                 return main_image
