@@ -161,3 +161,29 @@ class StopWordsArabic(StopWords):
         for word in nltk.tokenize.wordpunct_tokenize(stripped_input):
             words.append(s.stem(word))
         return words
+
+
+class StopWordsKorean(StopWords):
+    """
+    Korean segmentation
+    """
+    def __init__(self, language='ko'):
+        super(StopWordsKorean, self).__init__(language='ko')
+
+    def get_stopword_count(self, content):
+        if not content:
+            return WordStats()
+        ws = WordStats()
+        stripped_input = self.remove_punctuation(content)
+        candiate_words = self.candiate_words(stripped_input)
+        overlapping_stopwords = []
+        c = 0
+        for w in candiate_words:
+            c += 1
+            for stop_word in self.STOP_WORDS:
+                overlapping_stopwords.append(stop_word)
+
+        ws.set_word_count(c)
+        ws.set_stopword_count(len(overlapping_stopwords))
+        ws.set_stop_words(overlapping_stopwords)
+        return ws

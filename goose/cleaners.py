@@ -32,7 +32,7 @@ class DocumentCleaner(object):
         self.remove_nodes_re = (
         "^side$|combx|retweet|mediaarticlerelated|menucontainer|navbar"
         "|comment|PopularQuestions|contact|foot|footer|Footer|footnote"
-        "|cnn_strycaptiontxt|links|meta$|scroll|shoutbox|sponsor"
+        "|cnn_strycaptiontxt|cnn_html_slideshow|cnn_strylftcntnt|links|meta$|scroll|shoutbox|sponsor"
         "|tags|socialnetworking|socialNetworking|cnnStryHghLght"
         "|cnn_stryspcvbx|^inset$|pagetools|post-attributes"
         "|welcome_form|contentTools2|the_answers"
