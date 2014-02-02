@@ -335,6 +335,16 @@ class TestExtractions(TestExtractionBase):
         fields = ['cleaned_text', 'meta_description', 'meta_keywords']
         self.runArticleAssertions(article=article, fields=fields)
 
+    def test_mashable_issue_74(self):
+        article = self.getArticle()
+        fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
+    def test_usatoday_issue_74(self):
+        article = self.getArticle()
+        fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
 
 class TestExtractWithUrl(TestExtractionBase):
 
