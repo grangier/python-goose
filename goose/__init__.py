@@ -21,6 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import os
+from tempfile import mkstemp
 from goose.version import version_info, __version__
 from goose.configuration import Configuration
 from goose.crawler import CrawlCandidate
@@ -74,7 +75,7 @@ class Goose(object):
 
         # test to write a dummy file to the directory
         # to check is directory is writtable
-        path = os.path.join(self.config.local_storage_path, 'test.txt')
+        level, path = mkstemp(dir=self.config.local_storage_path)
         try:
             f = open(path, 'w')
             f.close()
