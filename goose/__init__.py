@@ -21,8 +21,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import os
-import time
-import random
 from goose.version import version_info, __version__
 from goose.configuration import Configuration
 from goose.crawler import CrawlCandidate
@@ -76,9 +74,7 @@ class Goose(object):
 
         # test to write a dummy file to the directory
         # to check is directory is writtable
-        timestamp = time.time()
-        file_name = 'test-%s-%s.txt' % (timestamp, random.randrange(0, 100000))
-        path = os.path.join(self.config.local_storage_path, file_name)
+        path = os.path.join(self.config.local_storage_path, 'test.txt')
         try:
             f = open(path, 'w')
             f.close()
