@@ -59,8 +59,8 @@ class ContentExtractor(object):
         # so we use the article.meta_lang
         if self.config.use_meta_language == True:
             if article.meta_lang:
-                self.language = article.meta_lang[:2]
-        self.language = self.config.target_language
+                return article.meta_lang[:2]
+        return self.config.target_language
 
     def get_title(self, article):
         """\
@@ -246,7 +246,7 @@ class ContentExtractor(object):
 
         for node in nodes_to_check:
             text_node = self.parser.getText(node)
-            word_stats = self.stopwords_class(language=self.language).get_stopword_count(text_node)
+            word_stats = self.stopwords_class(language=self.get_language(article)).get_stopword_count(text_node)
             high_link_density = self.is_highlink_density(node)
             if word_stats.get_stopword_count() > 2 and not high_link_density:
                 nodes_with_text.append(node)
@@ -258,7 +258,7 @@ class ContentExtractor(object):
         for node in nodes_with_text:
             boost_score = float(0)
             # boost
-            if(self.is_boostable(node)):
+            if(self.is_boostable(node, article)):
                 if cnt >= 0:
                     boost_score = float((1.0 / starting_boost) * 50)
                     starting_boost += 1
@@ -272,7 +272,7 @@ class ContentExtractor(object):
                         boost_score = float(5)
 
             text_node = self.parser.getText(node)
-            word_stats = self.stopwords_class(language=self.language).get_stopword_count(text_node)
+            word_stats = self.stopwords_class(language=self.get_language(article)).get_stopword_count(text_node)
             upscore = int(word_stats.get_stopword_count() + boost_score)
 
             # parent node
@@ -306,7 +306,7 @@ class ContentExtractor(object):
 
         return top_node
 
-    def is_boostable(self, node):
+    def is_boostable(self, node, article):
         """\
         alot of times the first paragraph might be the caption under an image
         so we'll want to make sure if we're going to boost a parent node that
@@ -328,7 +328,7 @@ class ContentExtractor(object):
                 if steps_away >= max_stepsaway_from_node:
                     return False
                 paraText = self.parser.getText(current_node)
-                word_stats = self.stopwords_class(language=self.language).get_stopword_count(paraText)
+                word_stats = self.stopwords_class(language=self.get_language(article)).get_stopword_count(paraText)
                 if word_stats.get_stopword_count() > minimum_stopword_count:
                     return True
                 steps_away += 1
@@ -343,16 +343,16 @@ class ContentExtractor(object):
             current_sibling = None if previousSibling is None else previousSibling
         return b
 
-    def add_siblings(self, top_node):
-        baselinescore_siblings_para = self.get_siblings_score(top_node)
+    def add_siblings(self, top_node, article):
+        baselinescore_siblings_para = self.get_siblings_score(top_node, article)
         results = self.walk_siblings(top_node)
         for current_node in results:
-            ps = self.get_siblings_content(current_node, baselinescore_siblings_para)
+            ps = self.get_siblings_content(current_node, baselinescore_siblings_para, article)
             for p in ps:
                 top_node.insert(0, p)
         return top_node
 
-    def get_siblings_content(self, current_sibling, baselinescore_siblings_para):
+    def get_siblings_content(self, current_sibling, baselinescore_siblings_para, article):
         """\
         adds any siblings that may have a decent score to this node
         """
@@ -371,7 +371,7 @@ class ContentExtractor(object):
                 for first_paragraph in potential_paragraphs:
                     text = self.parser.getText(first_paragraph)
                     if len(text) > 0:
-                        word_stats = self.stopwords_class(language=self.language).get_stopword_count(text)
+                        word_stats = self.stopwords_class(language=self.get_language(article)).get_stopword_count(text)
                         paragraph_score = word_stats.get_stopword_count()
                         sibling_baseline_score = float(.30)
                         high_link_density = self.is_highlink_density(first_paragraph)
@@ -381,7 +381,7 @@ class ContentExtractor(object):
                             ps.append(p)
                 return ps
 
-    def get_siblings_score(self, top_node):
+    def get_siblings_score(self, top_node, article):
         """\
         we could have long articles that have tons of paragraphs
         so if we tried to calculate the base score against
@@ -398,7 +398,7 @@ class ContentExtractor(object):
 
         for node in nodes_to_check:
             text_node = self.parser.getText(node)
-            word_stats = self.stopwords_class(language=self.language).get_stopword_count(text_node)
+            word_stats = self.stopwords_class(language=self.get_language(article)).get_stopword_count(text_node)
             high_link_density = self.is_highlink_density(node)
             if word_stats.get_stopword_count() > 2 and not high_link_density:
                 paragraphs_number += 1
@@ -507,12 +507,12 @@ class ContentExtractor(object):
             return False
         return True
 
-    def post_cleanup(self, targetNode):
+    def post_cleanup(self, targetNode, article):
         """\
         remove any divs that looks like non-content,
         clusters of links, or paras with no gusto
         """
-        node = self.add_siblings(targetNode)
+        node = self.add_siblings(targetNode, article)
         for e in self.parser.getChildren(node):
             e_tag = self.parser.getTag(e)
             if e_tag != 'p':
