@@ -87,7 +87,7 @@ soup parser passe it in the configuration dict :
 Goose is now language aware
 ---------------------------
 
-For exemple scrapping a spanish content page with correct meta language
+For example scrapping a spanish content page with correct meta language
 tags
 
 ::
