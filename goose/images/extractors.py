@@ -49,7 +49,7 @@ class ImageExtractor(object):
 
 class UpgradedImageIExtractor(ImageExtractor):
 
-    def __init__(self, http_client, article, config):
+    def __init__(self, config, article):
         self.custom_site_mapping = {}
         self.load_customesite_mapping()
 

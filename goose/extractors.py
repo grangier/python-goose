@@ -43,32 +43,29 @@ RE_LANG = r'^[A-Za-z]{2}$'
 
 class ContentExtractor(object):
 
-    def __init__(self, config):
+    def __init__(self, config, article):
+        # config
         self.config = config
+
         # parser
         self.parser = self.config.get_parser()
+
+        # article
+        self.article = article
+
+        # language
         self.language = config.target_language
+
+        # stopwords class
         self.stopwords_class = config.stopwords_class
 
-    def get_language(self, article):
-        """\
-        Returns the language is by the article or
-        the configuration language
-        """
-        # we don't want to force the target laguage
-        # so we use the article.meta_lang
-        if self.config.use_meta_language == True:
-            if article.meta_lang:
-                self.language = article.meta_lang[:2]
-        self.language = self.config.target_language
-
-    def get_title(self, article):
+    def get_title(self):
         """\
         Fetch the article title and analyze it
         """
 
         title = ''
-        doc = article.doc
+        doc = self.article.doc
 
         title_element = self.parser.getElementsByTag(doc, tag='title')
         # no title found
@@ -121,7 +118,7 @@ class ContentExtractor(object):
         title = title_pieces[large_text_index]
         return TITLE_REPLACEMENTS.replaceAll(title).strip()
 
-    def get_favicon(self, article):
+    def get_favicon(self):
         """\
         Extract the favicon from a website
         http://en.wikipedia.org/wiki/Favicon
@@ -129,18 +126,18 @@ class ContentExtractor(object):
         <link rel="icon" type="image/png" href="favicon.png" />
         """
         kwargs = {'tag': 'link', 'attr': 'rel', 'value': 'icon'}
-        meta = self.parser.getElementsByTag(article.doc, **kwargs)
+        meta = self.parser.getElementsByTag(self.article.doc, **kwargs)
         if meta:
             favicon = self.parser.getAttribute(meta[0], 'href')
             return favicon
         return ''
 
-    def get_meta_lang(self, article):
+    def get_meta_lang(self):
         """\
         Extract content language from meta
         """
         # we have a lang attribute in html
-        attr = self.parser.getAttribute(article.doc, attr='lang')
+        attr = self.parser.getAttribute(self.article.doc, attr='lang')
         if attr is None:
             # look up for a Content-Language in meta
             items = [
@@ -148,7 +145,7 @@ class ContentExtractor(object):
                 {'tag': 'meta', 'attr': 'name', 'value': 'lang'}
             ]
             for item in items:
-                meta = self.parser.getElementsByTag(article.doc, **item)
+                meta = self.parser.getElementsByTag(self.article.doc, **item)
                 if meta:
                     attr = self.parser.getAttribute(meta[0], attr='content')
                     break
@@ -175,45 +172,45 @@ class ContentExtractor(object):
 
         return ''
 
-    def get_meta_description(self, article):
+    def get_meta_description(self):
         """\
         if the article has meta description set in the source, use that
         """
-        return self.get_meta_content(article.doc, "meta[name=description]")
+        return self.get_meta_content(self.article.doc, "meta[name=description]")
 
-    def get_meta_keywords(self, article):
+    def get_meta_keywords(self):
         """\
         if the article has meta keywords set in the source, use that
         """
-        return self.get_meta_content(article.doc, "meta[name=keywords]")
+        return self.get_meta_content(self.article.doc, "meta[name=keywords]")
 
-    def get_canonical_link(self, article):
+    def get_canonical_link(self):
         """\
         if the article has meta canonical link set in the url
         """
-        if article.final_url:
+        if self.article.final_url:
             kwargs = {'tag': 'link', 'attr': 'rel', 'value': 'canonical'}
-            meta = self.parser.getElementsByTag(article.doc, **kwargs)
+            meta = self.parser.getElementsByTag(self.article.doc, **kwargs)
             if meta is not None and len(meta) > 0:
                 href = self.parser.getAttribute(meta[0], 'href')
                 if href:
                     href = href.strip()
                     o = urlparse(href)
                     if not o.hostname:
-                        z = urlparse(article.final_url)
+                        z = urlparse(self.article.final_url)
                         domain = '%s://%s' % (z.scheme, z.hostname)
                         href = urljoin(domain, href)
                     return href
-        return article.final_url
+        return self.article.final_url
 
-    def get_domain(self, url):
-        if url:
-            o = urlparse(url)
+    def get_domain(self):
+        if self.article.final_url:
+            o = urlparse(self.article.final_url)
             return o.hostname
         return None
 
-    def extract_tags(self, article):
-        node = article.doc
+    def extract_tags(self):
+        node = self.article.doc
 
         # node doesn't have chidren
         if len(list(node)) == 0:
@@ -233,8 +230,8 @@ class ContentExtractor(object):
 
         return set(tags)
 
-    def calculate_best_node(self, article):
-        doc = article.doc
+    def calculate_best_node(self):
+        doc = self.article.doc
         top_node = None
         nodes_to_check = self.nodes_to_check(doc)
 
@@ -507,11 +504,12 @@ class ContentExtractor(object):
             return False
         return True
 
-    def post_cleanup(self, targetNode):
+    def post_cleanup(self):
         """\
         remove any divs that looks like non-content,
         clusters of links, or paras with no gusto
         """
+        targetNode = self.article.top_node
         node = self.add_siblings(targetNode)
         for e in self.parser.getChildren(node):
             e_tag = self.parser.getTag(e)
