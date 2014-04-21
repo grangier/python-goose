@@ -20,14 +20,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import os
+import tempfile
 import unittest
 
-from goose.configuration import Configuration
+from goose import Goose
 
 
 class TestTempDir(unittest.TestCase):
 
-    def test_tmp_not_overwritten(self):
+    def test_tmp_defaut(self):
+        g = Goose()
+        default_local_storage_path = os.path.join(tempfile.gettempdir(), 'goose')
+        self.assertEquals(g.config.local_storage_path, default_local_storage_path)
+
+    def test_tmp_overwritten(self):
         path = '/this/directory/does/not/exist/i/assume/'
-        config = Configuration()
-        self.assertRaises(AttributeError, lambda: setattr(config, 'local_storage_path', path))
+        g = Goose({'local_storage_path': path})
+        self.assertEquals(g.config.local_storage_path, path)

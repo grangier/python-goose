@@ -84,9 +84,9 @@ class Configuration(object):
         # Parser type
         self.parser_class = 'lxml'
 
-    @property
-    def local_storage_path(self):
-        return os.path.join(tempfile.gettempdir(), 'goose')
+        # set the local storage path
+        # make this configurable
+        self.local_storage_path = os.path.join(tempfile.gettempdir(), 'goose')
 
     def get_parser(self):
         return Parser if self.parser_class == 'lxml' else ParserSoup
