@@ -83,7 +83,7 @@ class Configuration(object):
 
         # Parser type
         self.parser_class = 'lxml'
-        
+
         # set the local storage path
         # make this configurable
         self.local_storage_path = os.path.join(tempfile.gettempdir(), 'goose')
