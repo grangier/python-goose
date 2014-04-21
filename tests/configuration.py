@@ -35,6 +35,6 @@ class TestTempDir(unittest.TestCase):
         self.assertEquals(g.config.local_storage_path, default_local_storage_path)
 
     def test_tmp_overwritten(self):
-        path = '/this/directory/does/not/exist/i/assume/'
+        path = '/tmp/bla'
         g = Goose({'local_storage_path': path})
         self.assertEquals(g.config.local_storage_path, path)
