@@ -62,6 +62,112 @@ class ContentExtractor(object):
                 self.language = article.meta_lang[:2]
         self.language = self.config.target_language
 
+    def get_authors(self, article):
+        """\
+        Fetch the authors of the article, return as a list
+        Only works for english articles
+        """
+
+        _digits = re.compile('\d')
+        def contains_digits(d):
+            return bool(_digits.search(d))
+
+        def parse_byline(search_str):
+            """\
+            Takes a candidate line of html or text and
+            extracts out the name(s) in list form
+            >>> search_str('<div>By: <strong>Lucas Ou-Yang</strong>, \
+                            <strong>Alex Smith</strong></div>')
+            ['Lucas Ou-Yang', 'Alex Smith']
+            """
+            # Remove HTML boilerplate
+            search_str = re.sub('<[^<]+?>', '', search_str)
+
+            # Remove original By statement
+            search_str = re.sub('[bB][yY][\:\s]|[fF]rom[\:\s]', '', search_str)
+
+            search_str = search_str.strip()
+
+            # Chunk the line by non alphanumeric tokens (few name exceptions)
+
+            # >>> re.split("[^\w\'\-]", "Lucas Ou-Yang, Dean O'Brian and Ronald")
+            # ['Lucas Ou-Yang', '', 'Dean O'Brian', 'and', 'Ronald']
+
+            name_tokens = re.split("[^\w\'\-]", search_str)
+            name_tokens = [s.strip() for s in name_tokens]
+
+            _authors = []
+            curname = [] # List of first, last name tokens
+            DELIM = ['and', '']
+
+            for token in name_tokens:
+                if token in DELIM:
+                    # should we allow middle names?
+                    valid_name = (len(curname) == 2)
+                    if valid_name:
+                        _authors.append(' '.join(curname))
+                        curname = []
+
+                elif not contains_digits(token):
+                    curname.append(token)
+
+            # One last check at end
+            valid_name = (len(curname) >= 2)
+            if valid_name:
+                _authors.append(' '.join(curname))
+
+            return _authors
+
+        # Try 1: Search popular author tags for authors
+
+        ATTRS = ['name', 'rel', 'itemprop', 'class', 'id']
+        VALS = ['author', 'byline']
+        matches = []
+        _authors, authors = [], []
+        doc = article.doc
+        html = article.raw_html
+
+        for attr in ATTRS:
+            for val in VALS:
+                # found = doc.xpath('//*[@%s="%s"]' % (attr, val))
+                found = self.parser.getElementsByTag(doc, attr=attr, value=val)
+                matches.extend(found)
+
+        for match in matches:
+            content = u''
+
+            if match.tag == 'meta':
+                mm = match.xpath('@content')
+                if len(mm) > 0:
+                    content = mm[0]
+
+            else: # match.tag == <any other tag>
+                content = match.text or u'' # text_content()
+
+            if len(content) > 0:
+                _authors.extend(parse_byline(content))
+
+        uniq = list(set([s.lower() for s in _authors]))
+
+        for name in uniq:
+            names = [w.capitalize() for w in name.split(' ')]
+            authors.append(' '.join(names))
+
+        return authors or []
+
+        # TODO Method 2: Search raw html for a by-line
+
+        # match = re.search('By[\: ].*\\n|From[\: ].*\\n', html)
+
+        # try:
+        #    # Don't let zone be too long
+        #    line = match.group(0)[:100]
+        #    authors = parse_byline(line)
+        # except:
+        #    return [] # Failed to find anything
+
+        # return authors
+
     def get_title(self, article):
         """\
         Fetch the article title and analyze it

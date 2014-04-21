@@ -170,12 +170,12 @@ class TestExtractions(TestExtractionBase):
 
     def test_cnn1(self):
         article = self.getArticle()
-        fields = ['title', 'cleaned_text']
+        fields = ['title', 'cleaned_text', 'authors']
         self.runArticleAssertions(article=article, fields=fields)
 
     def test_businessWeek1(self):
         article = self.getArticle()
-        fields = ['title', 'cleaned_text']
+        fields = ['title', 'cleaned_text', 'authors']
         self.runArticleAssertions(article=article, fields=fields)
 
     def test_businessWeek2(self):
@@ -262,7 +262,7 @@ class TestExtractions(TestExtractionBase):
     #     self.runArticleAssertions(article=article, fields=fields)
     def test_time(self):
         article = self.getArticle()
-        fields = ['cleaned_text', 'title']
+        fields = ['cleaned_text', 'title', 'authors']
         self.runArticleAssertions(article=article, fields=fields)
 
     def test_time2(self):
@@ -272,7 +272,7 @@ class TestExtractions(TestExtractionBase):
 
     def test_cnet(self):
         article = self.getArticle()
-        fields = ['cleaned_text']
+        fields = ['cleaned_text', 'authors']
         self.runArticleAssertions(article=article, fields=fields)
 
     def test_yahoo(self):
