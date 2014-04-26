@@ -43,6 +43,7 @@ class OutputFormatter(object):
         if self.config.use_meta_language == True:
             if article.meta_lang:
                 return article.meta_lang[:2]
+
         return self.config.target_language
 
     def get_top_node(self):

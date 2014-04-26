@@ -97,7 +97,7 @@ class Crawler(object):
                 image_extractor = self.get_image_extractor(article)
                 article.top_image = image_extractor.get_best_image(article.raw_doc, article.top_node)
             # post cleanup
-            article.top_node = extractor.post_cleanup(article.top_node)
+            article.top_node = extractor.post_cleanup(article.top_node, article)
             # clean_text
             article.cleaned_text = output_formatter.get_formatted_text(article)
 
