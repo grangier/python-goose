@@ -1,0 +1,12 @@
+{
+    "url": "http://www.businessinsider.com/larry-page-the-untold-story-2014-4",
+    "expected": {
+        "meta_description": "One day in July 2001, Larry Page decided to...",
+        "domain": "www.businessinsider.com", 
+        "final_url": "http://www.businessinsider.com/larry-page-the-untold-story-2014-4",
+        "meta_keywords": "Google, Larry Page, Longform, Nicholas Carlson,",
+        "cleaned_text": "One day in July 2001, Larry Page decided to fire Google",
+        "meta_favicon": "http://static5.businessinsider.com/assets/images/faviconBI.ico",
+        "meta_lang": "en"
+    }
+}
