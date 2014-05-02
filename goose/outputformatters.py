@@ -26,14 +26,23 @@ from goose.text import innerTrim
 
 class OutputFormatter(object):
 
-    def __init__(self, config):
-        self.top_node = None
+    def __init__(self, config, article):
+        # config
         self.config = config
+
+        # article
+        self.article = article
+
         # parser
         self.parser = self.config.get_parser()
+
+        # stopwords class
         self.stopwords_class = config.stopwords_class
 
-    def get_language(self, article):
+        # top node
+        self.top_node = None
+
+    def get_language(self):
         """\
         Returns the language is by the article or
         the configuration language
@@ -41,20 +50,20 @@ class OutputFormatter(object):
         # we don't want to force the target laguage
         # so we use the article.meta_lang
         if self.config.use_meta_language == True:
-            if article.meta_lang:
-                return article.meta_lang[:2]
+            if self.article.meta_lang:
+                return self.article.meta_lang[:2]
         return self.config.target_language
 
     def get_top_node(self):
         return self.top_node
 
-    def get_formatted_text(self, article):
-        self.top_node = article.top_node
+    def get_formatted_text(self):
+        self.top_node = self.article.top_node
         self.remove_negativescores_nodes()
         self.links_to_text()
         self.add_newline_to_br()
         self.replace_with_text()
-        self.remove_fewwords_paragraphs(article)
+        self.remove_fewwords_paragraphs()
         return self.convert_to_text()
 
     def convert_to_text(self):
@@ -101,7 +110,7 @@ class OutputFormatter(object):
         """
         self.parser.stripTags(self.get_top_node(), 'b', 'strong', 'i', 'br', 'sup')
 
-    def remove_fewwords_paragraphs(self, article):
+    def remove_fewwords_paragraphs(self):
         """\
         remove paragraphs that have less than x number of words,
         would indicate that it's some sort of link
@@ -111,7 +120,7 @@ class OutputFormatter(object):
         for el in all_nodes:
             tag = self.parser.getTag(el)
             text = self.parser.getText(el)
-            stop_words = self.stopwords_class(language=self.get_language(article)).get_stopword_count(text)
+            stop_words = self.stopwords_class(language=self.get_language()).get_stopword_count(text)
             if (tag != 'br' or text != '\\r') and stop_words.get_stopword_count() < 3 \
                 and len(self.parser.getElementsByTag(el, tag='object')) == 0 \
                 and len(self.parser.getElementsByTag(el, tag='embed')) == 0:
