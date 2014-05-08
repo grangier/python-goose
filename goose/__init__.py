@@ -21,7 +21,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import os
+import platform
 from tempfile import mkstemp
+
 from goose.version import version_info, __version__
 from goose.configuration import Configuration
 from goose.crawler import CrawlCandidate
@@ -82,7 +84,12 @@ class Goose(object):
         # to check is directory is writtable
         level, path = mkstemp(dir=self.config.local_storage_path)
         try:
-            f = open(path, 'w')
+            if platform.system() == 'Windows':
+                # Return an open file object connected
+                # to the file descriptor level
+                f = os.fdopen(level, 'w')
+            else:
+                f = open(path, 'w')
             f.close()
             os.remove(path)
         except IOError:
