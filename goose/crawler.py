@@ -69,6 +69,9 @@ class Crawler(object):
         # image extrator
         self.image_extractor = self.get_image_extractor()
 
+        # html fetcher
+        self.htmlfetcher = HtmlFetcher(self.config)
+
         # TODO : log prefix
         self.logPrefix = "crawler:"
 
@@ -150,9 +153,11 @@ class Crawler(object):
             return crawl_candidate.raw_html
 
         # fetch HTML
-        fetcher = HtmlFetcher(self.config, parsing_candidate.url)
-        html = fetcher.get_html()
-        #html = HtmlFetcher().get_html(self.config, parsing_candidate.url)
+        html = self.htmlfetcher.get_html(parsing_candidate.url)
+        self.article.additional_data.update({
+            'request': self.htmlfetcher.request,
+            'result': self.htmlfetcher.result,
+            })
         return html
 
     def get_image_extractor(self):
