@@ -182,7 +182,7 @@ class.
 Goose in Korean
 ----------------
 
-In order to use Goose in Arabic you have to use the StopWordsKorean
+In order to use Goose in Korean you have to use the StopWordsKorean
 class.
 
 ::
