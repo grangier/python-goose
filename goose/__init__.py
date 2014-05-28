@@ -84,12 +84,7 @@ class Goose(object):
         # to check is directory is writtable
         level, path = mkstemp(dir=self.config.local_storage_path)
         try:
-            if platform.system() == 'Windows':
-                # Return an open file object connected
-                # to the file descriptor level
-                f = os.fdopen(level, 'w')
-            else:
-                f = open(path, 'w')
+            f = os.fdopen(level, "w")
             f.close()
             os.remove(path)
         except IOError:
