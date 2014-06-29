@@ -5,10 +5,10 @@ Intro
 -----
 
 Goose was originally an article extractor written in Java that has most
-recently (aug2011) converted to a `scala project <https://github.com/GravityLabs/goose>`_.
+recently (aug2011) been converted to a `scala project <https://github.com/GravityLabs/goose>`_.
 
-This is a complete rewrite in python. The aim of the software is is to
-take any news article or article type web page and not only extract what
+This is a complete rewrite in python. The aim of the software is to
+take any news article or article-type web page and not only extract what
 is the main body of the article but also all meta data and most probable
 image candidate.
 
@@ -20,14 +20,14 @@ Goose will try to extract the following information:
 -  Meta Description
 -  Meta tags
 
-The python version was rewrite by:
+The python version was rewritten by:
 
 -  Xavier Grangier
 
 Licensing
 ---------
 
-If you find Goose useful or have issues please drop me a line, I'd love
+If you find Goose useful or have issues please drop me a line. I'd love
 to hear how you're using it or what features should be improved
 
 Goose is licensed by Gravity.com under the Apache 2.0 license, see the
@@ -65,20 +65,20 @@ Take it for a spin
 Configuration
 -------------
 
-There is two way to pass configuration to goose. The first one is to
-pass to goose a Configuration() object. The second one is to pass a
-configuration dict
+There are two ways to pass configuration to goose. The first one is to
+pass goose a Configuration() object. The second one is to pass a
+configuration dict.
 
-For instance, if you want to change the userAgent used by Goose juste
+For instance, if you want to change the userAgent used by Goose just
 pass :
 
 ::
 
     >>> g = Goose({'browser_user_agent': 'Mozilla'})
 
-Switching parser : Goose can now be use with lxml html parser or lxml
+Switching parsers : Goose can now be use with lxml html parser or lxml
 soup parser. By default the html parser is used. If you want to use the
-soup parser passe it in the configuration dict :
+soup parser pass it in the configuration dict :
 
 ::
 
@@ -87,7 +87,7 @@ soup parser passe it in the configuration dict :
 Goose is now language aware
 ---------------------------
 
-For example scrapping a spanish content page with correct meta language
+For example scrapping a Spanish content page with correct meta language
 tags
 
 ::
@@ -143,8 +143,8 @@ Video extraction
 Goose in Chinese
 ----------------
 
-Some users want to use Goose for chinese content. Chinese word
-segementation is way more difficult to deal with that occidental
+Some users want to use Goose for Chinese content. Chinese word
+segmentation is way more difficult to deal with than occidental
 languages. Chinese needs a dedicated StopWord analyser that need to be
 passed to the config object
 
@@ -182,7 +182,7 @@ class.
 Goose in Korean
 ----------------
 
-In order to use Goose in Arabic you have to use the StopWordsKorean
+In order to use Goose in Korean you have to use the StopWordsKorean
 class.
 
 ::
@@ -201,8 +201,8 @@ class.
 Known issues
 ------------
 
--  There is some issue with unicode URLs.
-- Cookie handeling : Some website needs cookie handeling. At the moment the only work around is to use the raw_html extraction. For instance ;
+- There are some issues with unicode URLs.
+- Cookie handling : Some websites need cookie handling. At the moment the only work around is to use the raw_html extraction. For instance ;
 
     >>> import urllib2
     >>> import goose
