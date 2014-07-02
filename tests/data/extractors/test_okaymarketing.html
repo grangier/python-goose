@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+<head>
+	<meta charset="UTF-8">
+	<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+	<!--[if IE ]>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<![endif]-->
+	<link rel="profile" href="http://gmpg.org/xfn/11" />
+	<title>How to Add Schema Markup to a Page in WordPress</title>
+		<link rel="icon" href="http://cdn.okaymarketing.com/wp-content/uploads/2014/03/favicon.png" type="image/x-icon" />
+<!--iOS/android/handheld specific -->
+<link rel="apple-touch-icon" href="http://cdn.okaymarketing.com/wp-content/themes/spike/apple-touch-icon.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="pingback" href="http://okaymarketing.com/xmlrpc.php" />
+	
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.5.3.3 - https://yoast.com/wordpress/plugins/seo/ -->
+<meta name="description" content="Add schema markup for your business to gain that competitive edge in SERPs. Follow our tutorial to see how you can create a simple shortcode in Wordpress."/>
+<link rel="canonical" href="http://okaymarketing.com/add-schema-markup-page-wordpress/" />
+<link rel="author" href="https://plus.google.com/118032823674718072896"/>
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="How to Add Schema Markup to a Page in WordPress" />
+<meta property="og:description" content="Add schema markup for your business to gain that competitive edge in SERPs. Follow our tutorial to see how you can create a simple shortcode in Wordpress." />
+<meta property="og:url" content="http://okaymarketing.com/add-schema-markup-page-wordpress/" />
+<meta property="og:site_name" content="OKay Marketing" />
+<meta property="article:publisher" content="https://www.facebook.com/okaymarketing" />
+<meta property="article:author" content="https://www.facebook.com/brianleejackson" />
+<meta property="article:tag" content="Schema" />
+<meta property="article:tag" content="Schema Markup" />
+<meta property="article:tag" content="Snippets" />
+<meta property="article:tag" content="WordPress" />
+<meta property="article:section" content="WordPress" />
+<meta property="article:published_time" content="2014-06-30T16:54:02+00:00" />
+<meta property="article:modified_time" content="2014-07-01T08:54:35+00:00" />
+<meta property="og:updated_time" content="2014-07-01T08:54:35+00:00" />
+<meta property="fb:admins" content="1098660425" />
+<meta property="og:image" content="http://okaymarketing.com/wp-content/uploads/2014/06/seo.jpg" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:site" content="@okay_marketing"/>
+<meta name="twitter:domain" content="OKay Marketing"/>
+<meta name="twitter:creator" content="@brianleejackson"/>
+<meta name="twitter:image:src" content="http://okaymarketing.com/wp-content/uploads/2014/06/seo.jpg"/>
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="OKay Marketing &raquo; Feed" href="http://okaymarketing.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="OKay Marketing &raquo; Comments Feed" href="http://okaymarketing.com/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="OKay Marketing &raquo; How to Add Schema Markup to a Page in WordPress Comments Feed" href="http://okaymarketing.com/add-schema-markup-page-wordpress/feed/" />
+<link rel='stylesheet' id='fancybox2-css'  href='http://cdn.okaymarketing.com/wp-content/plugins/arscode-ninja-popups/fancybox2/jquery.fancybox.css?ver=3.9.1' type='text/css' media='all' />
+<link rel='stylesheet' id='snp_styles_reset-css'  href='http://cdn.okaymarketing.com/wp-content/plugins/arscode-ninja-popups/themes/reset.css?ver=3.9.1' type='text/css' media='all' />
+<link rel='stylesheet' id='snp_styles_theme14-css'  href='http://cdn.okaymarketing.com/wp-content/plugins/arscode-ninja-popups/themes/theme14/css/theme14.css?ver=3.9.1' type='text/css' media='all' />
+<link rel='stylesheet' id='easy-social-share-buttons-css'  href='http://cdn.okaymarketing.com/wp-content/plugins/easy-social-share-buttons/assets/css/metro-retina/easy-social-share-buttons.min.css?ver=1.3.9.5' type='text/css' media='all' />
+<link rel='stylesheet' id='easy-social-share-buttons-mailform-css'  href='http://cdn.okaymarketing.com/wp-content/plugins/easy-social-share-buttons/assets/css/essb-mailform.min.css?ver=1.3.9.5' type='text/css' media='all' />
+<link rel='stylesheet' id='tm_clicktotweet-css'  href='http://cdn.okaymarketing.com/wp-content/plugins/click-to-tweet-by-todaymade/assets/css/styles.css?ver=3.9.1' type='text/css' media='all' />
+<link rel='stylesheet' id='genericons-css'  href='http://cdn.okaymarketing.com/wp-content/plugins/fanciest-author-box/css/genericons/genericons.css?ver=3.9.1' type='text/css' media='all' />
+<link rel='stylesheet' id='ts_fab_css-css'  href='http://cdn.okaymarketing.com/wp-content/plugins/fanciest-author-box/css/ts-fab.css?ver=2.0.6' type='text/css' media='all' />
+<link rel='stylesheet' id='googleFont-css'  href='http://fonts.googleapis.com/css?family=Open+Sans%7COpen+Sans&#038;ver=3.9.1' type='text/css' media='all' />
+<link rel='stylesheet' id='optinforms-stylesheet-css'  href='http://cdn.okaymarketing.com/wp-content/plugins/optin-forms/css/optinforms.css?ver=3.9.1' type='text/css' media='all' />
+<link rel='stylesheet' id='socialfans-widget-style-css'  href='http://cdn.okaymarketing.com/wp-content/plugins/socialfans-counter/assets/css/socialfans-style.css?ver=2.0.2' type='text/css' media='all' />
+<link rel='stylesheet' id='mts_wpshortcodes-css'  href='http://cdn.okaymarketing.com/wp-content/plugins/wp-shortcode/css/wp-shortcode.css?ver=3.9.1' type='text/css' media='all' />
+<link rel='stylesheet' id='fontawesome-css'  href='http://cdn.okaymarketing.com/wp-content/themes/spike/css/font-awesome.min.css?ver=3.9.1' type='text/css' media='all' />
+<link rel='stylesheet' id='stylesheet-css'  href='http://cdn.okaymarketing.com/wp-content/themes/spike/style.css?ver=3.9.1' type='text/css' media='all' />
+<style type='text/css'>
+
+		body {background-color:#ffffff; }
+		body {background-image: url(http://cdn.okaymarketing.com/wp-content/themes/spike/images/nobg.png);}
+		.main-header { background-color: #FFFFFF; background-image: url(http://cdn.okaymarketing.com/wp-content/themes/spike/images/pattern1.png);}
+		footer {background-color:#F5F5F5; background-image: url(http://cdn.okaymarketing.com/wp-content/themes/spike/images/pattern1.png);}
+		#navigation ul .current-menu-item a, #navigation ul li:hover > a, #navigation ul .current-menu-item:before, #navigation ul li:hover:before, #navigation ul li:hover:after, .postauthor h5, .single_post a, .textwidget a, .pnavigation2 a, .sidebar.c-4-12 a:hover, .copyrights a:hover, footer .widget li a:hover, .sidebar.c-4-12 a:hover, .related-posts a:hover, .title a:hover, .post-info a:hover,.comm, #tabber .inside li a:hover, .readMore a:hover, a, a:hover { color:#4293c4; }	
+			.reply a, .flex-control-paging li a.flex-active, .currenttext, .pagination a:hover, .single .pagination a:hover .currenttext, .sbutton, #searchsubmit, #commentform input#submit, .contactform #submit, .mts-subscribe input[type='submit'], #move-to-top:hover, #searchform .icon-search, .tagcloud a, a#pull, .secondary-navigation.mobile, .mobile #navigation, #load-posts > a, .pace .pace-progress, .widget_tabs2 .pagination a, .pagination .nav-previous a:hover, .pagination .nav-next a:hover, .flex-control-paging li a:hover, #featured-thumbnail .review-total-only { background-color:#4293c4; color: #fff!important; }
+		.flex-control-thumbs .flex-active { border-top:3px solid #4293c4;}
+		#navigation ul .current-menu-item a, #navigation > ul > li > a:hover { border-bottom: 1px solid #4293c4; }
+		.tagcloud a .tab_count, .flex-control-paging li a, #logo, #load-posts > a:hover, #searchform .sbutton:hover, .mts-subscribe input[type='submit']:hover { background-color:#a0c3d8; }
+		.pagination a {color:#a0c3d8; }
+		.pagination a, .pagination2 { border: 1px solid #a0c3d8; }
+		.currenttext, .pagination a:hover, .pagination2:hover, .widget_tabs2 .pagination a { border: 1px solid #4293c4; }
+		#navigation ul ul { border-top: 1px solid #4293c4; }
+		.slidertitle, .slidertext { background: rgba(66,147,196, 0.7) }
+		
+		
+		
+		
+		
+		.single_post_below { float: left; width: 100%; margin-top: 27px; }
+		.single_post_below .related-posts li { margin: 0 2% 0 0; width: 23.5%; } .relatedthumb { float: left; width: 100% }
+		.post-single-content, .single_post_below .rthumb, .relatedthumb img { width: 100% }
+		.post-single-content { max-width: 850px; }
+		.single_post_below .related-posts h3 { font-weight: 700 }
+		.shareit { top: 282px; left: auto; z-index: 0; margin: 0 0 0 -123px; width: 90px; position: fixed; overflow: hidden; padding: 5px; border:none; border-right: 0;}
+		.share-item {margin: 2px;}
+		
+		.bypostauthor .commentmetadata {background: rgba(0, 0, 0, 0.02);border: 1px solid rgba(0, 0, 0, 0.06);}
+		.bypostauthor .commentmetadata:after { font-size: 12px; content: "Author"; position: absolute; right: 0; top: 0; padding: 1px 10px; background: rgba(0, 0, 0, 0.2); color: #FFF; }
+		
+		#subscribe-callout {
+    background: none repeat scroll 0 0 #4293c4;
+    color: #FFFFFF;
+    font-size: 15px;
+    line-height: 1.3;
+    margin-top: 11px;
+    padding: 15px;
+    position: relative;
+}
+
+article.widget_subscribe {
+    background: none repeat scroll 0 0 padding-box #333333;
+    border-radius: 2px 2px 2px 2px;
+ padding:15px;
+    color: #FFFFFF;
+width:270px;
+}
+
+#subscribe-callout em {
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #4293c4;
+    bottom: -10px;
+    height: 0;
+    left: 20px;
+    position: absolute;
+    width: 0;
+}
+.required {
+    color: #999999; }
+
+#navigation > .menu > [class^="icon-"] > a, #navigation > .menu > [class*=" icon-"] > a {margin-top: -4px; margin-left:22px;}
+.gform_wrapper .top_label input.medium {
+    font-size: 14px; }
+gform_wrapper .top_label input.large, .gform_wrapper .top_label select.large, .gform_wrapper .top_label textarea.textarea {font-size:14px;}
+.us_wrapper .us_button {font-size:20px;}
+.us_wrapper .us_button.us_share_text {margin-top:15px;}
+
+.widget {margin-bottom:15px;}
+.fn {text-transform: none; font-weight:normal;}
+
+.latestPost .post-info {
+    border-bottom: 1px dotted rgba(0, 0, 0, 0.12);
+    border-top: 1px dotted rgba(0, 0, 0, 0.12);}
+
+.home_meta_comment_social {
+    border-top: 1px dotted rgba(0, 0, 0, 0.12);}
+
+.single-title {
+    border-bottom: 1px dotted rgba(0, 0, 0, 0.12); font-size:28px;}
+.widget h3 {font-weight:800; border-bottom: 1px dotted rgba(0, 0, 0, 0.12); padding:5px;}
+
+.main-header {
+    border-bottom: 1px dotted rgba(0, 0, 0, 0.12); }
+input, textarea, select {font-size:14px;}
+
+.post-single-content a:hover {
+    background: none repeat scroll 0 0 #eefac8; 
+}
+.post-single-content a {
+    text-decoration:underline;
+    font-weight: bold;
+}
+
+.post-content a:hover {
+    background: none repeat scroll 0 0 #eefac8; 
+}
+
+.us_wrapper a:hover {background-color:#4192c3;}
+
+.post-content a {
+    text-decoration:underline;
+    font-weight: bold;
+}
+
+.btn_green {
+    background-color: #bad879;
+    background-image: none;
+border-radius: 0px;
+    border-color: none;
+    border-style: solid;
+    border-width: 0px;
+    box-shadow: none;
+    color: #FFFFFF;
+    font: bold 11px/1 "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif;
+    padding: 12px 10px;
+    text-shadow: none;
+    text-transform: uppercase;
+}
+
+
+.btn_green:hover {
+    background-color: #b0cc72;
+    background-image: none;
+    border-color: none;
+border-radius: 0px;
+    border-style: solid;
+    border-width: 0px;
+    box-shadow: none;
+    color: #FFFFFF;
+    font: bold 11px/1 "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif;
+    padding: 12px 10px;
+    text-shadow: none;
+    text-transform: uppercase;
+}
+#optinforms-form5-disclaimer {margin-top:10px;}
+.tm-click-to-tweet {margin-top:0px;}
+
+.tm-click-to-tweet .tm-ctt-text a {
+    background: none repeat scroll 0 0 #eefac8; 
+}
+
+#optinforms-form5-container {margin-top:0px;}
+
+.post-single-content .us_wrapper.tac {background-color: #333333;}
+.us_wrapper .us_share_text {color: #ffffff;}
+
+.essb_links {
+    background-color: #333333;
+    clear: both;
+    margin: 1em 0 0;
+    padding-left: 25px;
+    padding-top: 10px;
+    word-wrap: normal !important;
+}
+			
+</style>
+<link rel='stylesheet' id='responsive-css'  href='http://cdn.okaymarketing.com/wp-content/themes/spike/css/responsive.css?ver=3.9.1' type='text/css' media='all' />
+<script type='text/javascript' src='http://cdn.okaymarketing.com/wp-includes/js/jquery/jquery.js?ver=1.11.0'></script>
+<script type='text/javascript' src='http://cdn.okaymarketing.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
+<script type='text/javascript' src='http://cdn.okaymarketing.com/wp-content/plugins/arscode-ninja-popups/js/jquery.ck.js?ver=3.9.1'></script>
+<script type='text/javascript' src='http://cdn.okaymarketing.com/wp-content/plugins/arscode-ninja-popups/fancybox2/jquery.fancybox.js?ver=3.9.1'></script>
+<script type='text/javascript' src='http://cdn.okaymarketing.com/wp-content/plugins/arscode-ninja-popups/js/jquery.placeholder.js?ver=3.9.1'></script>
+<script type='text/javascript' src='http://cdn.okaymarketing.com/wp-content/plugins/arscode-ninja-popups/js/ninjapopups.js?ver=3.9.1'></script>
+<script type='text/javascript' src='http://cdn.okaymarketing.com/wp-content/plugins/fanciest-author-box/js/ts-fab.js?ver=2.0.6'></script>
+<script type='text/javascript' src='http://cdn.okaymarketing.com/wp-content/plugins/optin-forms/js/placeholder.js?ver=3.9.1'></script>
+<script type='text/javascript' src='http://cdn.okaymarketing.com/wp-content/plugins/socialfans-counter/assets/js/socialfans-script.js?ver=2.0.2'></script>
+<script type='text/javascript' src='http://cdn.okaymarketing.com/wp-content/themes/spike/js/customscript.js?ver=3.9.1'></script>
+<script type='text/javascript' src='http://cdn.okaymarketing.com/wp-content/plugins/wp-shortcode/js/wp-shortcode.js?ver=3.9.1'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://okaymarketing.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://okaymarketing.com/wp-includes/wlwmanifest.xml" /> 
+<link rel='shortlink' href='http://okaymarketing.com/?p=13131' />
+<style>.ts-fab-wrapper .ts-fab-list li a { background-color:#e9e9e9; border: 1px solid #e9e9e9; color: #333; } .ts-fab-wrapper .ts-fab-list li.active a { background-color: #333; border: 1px solid #333; color: #fff; }.ts-fab-wrapper .ts-fab-tab.visible-tab { background-color: #f9f9f9; border: 2px solid #e5e5e5; color: #555; }</style><!--[if IE 7]>
+<link rel="stylesheet" href="http://cdn.okaymarketing.com/wp-content/plugins/wp-review/assets/css/wp-review-ie7.css">
+<![endif]-->
+<link href="http://fonts.googleapis.com/css?family=Lato:700|Open+Sans:normal|Open+Sans:600|Lato:normal" rel="stylesheet" type="text/css">
+<style type="text/css">
+.menu li a{ font-family: 'Lato'; font-weight: 700; font-size: 18px; color: #999999; }
+h1{ font-family: 'Open Sans'; font-weight: normal; font-size: 28px; color: #444444; }
+h2{ font-family: 'Open Sans'; font-weight: 600; font-size: 24px; color: #444444; }
+h3{ font-family: 'Open Sans'; font-weight: normal; font-size: 21px; color: #444444; }
+h4{ font-family: 'Open Sans'; font-weight: normal; font-size: 20px; color: #444444; }
+h5{ font-family: 'Open Sans'; font-weight: normal; font-size: 18px; color: #444444; }
+h6{ font-family: 'Open Sans'; font-weight: normal; font-size: 16px; color: #444444; }
+body{ font-family: 'Lato'; font-weight: normal; font-size: 15px; color: #666666;line-height: 1.625; }
+</style>
+<script type="text/javascript">document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');</script><style type="text/css" id="syntaxhighlighteranchor"></style>
+<style type="text/css">
+				.percentage-point .review-result { background-color: #1e73be; }
+
+						.review-wrapper, .review-title, .review-desc p{ color: #555555;}
+			.review-list li, .review-wrapper{ background: #ffffff;}
+			.review-title, .review-list li:nth-child(2n){background: #e7e7e7;}
+
+			.bar-point .allowed-to-rate .review-result, .percentage-point .allowed-to-rate .review-result{background: none;}
+			.review-total-star.allowed-to-rate a i { color: #1e73be; opacity: 0.50; filter: alpha(opacity=50); }
+			.bar-point .allowed-to-rate .review-result, .percentage-point .allowed-to-rate .review-result{text-indent:0;}
+			.bar-point .allowed-to-rate .review-result i, .percentage-point .allowed-to-rate .review-result i, .mts-user-review-star-container .selected i { color: #1e73be; opacity: 1; filter: alpha(opacity=100); }
+			.review-wrapper, .review-title, .review-list li, .review-list li:last-child, .user-review-area{border-color: #e7e7e7;}
+							.user-review-area{border: 1px solid #e7e7e7; margin-top: 0px;}
+				.review-desc{width: 100%;}
+				.review-wrapper{border: none; overflow: visible;}
+			</style></head>
+<body id ="blog" class="single single-post postid-13131 single-format-standard main" itemscope itemtype="http://schema.org/WebPage">
+	<div class="main-container-wrap">
+		<header class="main-header">
+						<div class="container">
+				<div id="header">
+											<div class="logo-wrap">
+																								  <h2 id="logo" class="image-logo">
+											<a href="http://okaymarketing.com"><img src="http://cdn.okaymarketing.com/wp-content/uploads/2014/03/logo.png" alt="OKay Marketing"></a>
+										</h2><!-- END #logo -->
+																					</div>
+										  
+					<div class="secondary-navigation search-navigation">
+						<nav id="navigation" class="clearfix">
+															<ul id="menu-menu" class="menu clearfix"><li id="menu-item-12580" class="icon-home menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-12580"><a href="http://okaymarketing.com/">Home</a></li>
+<li id="menu-item-12582" class="icon-reorder menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-12582"><a>Topics</a>
+<ul class="sub-menu">
+	<li id="menu-item-12597" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12597"><a href="http://okaymarketing.com/category/marketing/">Marketing</a></li>
+	<li id="menu-item-12565" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12565"><a href="http://okaymarketing.com/category/ppc/">PPC</a></li>
+	<li id="menu-item-12614" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12614"><a href="http://okaymarketing.com/category/reporting/">Reporting</a></li>
+	<li id="menu-item-12598" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12598"><a href="http://okaymarketing.com/category/reviews/">Reviews</a></li>
+	<li id="menu-item-12563" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12563"><a href="http://okaymarketing.com/category/seo/">SEO</a></li>
+	<li id="menu-item-12564" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12564"><a href="http://okaymarketing.com/category/social-media/">Social Media</a></li>
+	<li id="menu-item-12562" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-12562"><a href="http://okaymarketing.com/category/wordpress/">WordPress</a></li>
+</ul>
+</li>
+<li id="menu-item-12509" class="icon-group menu-item menu-item-type-post_type menu-item-object-page menu-item-12509"><a href="http://okaymarketing.com/about/">About</a></li>
+<li id="menu-item-13000" class="icon-wrench menu-item menu-item-type-post_type menu-item-object-page menu-item-13000"><a href="http://okaymarketing.com/marketing-toolbox/">Toolbox</a></li>
+<li id="menu-item-13126" class="icon-comments menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-13126"><a>Tips</a>
+<ul class="sub-menu">
+	<li id="menu-item-13129" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-13129"><a href="http://okaymarketing.com/seo-tips/">SEO</a></li>
+	<li id="menu-item-13128" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-13128"><a href="http://okaymarketing.com/pay-per-click-tips/">PPC</a></li>
+	<li id="menu-item-13127" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-13127"><a href="http://okaymarketing.com/social-media-tips/">Social Media</a></li>
+</ul>
+</li>
+<li id="menu-item-13120" class="icon-signal menu-item menu-item-type-post_type menu-item-object-page menu-item-13120"><a href="http://okaymarketing.com/advertise/">Advertise</a></li>
+<li id="menu-item-12507" class="icon-phone menu-item menu-item-type-post_type menu-item-object-page menu-item-12507"><a href="http://okaymarketing.com/contact/">Contact</a></li>
+</ul>														<a href="#" id="pull">Menu</a>
+													</nav>
+					</div>              
+				</div><!--#header-->
+			</div><!--.container-->        
+		</header>
+		<div class="main-container">
+			<div id="page" class="single">
+	<article class="article">
+		<div id="content_box" >
+							<div id="post-13131" class="post-13131 post type-post status-publish format-standard has-post-thumbnail hentry category-wordpress tag-schema tag-schema-markup tag-snippets tag-wordpress g post has_thumb">
+					<div class="single_post">
+													<div class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#"><span typeof="v:Breadcrumb"><a rel="v:url" property="v:title" href="http://okaymarketing.com" rel="nofollow"><i class="icon-home"></i>&nbsp;Home</a></span>&nbsp;>&nbsp;<span typeof="v:Breadcrumb"><a href="http://okaymarketing.com/category/wordpress/" rel="v:url" property="v:title">WordPress</a></span>&nbsp;>&nbsp;<span typeof='v:Breadcrumb'><span property='v:title'>How to Add Schema Markup to a Page in WordPress</span></span></div>
+												<header>
+							<h1 class="entry-title title single-title">How to Add Schema Markup to a Page in WordPress</h1>
+															<div class="post-info">
+																			<span class="vcard author"><i class="icon-user"></i> By <span class="fn"> <a rel="author" href="https://plus.google.com/118032823674718072896">Brian Jackson</a></span></span>
+																																					<span class="thecategory"><i class="icon-tags"></i> <a href="http://okaymarketing.com/category/wordpress/" title="View all posts in WordPress" rel="nofollow">WordPress</a></span>
+																												<span class="thecomment"><i class="icon-comments"></i> <a rel="nofollow" href="http://okaymarketing.com/add-schema-markup-page-wordpress/#comments"><span class="dsq-postid" rel="13131 http://okaymarketing.com/?p=13131">No Comments</span></a></span>
+<div style="margin-top:10px;"><img width="850" height="348" src="http://cdn.okaymarketing.com/wp-content/uploads/2014/06/seo.jpg" class="attachment-large wp-post-image" alt="seo" /></div>
+																	</div>
+													</header><!--.headline_area-->
+						<div class="post-single-content box mark-links entry-content">
+																					<p>If you are operating a local business there is something you can do right now to gain an advantage over your competition. It is called schema markup. Taking advantage of this early on will benefit you. What is schema markup? Basically it is code you can add to your page so that search engines like Google and Bing can better identify the data and be more likely to serve that information up in SERPs.</p>
+<p><div class='tm-tweet-clear'></div><div class='tm-click-to-tweet'><div class='tm-ctt-text'><a href='https://twitter.com/share?text=Schema+Markup+is+the+Bees+Knees%21+%23schema+%23SERPs&via=okay_marketing&related=okay_marketing&url=http://okaymarketing.com/add-schema-markup-page-wordpress/' target='_blank'>Schema Markup is the Bees Knees! #schema #SERPs</a></div><a href='https://twitter.com/share?text=Schema+Markup+is+the+Bees+Knees%21+%23schema+%23SERPs&via=okay_marketing&related=okay_marketing&url=http://okaymarketing.com/add-schema-markup-page-wordpress/' target='_blank' class='tm-ctt-btn'>Click To Tweet</a><div class='tm-ctt-tip'></div><div class='tm-powered-by'></div></div></p>
+<p>There is a great article on KissMetrics about <a title="How to Boost Your SEO by Using Schema Markup" href="http://blog.kissmetrics.com/get-started-using-schema/" target="_blank">How to Boost Your SEO by Using Schema Markup</a>. I suggest reading through that if you want to know more about how schema markup helps you and then come back to our page. I will show you how to quickly add some schema markup for a local business location to a page in WordPress.</p>
+<p>There is a WordPress plugin out there called <a title="Schema Creator by Raven" href="http://wordpress.org/plugins/schema-creator/" target="_blank">Schema Creator by Raven</a>, however I was not happy with the results. There were a bunch of line breaks and I couldn&#8217;t get it to look like I wanted without going and editing the plugin itself. I needed to add location data, specifically the LocalBusiness attribute. So I asked my brother Brett who is a phenomenal PHP programmer and he whipped up something in a matter of minutes. So I thought I would share it with you as an alternative to using a plugin or simply pasting the HTML from a schema generator.</p>
+<h2>Step 1</h2>
+<p>First we are going to add a function for our schema itemtypes, specifically <strong>LocalBusiness</strong> and <strong>PostalAddress</strong>, to WordPress. So in your WordPress dashboard browse to Appearance and click on on &#8220;Editor.&#8221;</p>
+<p><img class="alignnone wp-image-13132 size-full" title="wordpress appearance editor" src="http://cdn.okaymarketing.com/wp-content/uploads/2014/06/wordpress-appearance-editor.png" alt="wordpress appearance editor" width="320" height="216" /></p>
+<h2>Step 2</h2>
+<p>Click into your WordPress functions.php file. <strong>(please don&#8217;t edit this file if you are unsure of what you are doing, or please make a backup first!)</strong></p>
+<p><img class="alignnone wp-image-13134 size-full" title="wordpress functions file" src="http://cdn.okaymarketing.com/wp-content/uploads/2014/06/wordpress-functions-file.png" alt="wordpress functions file" width="160" height="56" /></p>
+<h2>Step 3</h2>
+<p>Now scroll to the bottom and we are going to add this code. What we are doing is creating a shortcode we can use later. Why do we do a shortcode? Simply because if you have multiple people editing sometimes they will switch out out of the text view and you lose your schema markup.</p>
+<pre class="brush: php; title: ; notranslate" title="">
+function shortcode_printaddress($atts)
+{
+$val.= '&lt;div itemscope itemtype=&quot;http://schema.org/LocalBusiness&quot;&gt;';
+$val.= '&lt;a itemprop=&quot;url&quot; href=&quot;' . site_url() . '&quot;&gt;';
+$val.= '&lt;div itemprop=&quot;name&quot;&gt;';
+$val.= '&lt;strong&gt;' . $atts[&quot;name&quot;] . '&lt;/strong&gt;';
+$val.= '&lt;/div&gt;'; $val.= '&lt;/a&gt;';
+$val.= '&lt;div itemprop=&quot;address&quot; itemscope itemtype=&quot;http://schema.org/PostalAddress&quot;&gt;';
+$val.= '&lt;span itemprop=&quot;streetAddress&quot;&gt;';
+$val.= $atts[&quot;address1&quot;]; if(!empty($atts[&quot;address2&quot;]))
+{
+$val.= '&lt;br /&gt;' . $atts[&quot;address2&quot;];
+}
+$val.= '&lt;/span&gt;&lt;br /&gt;';
+$val.= '&lt;span itemprop=&quot;addressLocality&quot;&gt;' . $atts[&quot;city&quot;] . '&lt;/span&gt;, &lt;span itemprop=&quot;addressRegion&quot;&gt;' . $atts[&quot;state&quot;] . '&lt;/span&gt; &lt;span itemprop=&quot;postalCode&quot;&gt;' . $atts[&quot;zip&quot;] . '&lt;/span&gt;';
+$val.= '&lt;/div&gt;';
+$val.= '&lt;/div&gt;'; return
+$val;
+}
+add_shortcode('printaddress', 'shortcode_printaddress');
+</pre>
+<h2>Step 4</h2>
+<p>Now we can go to our page and add the shortcode. Obviously you will want to change the details below with your address.</p>
+<p><strong>[printaddress name="OKay Marketing" address1="8275 E Bell RD" address2="Suite 250" city="Scottsdale" state="AZ" zip="85260"]</strong></p>
+<p>The shortcode will display like our address below.</p>
+<div class="divider"></div>
+<div itemscope itemtype="http://schema.org/LocalBusiness"><a itemprop="url" href="http://okaymarketing.com"><div itemprop="name"><strong>OKay Marketing</strong></div></a><div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetAddress">8275 E Bell RD<br />Suite 250</span><br /><span itemprop="addressLocality">Scottsdale</span>, <span itemprop="addressRegion">AZ</span> <span itemprop="postalCode">85260</span></div></div>
+<div class="divider"></div>
+<p>The reason we like this method better is because it is much easier to style, there aren&#8217;t any line breaks and to the general user, it looks just like a normal address listing.</p>
+<h2>Step 5</h2>
+<p>Now you will want to copy the URL of the page you have the shortcode on and go test it in the <a title="Google Structured Data Testing Tool" href="http://www.google.com/webmasters/tools/richsnippets" target="_blank">Google Structured Data Testing Tool</a>.</p>
+<p>At the very bottom you will want to verify that you have the localbusiness item type and that the address points to <em>Item 1</em> which in turn points to Item 1 for the address.</p>
+<p><img class="alignnone wp-image-13136 size-full" title="schema local business wordpress" src="http://cdn.okaymarketing.com/wp-content/uploads/2014/06/schema-local-business-wordpress.png" alt="schema local business wordpress" width="538" height="441" /></p>
+<p>There are many more things you could add too, like phone number, hours of business, etc. To read more about the available schema types visit the official <a title="Schemas" href="https://schema.org/docs/schemas.html" target="_blank">schema</a> website.</p>
+
+<div class="essb_links  essb_counters essb_displayed_bottom essb_template_metro-retina" id="essb_displayed_bottom" >
+	<ul class="essb_links_list" ><li class="essb_item essb_link_facebook nolightbox" ><a href="http://www.facebook.com/sharer/sharer.php?u=http://okaymarketing.com/add-schema-markup-page-wordpress/" rel="nofollow" title="Share this article on Facebook" target="_blank" onclick="essb_window1157922745('http://www.facebook.com/sharer/sharer.php?u=http://okaymarketing.com/add-schema-markup-page-wordpress/', 'facebook'); return false;"  style="width: 100px !important; text-align: center;"><span class="essb_icon"></span><span class="essb_network_name">Facebook</span></a></li><li class="essb_item essb_link_twitter nolightbox" ><a href="#" rel="nofollow" title="Share this article on Twitter" target="_blank" onclick="essb_window1157922745('https://twitter.com/intent/tweet?source=webclient&amp;original_referer=http://okaymarketing.com/add-schema-markup-page-wordpress/&amp;text=How+to+Add+Schema+Markup+to+a+Page+in+WordPress&amp;url=http://okaymarketing.com/add-schema-markup-page-wordpress/&amp;related=okay_marketing&amp;via=okay_marketing', 'twitter'); return false;"  style="width: 100px !important; text-align: center;"><span class="essb_icon"></span><span class="essb_network_name">Twitter</span></a></li><li class="essb_item essb_link_google nolightbox" ><a href="https://plus.google.com/share?url=http://okaymarketing.com/add-schema-markup-page-wordpress/" rel="nofollow" title="Share this article on Google+" target="_blank" onclick="essb_window1157922745('https://plus.google.com/share?url=http://okaymarketing.com/add-schema-markup-page-wordpress/', 'google'); return false;"  style="width: 100px !important; text-align: center;"><span class="essb_icon"></span><span class="essb_network_name">Google+</span></a></li><li class="essb_item essb_link_linkedin nolightbox" ><a href="http://www.linkedin.com/shareArticle?mini=true&amp;ro=true&amp;trk=EasySocialShareButtons&amp;title=How+to+Add+Schema+Markup+to+a+Page+in+WordPress&amp;url=http://okaymarketing.com/add-schema-markup-page-wordpress/" rel="nofollow" title="Share this article on LinkedIn" target="_blank" onclick="essb_window1157922745('http://www.linkedin.com/shareArticle?mini=true&amp;ro=true&amp;trk=EasySocialShareButtons&amp;title=How+to+Add+Schema+Markup+to+a+Page+in+WordPress&amp;url=http://okaymarketing.com/add-schema-markup-page-wordpress/', 'linkedin'); return false;"  style="width: 100px !important; text-align: center;"><span class="essb_icon"></span><span class="essb_network_name">LinkedIn</span></a></li><li class="essb_item essb_link_mail nolightbox" ><a id="essb-mailform1157922745" href="javascript:void(0);" rel="nofollow" title="Share this article with a friend (email)"  style="width: 100px !important; text-align: center;"><span class="essb_icon"></span><span class="essb_network_name">E-mail</span></a></li><li class="essb_item essb_totalcount_item" style="display: none !important;"><span class="essb_totalcount" title_after="" title="Total: "><span class="essb_t_nb"></span></span></li></ul>
+	<input type="hidden" class="essb_info_plugin_url" value="http://okaymarketing.com/wp-content/plugins/easy-social-share-buttons" /><input type="hidden" class="essb_info_permalink" value="http://okaymarketing.com/add-schema-markup-page-wordpress/" /><input type="hidden" class="essb_fb_total_count" value="false" /><input type="hidden" class="essb_counter_ajax" value="false"/><input type="hidden" class="essb_info_counter_pos" value="" /></div>
+
+<script type="text/javascript">function essb_window1157922745(oUrl, oService) {  if (oService == "twitter") { window.open( oUrl, "essb_share_window", "height=300,width=500,resizable=1,scrollbars=yes" ); }  else { window.open( oUrl, "essb_share_window", "height=500,width=800,resizable=1,scrollbars=yes" ); }  };  function essb_pinterenst() { var e=document.createElement('script');e.setAttribute('type','text/javascript');e.setAttribute('charset','UTF-8');e.setAttribute('src','//assets.pinterest.com/js/pinmarklet.js?r='+Math.random()*99999999);document.body.appendChild(e)};var essb_count_data = {
+    'ajax_url': 'http://okaymarketing.com/wp-admin/admin-ajax.php'
+};</script><script type="text/javascript">jQuery(function() {
+        vex.defaultOptions.className = 'vex-theme-os';
+	    jQuery('#essb-mailform1157922745').click(function(){
+	    
+        vex.dialog.open({
+            message: 'Share this with a friend',
+            input: '' +
+                '<div class="vex-custom-field-wrapper"><strong>Your Email</strong></div>'+
+                '<input name="emailfrom" type="text" placeholder="Your Email" required />' +
+                '<div class="vex-custom-field-wrapper"><strong>Recipient Email</strong></div>'+
+                '<input name="emailto" type="text" placeholder="Recipient Email" required />' +
+                '<div class="vex-custom-field-wrapper" style="border-bottom: 1px solid #aaa !important; margin-top: 10px;"><h3></h3></div>'+
+                '<div class="vex-custom-field-wrapper" style="margin-top: 10px;"><strong>Subject</strong></div>'+
+                '<input name="emailsubject" type="text" placeholder="Subject" required value="Visit this site http://okaymarketing.com" />' +
+                '<div class="vex-custom-field-wrapper" style="margin-top: 10px;"><strong>Message</strong></div>'+
+                '<textarea name="emailmessage" placeholder="Message" required" rows="6">Hi, this may be intersting you: \"How to Add Schema Markup to a Page in WordPress\"! This is the link: http://okaymarketing.com/add-schema-markup-page-wordpress/ </textarea>' +
+                '<div class="vex-custom-field-wrapper"><strong>What is 2 + 2?</strong></div><input name="captchacode" type="text" placeholder="Captcha Code" />'+
+            '',
+            buttons: [
+                jQuery.extend({}, vex.dialog.buttons.YES, { text: 'Send' }),
+                jQuery.extend({}, vex.dialog.buttons.NO, { text: 'Cancel' })
+            ],
+            callback: function (data) {
+				if (data.emailfrom && typeof(data.emailfrom) != "undefined") {
+					var c = typeof(data.captchacode) != "undefined" ? data.captchacode : "";
+					essb_sendmail_ajax1736201320(data.emailfrom, data.emailto, data.emailsubject, data.emailmessage, c);
+				}
+	}
+        });
+    });
+});
+		function essb_sendmail_ajax1736201320(emailfrom, emailto, emailsub, emailmessage, c) {
+			//alert(emailfrom + "|" + emailto);
+			
+			var get_address = "http://okaymarketing.com/wp-content/plugins/easy-social-share-buttons/public/essb-mail.php?from="+emailfrom+"&to="+emailto+"&sub="+emailsub+"&message="+emailmessage+"&t=How+to+Add+Schema+Markup+to+a+Page+in+WordPress&u=http%3A%2F%2Fokaymarketing.com&p=http%3A%2F%2Fokaymarketing.com%2Fadd-schema-markup-page-wordpress%2F&c="+c;
+			//prompt(get_address, get_address);
+			//alert(get_address);
+			jQuery.getJSON(get_address)
+					.done(function(data){
+						alert(data.message);
+					});
+		}
+		
+		</script>
+
+<!-- Form created by Optin Forms plugin by Codeleon: create beautiful optin forms with ease! -->
+<!-- http://www.codeleon.com/wordpress/plugins/optin-forms -->
+<div id="optinforms-form5-container" ><form method="post"  action="http://okaymarketing.us7.list-manage1.com/subscribe/post?u=58dc4fb85763d12722bef6a8f&id=f4cd2555e2"><div id="optinforms-form5" style="background:#333333;"><div id="optinforms-form5-container-left"><div id="optinforms-form5-title" style="font-family:Open Sans; font-size:25px; line-height:25px; color:#ffffff">OKay Newsletter</div><!--optinforms-form5-title--><input type="text" id="optinforms-form5-name-field" name="FNAME" placeholder="Enter Your Name" style="font-family:Arial, Helvetica, sans-serif; font-size:16px; color:#000000" /><input type="text" id="optinforms-form5-email-field" name="EMAIL" placeholder="Enter Your Email" style="font-family:Arial, Helvetica, sans-serif; font-size:16px; color:#000000" /><input type="submit" name="submit" id="optinforms-form5-button" value="Subscribe" style="font-family:Arial, Helvetica, sans-serif; font-size:20px; color:#FFFFFF; background-color:#bad879" /></div><!--optinforms-form5-container-left--><div id="optinforms-form5-container-right"><div id="optinforms-form5-subtitle" style="font-family:Open Sans; font-size:15px; color:#cccccc">Join over 500 visitors who are receiving our newsletter and get SEO, PPC, Social Media, Marketing, and WordPress Tips Delivered Right To Your Inbox, once a week.</div><!--optinforms-form5-subtitle--><div id="optinforms-form5-disclaimer" style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#727272">We hate spam. Your email address will not be sold or shared with anyone else.</div><!--optinforms-form5-disclaimer--></div><!--optinforms-form5-container-right--><div class="clear"></div></div><!--optinforms-form5--><div class="clear"></div></form></div><!--optinforms-form5-container--><div class="clear"></div>
+<!-- / Optin Forms -->
+
+<style type='text/css'>#optinforms-form5-name-field{display:none;}</style><!-- Fanciest Author Box v2.0.6 --><div id="ts-fab-below-13131" class="ts-fab-wrapper ts-fab-icons-text"><ul class="ts-fab-list"><li class="ts-fab-bio-link"><a href="#ts-fab-bio-below-13131">
+									<span class="genericon genericon-user" data-tab="bio"></span> 
+									<span class="ts-fab-tab-text">Bio</span>
+								</a></li><li class="ts-fab-twitter-link"><a href="#ts-fab-twitter-below-13131" data-tab="twitter" data-twitter-username="brianleejackson" data-show-count="true" data-locale="en_US">
+										<span class="genericon genericon-twitter"></span> 
+										<span class="ts-fab-tab-text">Twitter</span>
+									</a></li><li class="ts-fab-facebook-link"><a href="#ts-fab-facebook-below-13131" data-tab="facebook" data-facebook-username="brianleejackson" data-load-sdk="yes" data-facebook-locale="en_US" data-facebook-layout="standard" data-widget-type="subscribe">
+										<span class="genericon genericon-facebook"></span>
+										<span class="ts-fab-tab-text">Facebook</span>
+									</a></li><li class="ts-fab-googleplus-link"><a href="#ts-fab-googleplus-below-13131" data-tab="googleplus" data-width="320" data-googleplus-username="118032823674718072896" data-locale="en_US">
+
+										<span class="genericon genericon-googleplus"></span> 
+										<span class="ts-fab-tab-text">Google+</span>
+									</a></li><li class="ts-fab-linkedin-link"><a href="#ts-fab-linkedin-below-13131" data-tab="linkedin" data-linkedin-url="http://www.linkedin.com/in/brianleejackson">
+										<span class="genericon genericon-linkedin"></span>
+										<span class="ts-fab-tab-text">LinkedIn</span>
+									</a></li><li class="ts-fab-pinterest-link"><a href="#ts-fab-pinterest-below-13131" data-tab="pinterest" data-pinterest-username="okaymarketing">
+										<span class="genericon genericon-pinterest"></span>
+										<span class="ts-fab-tab-text">Pinterest</span>
+									</a></li><li class="ts-fab-latest-posts-link"><a href="#ts-fab-latest-posts-below-13131" data-tab="latest-posts">
+									<span class="genericon genericon-standard"></span>
+									<span class="ts-fab-tab-text">Latest Posts</span>
+								</a></li></ul><div class="ts-fab-tabs">
+	<div class="ts-fab-tab" id="ts-fab-bio-below-13131">
+		<div class="ts-fab-avatar"><img alt='Brian Jackson' src='http://1.gravatar.com/avatar/7b778bf121a80189c1b7c8e6466f6614?s=64&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G' class='avatar avatar-64 photo' height='64' width='64' /></div>
+		<div class="ts-fab-text">
+			<div class="ts-fab-header"><h4><a rel="nofollow" href="http://okaymarketing.com">Brian Jackson</a></h4><div class="ts-fab-description"><span>Owner/Director of Optimization</span> at <a rel="nofollow" href="http://okaymarketing.com"><span>OKay Marketing</span></a></div></div><!-- /.ts-fab-header --><div class="ts-fab-content">SEO, PPC, Social Media, Email Marketing, and WordPress Expert. <strong>It's all about conversions folks.</strong> “Some people dream of great accomplishments, while others stay awake and do them.”</div>
+		</div>
+	</div>
+		<div class="ts-fab-tab" id="ts-fab-twitter-below-13131">
+			<div class="ts-fab-avatar"><img alt='Brian Jackson' src='http://1.gravatar.com/avatar/7b778bf121a80189c1b7c8e6466f6614?s=64&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G' class='avatar avatar-64 photo' height='64' width='64' /></div>
+			<div class="ts-fab-text">
+				<div class="ts-fab-header">
+					<h4><a rel="nofollow" href="//twitter.com/brianleejackson">@brianleejackson</a></h4><div class="ts-fab-description">Owner/Director of Optimization <a rel="nofollow" href="http://twitter.com/OKay_Marketing" title="Follow OKay_Marketing"  target="_blank" >@OKay_Marketing</a> and Blogger <a rel="nofollow" href="http://twitter.com/webguystricks" title="Follow webguystricks"  target="_blank" >@webguystricks</a>  <a rel="nofollow" href="http://twitter.com/search/?q=%23SEO" title="Search #SEO"  target="_blank" >#SEO</a>, <a rel="nofollow" href="http://twitter.com/search/?q=%23PPC" title="Search #PPC"  target="_blank" >#PPC</a>, <a rel="nofollow" href="http://twitter.com/search/?q=%23Social" title="Search #Social"  target="_blank" >#Social</a> Media, and <a rel="nofollow" href="http://twitter.com/search/?q=%23WordPress" title="Search #WordPress"  target="_blank" >#WordPress</a> Expert. Active member on <a rel="nofollow" href="http://twitter.com/RiseForums" title="Follow RiseForums"  target="_blank" >@RiseForums</a></div></div><!-- /.ts-fab-header --><div class="ts-fab-content"><div class="ts-fab-twitter-tweet">Breaking Down Page Speed Events For SEO Gain - <a rel="nofollow" href="http://t.co/O2F3Yxf2p7" title="http://t.co/O2F3Yxf2p7"   target="_blank" >http://t.co/O2F3Yxf2p7</a> <a rel="nofollow" href="http://twitter.com/search/?q=%23SEO" title="Search #SEO"  target="_blank" >#SEO</a> <a rel="nofollow" href="http://twitter.com/search/?q=%23PageSpeed" title="Search #PageSpeed"  target="_blank" >#PageSpeed</a><span class="ts-fab-twitter-time"> - 1 hour ago</span></div></div><div class="ts-fab-twitter-widget-wrapper"></div></div>
+		</div><div class="ts-fab-tab" id="ts-fab-facebook-below-13131">
+			<div class="ts-fab-avatar"><img alt='Brian Jackson' src='http://1.gravatar.com/avatar/7b778bf121a80189c1b7c8e6466f6614?s=64&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G' class='avatar avatar-64 photo' height='64' width='64' /></div>
+			<div class="ts-fab-text">
+				<div class="ts-fab-header">
+					<h4><a rel="nofollow" href="//www.facebook.com/brianleejackson">Brian Jackson</a></h4>
+				</div><div class="ts-fab-facebook-widget-wrapper"></div></div>
+		</div>
+		<div class="ts-fab-tab" id="ts-fab-googleplus-below-13131">
+			<div class="ts-fab-avatar"><img alt='Brian Jackson' src='http://1.gravatar.com/avatar/7b778bf121a80189c1b7c8e6466f6614?s=64&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G' class='avatar avatar-64 photo' height='64' width='64' /></div>
+			<div class="ts-fab-text">
+				<div class="ts-fab-header">
+					<h4><a rel="nofollow" href="//plus.google.com/118032823674718072896?rel=author">+Brian Jackson</a></h4>
+				</div><!-- /.ts-fab-header -->
+				<div class="ts-fab-googleplus-widget-wrapper">
+					<g:follow href="//plus.google.com/118032823674718072896" rel="author"></g:follow>
+				</div>
+			</div>
+		</div>
+		<div class="ts-fab-tab" id="ts-fab-linkedin-below-13131">
+			<div class="ts-fab-avatar"><img alt='Brian Jackson' src='http://1.gravatar.com/avatar/7b778bf121a80189c1b7c8e6466f6614?s=64&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G' class='avatar avatar-64 photo' height='64' width='64' /></div>
+			<div class="ts-fab-text">		
+				<div class="ts-fab-linkedin-widget-wrapper"></div>
+			</div>
+		</div>
+		<div class="ts-fab-tab" id="ts-fab-pinterest-below-13131">
+			<div class="ts-fab-avatar"><img alt='Brian Jackson' src='http://1.gravatar.com/avatar/7b778bf121a80189c1b7c8e6466f6614?s=64&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G' class='avatar avatar-64 photo' height='64' width='64' /></div>
+			<div class="ts-fab-text">
+				<div class="ts-fab-header">
+					<h4><a rel="nofollow" href="//www.pinterest.com/okaymarketing"">Brian Jackson</a></h4>
+				</div><!-- /.ts-fab-header -->
+				<div class="ts-fab-pinterest-widget-wrapper"></div>
+			</div>
+		</div>
+	<div class="ts-fab-tab" id="ts-fab-latest-posts-below-13131">
+		<div class="ts-fab-avatar"><img alt='Brian Jackson' src='http://1.gravatar.com/avatar/7b778bf121a80189c1b7c8e6466f6614?s=64&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G' class='avatar avatar-64 photo' height='64' width='64' /></div>
+		<div class="ts-fab-text">
+			<div class="ts-fab-header">
+				<h4>Latest posts by Brian Jackson <span class="latest-see-all">(<a href="http://okaymarketing.com/author/brianleejackson/">see all</a>)</span></h4>
+			</div>
+			<ul class="ts-fab-latest">
+				<li>
+					<a href="http://okaymarketing.com/add-schema-markup-page-wordpress/">How to Add Schema Markup to a Page in WordPress</a><span> - June 30, 2014</span> 
+				</li>
+				<li>
+					<a href="http://okaymarketing.com/best-stock-photo-site-ever-used-im-%e2%9d%a4/">The Best Stock Photo Site I Have Ever Used &#8211; I&#8217;m in ❤</a><span> - June 16, 2014</span> 
+				</li>
+				<li>
+					<a href="http://okaymarketing.com/setup-twitter-card-wordpress/">How to Setup Your Twitter Card in WordPress</a><span> - June 15, 2014</span> 
+				</li>
+		</ul></div>
+	</div>
+		</div>
+	</div>																															<div class="bottomad">
+										<a href="https://mv983.isrefer.com/go/home/b876/" target=_blank><img src="http://www.ninjacatppc.com/banner_ads/Leaderboard728x90.gif" border=0></a>									</div>
+															 
+															
+							  
+															<div class="single_post_below">
+								<!-- Start Related Posts -->
+								<div class="related-posts"><div class="postauthor-top"><h3>Related Posts</h3></div><ul>									<li class=" relatepostli2">
+										<a rel="nofollow" class="relatedthumb" href="http://okaymarketing.com/setup-twitter-card-wordpress/" title="How to Setup Your Twitter Card in WordPress">
+											<span class="rthumb">
+																									<img width="272" height="226" src="http://cdn.okaymarketing.com/wp-content/uploads/2014/06/twitter-card-272x226.jpg" class="attachment-featured3 wp-post-image" alt="twitter card" title="" />																							</span>
+										<span class="relatedthumb">
+											How to Setup Your Twitter Card in WordPress											
+										</span>
+										</a>
+									</li>
+																		<li class=" relatepostli3">
+										<a rel="nofollow" class="relatedthumb" href="http://okaymarketing.com/editing-image-margins-borders-wordpress-3-9/" title="No More Editing Image Margins &#038; Borders in WordPress 3.9">
+											<span class="rthumb">
+																									<img width="272" height="226" src="http://cdn.okaymarketing.com/wp-content/uploads/2014/05/wordpress-3.9-272x226.jpg" class="attachment-featured3 wp-post-image" alt="wordpress 3.9" title="" />																							</span>
+										<span class="relatedthumb">
+											No More Editing Image Margins &#038; Borders in WordPress 3.9											
+										</span>
+										</a>
+									</li>
+																		<li class=" relatepostli4">
+										<a rel="nofollow" class="relatedthumb" href="http://okaymarketing.com/set-first-field-selection-label-gravity-forms/" title="How to Set the First Field Selection as Label Only in Gravity Forms">
+											<span class="rthumb">
+																									<img width="272" height="226" src="http://cdn.okaymarketing.com/wp-content/uploads/2013/10/gravityforms-272x226.jpg" class="attachment-featured3 wp-post-image" alt="Gravity Forms" title="" />																							</span>
+										<span class="relatedthumb">
+											How to Set the First Field Selection as Label Only in Gravity Forms											
+										</span>
+										</a>
+									</li>
+																		<li class="last relatepostli1">
+										<a rel="nofollow" class="relatedthumb" href="http://okaymarketing.com/insert-bing-conversion-code-wordpress/" title="How to Insert the Bing Conversion Code in WordPress">
+											<span class="rthumb">
+																									<img width="272" height="226" src="http://cdn.okaymarketing.com/wp-content/uploads/2014/03/bing-conversion-pixel-272x226.jpg" class="attachment-featured3 wp-post-image" alt="Bing Conversion Pixel" title="" />																							</span>
+										<span class="relatedthumb">
+											How to Insert the Bing Conversion Code in WordPress											
+										</span>
+										</a>
+									</li>
+									</ul></div>								<!-- .related-posts -->
+								</div>
+							 	
+							
+<div id="disqus_thread">
+    </div>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+    var disqus_url = 'http://okaymarketing.com/add-schema-markup-page-wordpress/';
+    var disqus_identifier = '13131 http://okaymarketing.com/?p=13131';
+    var disqus_container_id = 'disqus_thread';
+    var disqus_domain = 'disqus.com';
+    var disqus_shortname = 'okaymarketing';
+    var disqus_title = "How to Add Schema Markup to a Page in WordPress";
+    var disqus_config = function () {
+        var config = this; // Access to the config object
+        config.language = '';
+
+        /* Add the ability to add javascript callbacks */
+        
+        /*
+           All currently supported events:
+            * preData — fires just before we request for initial data
+            * preInit - fires after we get initial data but before we load any dependencies
+            * onInit  - fires when all dependencies are resolved but before dtpl template is rendered
+            * afterRender - fires when template is rendered but before we show it
+            * onReady - everything is done
+         */
+
+        config.callbacks.preData.push(function() {
+            // clear out the container (its filled for SEO/legacy purposes)
+            document.getElementById(disqus_container_id).innerHTML = '';
+        });
+                config.callbacks.onReady.push(function() {
+            // sync comments in the background so we don't block the page
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = '?cf_action=sync_comments&post_id=13131';
+
+            var firstScript = document.getElementsByTagName( "script" )[0];
+            firstScript.parentNode.insertBefore(script, firstScript);
+        });
+                    };
+/* ]]> */
+</script>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+    var DsqLocal = {
+        'trackbacks': [
+        ],
+        'trackback_url': "http:\/\/okaymarketing.com\/add-schema-markup-page-wordpress\/trackback\/"    };
+/* ]]> */
+</script>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.' + 'disqus.com' + '/' + 'embed' + '.js' + '?pname=wordpress&pver=2.77';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+/* ]]> */
+</script>
+						</div>		
+										 	
+				</div><!--.post-content box mark-links-->	
+			</div><!--.g post-->
+		</div>
+	</article>
+	<aside class="sidebar c-4-12">
+	<div id="sidebars" class="g">
+		<div class="sidebar">
+			<ul class="sidebar_list">
+				<div id="search-2" class="widget widget_search"><form method="get" id="searchform" class="search-form" action="http://okaymarketing.com" _lpchecked="1">
+	<fieldset>
+		<input type="text" name="s" id="s" value="" placeholder="Search the site" x-webkit-speech="x-webkit-speech" >
+		<input id="search-image" class="sbutton" type="submit" value="Search">
+	</fieldset>
+</form></div><div id="text-41" class="widget widget_text">			<div class="textwidget"><article id="blog-updates" class="widget widget_subscribe">
+<span style="font-weight:normal; font-size:16px;">SEO, PPC, Social Media, Marketing, and WordPress Tips Delivered Right To Your Inbox, <strong>once a week</strong>.</span>
+	<div class="sidebar-section" style="padding-top:9px;">
+		
+		<form action="http://okaymarketing.us7.list-manage1.com/subscribe/post?u=58dc4fb85763d12722bef6a8f&id=f4cd2555e2" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate nice custom" target="_blank" novalidate="" style="margin-bottom:0px;">
+			<div style="display: none;">
+			<div class="response" id="mce-error-response" style="display:none"></div>
+				<div class="response" id="mce-success-response" style="display:none"></div>
+			</div>
+		
+		    <input value="" name="EMAIL" placeholder="Your email" class="input-text required email" id="mce-EMAIL" type="email" style="padding:5px; width:100%; font-size:17px;">
+		    <input value="Subscribe" name="subscribe" class="buttons btn_green left" style="margin-top:10px; margin-bottom:0px; font-size:20px; padding-top:9px; padding-bottom:7px; width:100%; text-transform:none;" id="emailsubscribe" type="submit">
+		</form></div></div>
+		</div><div id="text-39" class="widget widget_text"><h3 class="widget-title">We ❤ NinjaCat, What About You?</h3>			<div class="textwidget"><a href="https://mv983.isrefer.com/go/adwords/b876/" target=_blank><img src="http://www.ninjacatppc.com/banner_ads/300x250.gif" border=0></a></div>
+		</div>
+
+  <div id="socialfans_counter_widget-2" class="widget widget_socialfans_counter_widget">  <h3 class="widget-title">  Connect With Us  </h3>  <div class="sf-widget-holder" style="">
+
+  
+
+
+                              <div class="sf-block sf-view sf-no-effect  sf-col-lg-4 sf-col-md-4 sf-col-sm-4 sf-col-xs-4">
+          <div class="sf-front sf-bg-facebook">
+                              <div class="weekly-added" style=" ">
+              <i>&#9650</i><span>1</span>
+            </div>
+                          <a class="sf-dark-color"  href="http://www.facebook.com/okaymarketing" target="_blank" rel="nofollow">
+          <i class="-sf-icon-facebook "></i>
+                      <div class="sf-spe sf-dark-bg"></div>
+            <span class="sf-dark-color">854</span>
+            <div class="clearfix"></div>
+            <small class="sf-dark-color">Fans</small>
+                  </a>
+      </div>
+      <div class="sf-back sf-mask ">
+        <a href="http://www.facebook.com/okaymarketing" class="sf-join btn  btn-xs shake shake-slow sf-bg-facebook sf-dark-color" target="_blank" rel="nofollow">Like</a>
+      </div>
+    
+  </div><!-- End sf-block -->
+
+                              <div class="sf-block sf-view sf-no-effect  sf-col-lg-4 sf-col-md-4 sf-col-sm-4 sf-col-xs-4">
+          <div class="sf-front sf-bg-twitter">
+                              <div class="weekly-added" style=" ">
+              <i>&#9650</i><span>19</span>
+            </div>
+                          <a class="sf-dark-color"  href="http://www.twitter.com/okay_marketing" target="_blank" rel="nofollow">
+          <i class="-sf-icon-twitter "></i>
+                      <div class="sf-spe sf-dark-bg"></div>
+            <span class="sf-dark-color">970</span>
+            <div class="clearfix"></div>
+            <small class="sf-dark-color">Followers</small>
+                  </a>
+      </div>
+      <div class="sf-back sf-mask ">
+        <a href="http://www.twitter.com/okay_marketing" class="sf-join btn  btn-xs shake shake-slow sf-bg-twitter sf-dark-color" target="_blank" rel="nofollow">Follow</a>
+      </div>
+    
+  </div><!-- End sf-block -->
+
+                              <div class="sf-block sf-view sf-no-effect  sf-col-lg-4 sf-col-md-4 sf-col-sm-4 sf-col-xs-4">
+          <div class="sf-front sf-bg-google">
+                              <div class="weekly-added" style=" ">
+              <i>&#9650</i><span>4</span>
+            </div>
+                          <a class="sf-dark-color"  href="http://plus.google.com/107339358671766463291" target="_blank" rel="nofollow">
+          <i class="-sf-icon-google "></i>
+                      <div class="sf-spe sf-dark-bg"></div>
+            <span class="sf-dark-color">45</span>
+            <div class="clearfix"></div>
+            <small class="sf-dark-color">Fans</small>
+                  </a>
+      </div>
+      <div class="sf-back sf-mask ">
+        <a href="http://plus.google.com/107339358671766463291" class="sf-join btn  btn-xs shake shake-slow sf-bg-google sf-dark-color" target="_blank" rel="nofollow">Follow</a>
+      </div>
+    
+  </div><!-- End sf-block -->
+
+                              <div class="sf-block sf-view sf-no-effect  sf-col-lg-4 sf-col-md-4 sf-col-sm-4 sf-col-xs-4">
+          <div class="sf-front sf-bg-pinterest">
+                              <div class="weekly-added" style=" ">
+              <i>&#9650</i><span>9</span>
+            </div>
+                          <a class="sf-dark-color"  href="http://www.pinterest.com/okaymarketing" target="_blank" rel="nofollow">
+          <i class="-sf-icon-pinterest "></i>
+                      <div class="sf-spe sf-dark-bg"></div>
+            <span class="sf-dark-color">33</span>
+            <div class="clearfix"></div>
+            <small class="sf-dark-color">Followers</small>
+                  </a>
+      </div>
+      <div class="sf-back sf-mask ">
+        <a href="http://www.pinterest.com/okaymarketing" class="sf-join btn  btn-xs shake shake-slow sf-bg-pinterest sf-dark-color" target="_blank" rel="nofollow">Follow</a>
+      </div>
+    
+  </div><!-- End sf-block -->
+
+
+  <div class="sf-block sf-view sf-col-lg-8 sf-col-md-8 sf-col-sm-8 sf-col-xs-8">
+    <div class="sf-front sf-bg-total">
+      <div class="sf-love sf-dark-color">
+        <i class="-sf-icon-heart"></i>
+        <div class="sf-spe "></div>
+        <span class="sf-dark-color">1.9k</span>
+        <div class="clearfix"></div>
+        <small class="sf-dark-color">Fans Love us</small>
+      </div>
+    </div>
+  </div>
+
+    </div><!-- End Widget Holder -->
+  </div>        
+<div id="mts_poluar_posts_widget-2" class="widget widget_mts_poluar_posts_widget"><h3 class="widget-title">Popular Posts</h3><ul class="popular-posts">		<li>
+			<a href="http://okaymarketing.com/insert-facebook-conversion-pixel-wordpress/">
+										                        	                            <img width="65" height="50" src="http://cdn.okaymarketing.com/wp-content/uploads/2014/03/facebook1-65x50.jpg" class="attachment-widgetthumb wp-post-image" alt="facebook" title="" />                                            								How to Insert the Facebook Conversion Pixel in WordPress	
+			</a>
+			<div class="meta">
+																	<span class="dsq-postid" rel="12551 http://okaymarketing.com/?p=12551"><span class="comm">10</span> Comments</span>											</div> <!--end .entry-meta--> 
+		</li>	
+				<li>
+			<a href="http://okaymarketing.com/best-stock-photo-site-ever-used-im-%e2%9d%a4/">
+										                        	                            <img width="65" height="50" src="http://cdn.okaymarketing.com/wp-content/uploads/2014/06/dollar-photo-club-65x50.jpg" class="attachment-widgetthumb wp-post-image" alt="dollar photo club" title="" />                                            								The Best Stock Photo Site I Have Ever Used &#8211; I&#8217;m in ❤	
+			</a>
+			<div class="meta">
+																	<span class="dsq-postid" rel="13109 http://okaymarketing.com/?p=13109"><span class="comm">8</span> Comments</span>											</div> <!--end .entry-meta--> 
+		</li>	
+				<li>
+			<a href="http://okaymarketing.com/migrating-website-away-wp-engine/">
+										                        	                            <img width="65" height="50" src="http://cdn.okaymarketing.com/wp-content/uploads/2013/12/wp-engine-65x50.jpg" class="attachment-widgetthumb wp-post-image" alt="WP Engine" title="" />                                            								Migrating Your Website Away From WP Engine	
+			</a>
+			<div class="meta">
+																	<span class="dsq-postid" rel="5193 http://okaymarketing.com/?p=5193"><span class="comm">5</span> Comments</span>											</div> <!--end .entry-meta--> 
+		</li>	
+				<li>
+			<a href="http://okaymarketing.com/use-callrails-call-tracking-software-callrail-review/">
+										                        	                            <img width="65" height="50" src="http://cdn.okaymarketing.com/wp-content/uploads/2013/10/callrail-65x50.jpg" class="attachment-widgetthumb wp-post-image" alt="CallRail" title="" />                                            								Why We Use CallRail&#8217;s Call Tracking Software &#8211; CallRail Review	
+			</a>
+			<div class="meta">
+																	<span class="dsq-postid" rel="72 http://okaymarketing.com/?p=72"><span class="comm">6</span> Comments</span>											</div> <!--end .entry-meta--> 
+		</li>	
+				<li>
+			<a href="http://okaymarketing.com/best-team-collaboration-task-management-software/">
+										                        	                            <img width="65" height="50" src="http://cdn.okaymarketing.com/wp-content/uploads/2014/01/glip-65x50.jpg" class="attachment-widgetthumb wp-post-image" alt="Best Team Collaboration and Task Management Software" title="" />                                            								Best Team Collaboration and Task Management Software	
+			</a>
+			<div class="meta">
+																	<span class="dsq-postid" rel="5272 http://okaymarketing.com/?p=5272"><span class="comm">6</span> Comments</span>											</div> <!--end .entry-meta--> 
+		</li>	
+		</ul>
+</div><div id="text-44" class="widget widget_text"><h3 class="widget-title">We ❤ Dollar Photo Club</h3>			<div class="textwidget"><a href="http://mbsy.co/6VRj7" target="_blank" style="outline:none;border:none;"><img src="https://ambassador-api.s3.amazonaws.com/uploads/marketing/5205/2014_06_11_10_51_00.jpg" alt="Dollar Photo Club" border="0" /></a></div>
+		</div>	
+		<div id="wp_review_tab_widget-2" class="widget widget_wp_review_tab">	
+		<div class="wp_review_tab_widget_content" id="wp_review_tab_widget-2_content">		
+			<ul class="wp-review-tabs has-2-tabs">
+                                                            <li class="tab_title"><a href="#" id="recent-tab">Recent</a></li>	
+                                                                                <li class="tab_title"><a href="#" id="toprated-tab">Top Rated</a></li>	
+                                                                                                             
+			</ul> <!--end .tabs-->	
+			<div class="clear"></div>  
+			<div class="inside">        
+					
+					<div id="toprated-tab-content" class="tab-content">				
+					</div> <!--end #toprated-tab-content-->       
+				       
+					
+					<div id="recent-tab-content" class="tab-content"> 		 
+					</div> <!--end #recent-tab-content-->		
+				                     
+				            
+					
+				<div class="clear"></div>	
+			</div> <!--end .inside -->	
+			<div class="clear"></div>
+		</div><!--end #tabber -->    
+		  
+		<script type="text/javascript">  
+			jQuery(function($) {    
+				$('#wp_review_tab_widget-2_content').data('args', {"review_type":"any","allow_pagination":"1","post_num":"4","thumb_size":"small","show_date":null,"custom_reviews":""});  
+			});  
+		</script>  
+		</div>		<div id="archives-6" class="widget widget_archive"><h3 class="widget-title">Archives</h3>		<ul>
+	<li><a href='http://okaymarketing.com/2014/06/'>June 2014</a></li>
+	<li><a href='http://okaymarketing.com/2014/05/'>May 2014</a></li>
+	<li><a href='http://okaymarketing.com/2014/04/'>April 2014</a></li>
+	<li><a href='http://okaymarketing.com/2014/03/'>March 2014</a></li>
+	<li><a href='http://okaymarketing.com/2014/02/'>February 2014</a></li>
+	<li><a href='http://okaymarketing.com/2014/01/'>January 2014</a></li>
+	<li><a href='http://okaymarketing.com/2013/12/'>December 2013</a></li>
+	<li><a href='http://okaymarketing.com/2013/11/'>November 2013</a></li>
+	<li><a href='http://okaymarketing.com/2013/10/'>October 2013</a></li>
+	<li><a href='http://okaymarketing.com/2013/09/'>September 2013</a></li>
+		</ul>
+</div><div id="text-43" class="widget widget_text"><h3 class="widget-title">We ❤ Web CEO &gt; Raven Tools</h3>			<div class="textwidget"><a href="http://www.webceo.com?id=12026" target="_blank"><img src="http://cdn.okaymarketing.com/wp-content/uploads/2014/05/panda-penguin-seo-tool.png" alt="Web CEO Online SEO Tools" /></a></div>
+		</div><div id="text-45" class="widget widget_text"><h3 class="widget-title">We ❤ NinjaCat, What About You?</h3>			<div class="textwidget"><a href="https://mv983.isrefer.com/go/ppc/b876/" target=_blank><img src="http://www.ninjacatppc.com/banner_ads/300x250.gif" border=0></a></div>
+		</div>			</ul>
+		</div>
+	</div><!--sidebars-->
+</aside>	</div><!--#page-->
+</div><!--.main-container-->
+<footer>
+				<div class="footerTop">
+			<div class="container">
+				<div class="footer-widgets col3">
+					<div class="f-widget f-widget-1">
+						<div id="text-42" class="widget widget_text">			<div class="textwidget"><article id="blog-updates" class="widget widget_subscribe">
+<span style="font-weight:normal; font-size:16px;">Join over 500 visitors who are receiving our newsletter and get SEO, PPC, Social Media, Marketing, and WordPress Tips Delivered Right To Your Inbox, <strong>once a week</strong>.</span>
+	<div class="sidebar-section" style="padding-top:9px;">
+		
+		<form action="http://okaymarketing.us7.list-manage1.com/subscribe/post?u=58dc4fb85763d12722bef6a8f&id=f4cd2555e2" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate nice custom" target="_blank" novalidate="" style="margin-bottom:0px;">
+			<div style="display: none;">
+			<div class="response" id="mce-error-response" style="display:none"></div>
+				<div class="response" id="mce-success-response" style="display:none"></div>
+			</div>
+		
+		    <input value="" name="EMAIL" placeholder="Your email" class="input-text required email" id="mce-EMAIL" type="email" style="padding:5px; width:100%; font-size:17px;">
+		    <input value="Subscribe" name="subscribe" class="buttons btn_green left" style="margin-top:10px; margin-bottom:0px; font-size:20px; padding-top:9px; padding-bottom:7px; width:100%; text-transform:none;" id="emailsubscribe" type="submit">
+		</form></div></div>
+		</div>					</div>
+					<div class="f-widget f-widget-2">
+						<div id="mts_recent_posts_widget-2" class="widget widget_mts_recent_posts_widget"><h3 class="widget-title">Recent Posts</h3><ul class="advanced-recent-posts">        <li>
+            <a href="http://okaymarketing.com/add-schema-markup-page-wordpress/">
+                                                                                        <img width="65" height="50" src="http://cdn.okaymarketing.com/wp-content/uploads/2014/06/seo-65x50.jpg" class="attachment-widgetthumb wp-post-image" alt="seo" title="" />                                                                            How to Add Schema Markup to a Page in WordPress   
+            </a>
+            <div class="meta">
+                                    June 30, 2014                                                     &bull; 
+                                                    <span class="dsq-postid" rel="13131 http://okaymarketing.com/?p=13131">No Comment</span>                                            </div> <!--end .entry-meta-->
+        </li>   
+                <li>
+            <a href="http://okaymarketing.com/best-stock-photo-site-ever-used-im-%e2%9d%a4/">
+                                                                                        <img width="65" height="50" src="http://cdn.okaymarketing.com/wp-content/uploads/2014/06/dollar-photo-club-65x50.jpg" class="attachment-widgetthumb wp-post-image" alt="dollar photo club" title="" />                                                                            The Best Stock Photo Site I Have Ever Used &#8211; I&#8217;m in ❤   
+            </a>
+            <div class="meta">
+                                    June 16, 2014                                                     &bull; 
+                                                    <span class="dsq-postid" rel="13109 http://okaymarketing.com/?p=13109"><span class="comm">8</span> Comments</span>                                            </div> <!--end .entry-meta-->
+        </li>   
+                <li>
+            <a href="http://okaymarketing.com/setup-twitter-card-wordpress/">
+                                                                                        <img width="65" height="50" src="http://cdn.okaymarketing.com/wp-content/uploads/2014/06/twitter-card-65x50.jpg" class="attachment-widgetthumb wp-post-image" alt="twitter card" title="" />                                                                            How to Setup Your Twitter Card in WordPress   
+            </a>
+            <div class="meta">
+                                    June 15, 2014                                                     &bull; 
+                                                    <span class="dsq-postid" rel="13088 http://okaymarketing.com/?p=13088"><span class="comm">2</span> Comments</span>                                            </div> <!--end .entry-meta-->
+        </li>   
+        </ul>
+</div>					</div>
+					<div class="f-widget f-widget-3 last">
+						<div id="social-profile-icons-3" class="widget social-profile-icons"><h3 class="widget-title">Connect With Us</h3><div class="social-profile-icons"><ul class=""><li class="social-facebook"><a title="Facebook" href="https://facebook.com/okaymarketing" target="_blank">Facebook</a></li><li class="social-gplus"><a title="Google+" href="https://plus.google.com/107339358671766463291" target="_blank">Google+</a></li><li class="social-linkedin"><a title="LinkedIn" href="https://www.linkedin.com/company/okay-marketing" target="_blank">Linkedin</a></li><li class="social-pinterest"><a title="Pinterest" href="http://www.pinterest.com/okaymarketing/pins/" target="_blank">Pinterest</a></li><li class="social-rss"><a title="RSS" href="http://okaymarketing.com/feed" target="_blank">RSS</a></li><li class="social-twitter"><a title="Twitter" href="http://twitter.com/okay_marketing" target="_blank">Twitter</a></li><li class="social-instagram"><a title="Instagram" href="http://instagram.com/okaymarketing" target="_blank">Instagram</a></li></ul></div></div><div id="text-32" class="widget widget_text"><h3 class="widget-title">OKay Marketing</h3>			<div class="textwidget">OKay Marketing was founded on the premise of providing businesses with exceptional service, understanding that every business deserves “better than OKay.”</div>
+		</div>					</div>
+									</div><!--.footer-widgets-->
+			</div><!--.container-->
+		</div>
+		<div class="copyrights">
+		<!--start copyrights-->
+<div class="row" id="copyright-note">
+<span><a href="http://okaymarketing.com/" title="SEO, PPC, Social Media, WordPress Tips" rel="nofollow">OKay Marketing</a> Copyright &copy; 2014.</span>
+<div class="top">Powered by <a href="http://okaymarketing.com/wpengine" title="WP Engine" target="_blank">WP Engine</a> & <a href="https://wordpress.org/" title="WordPress" target="_blank">WordPress</a> - <a href="http://okaymarketing.com/privacy-policy/">Privacy Policy</a> - <a href="http://okaymarketing.com/sitemap_index.xml" target="_blank" title="Sitemap">Sitemap</a> -  <a href="#top" class="toplink" rel="nofollow">Back to Top ↑</a></div>
+</div>
+<!--end copyrights-->
+	</div> 
+</footer><!--footer-->
+</div><!--.main-container-wrap-->
+<div class="secondary-navigation mobile">
+	<nav id="navigation" class="clearfix">
+					<ul id="menu-menu-1" class="menu clearfix"><li class="icon-home menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-12580"><a href="http://okaymarketing.com/">Home</a></li>
+<li class="icon-reorder menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-12582"><a>Topics</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12597"><a href="http://okaymarketing.com/category/marketing/">Marketing</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12565"><a href="http://okaymarketing.com/category/ppc/">PPC</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12614"><a href="http://okaymarketing.com/category/reporting/">Reporting</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12598"><a href="http://okaymarketing.com/category/reviews/">Reviews</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12563"><a href="http://okaymarketing.com/category/seo/">SEO</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12564"><a href="http://okaymarketing.com/category/social-media/">Social Media</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-12562"><a href="http://okaymarketing.com/category/wordpress/">WordPress</a></li>
+</ul>
+</li>
+<li class="icon-group menu-item menu-item-type-post_type menu-item-object-page menu-item-12509"><a href="http://okaymarketing.com/about/">About</a></li>
+<li class="icon-wrench menu-item menu-item-type-post_type menu-item-object-page menu-item-13000"><a href="http://okaymarketing.com/marketing-toolbox/">Toolbox</a></li>
+<li class="icon-comments menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-13126"><a>Tips</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-13129"><a href="http://okaymarketing.com/seo-tips/">SEO</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-13128"><a href="http://okaymarketing.com/pay-per-click-tips/">PPC</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-13127"><a href="http://okaymarketing.com/social-media-tips/">Social Media</a></li>
+</ul>
+</li>
+<li class="icon-signal menu-item menu-item-type-post_type menu-item-object-page menu-item-13120"><a href="http://okaymarketing.com/advertise/">Advertise</a></li>
+<li class="icon-phone menu-item menu-item-type-post_type menu-item-object-page menu-item-12507"><a href="http://okaymarketing.com/contact/">Contact</a></li>
+</ul>			</nav>
+</div>
+<!--start footer code-->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-7855905-40', 'okaymarketing.com');
+  ga('send', 'pageview');
+
+</script><!--end footer code-->
+		<div style="display: none;">
+			<div id="fb-root"></div>
+			<input type="hidden" id="snp_popup" value="" />
+			<input type="hidden" id="snp_popup_id" value="" />
+			<input type="hidden" id="snp_popup_theme" value="" />
+			<input type="hidden" id="snp_exithref" value="" />
+			<input type="hidden" id="snp_exittarget" value="" />
+				<div id="snppopup-welcome" class="snp-pop-12954 snppopup"><input type="hidden" class="snp_open_after" value="20" /><input type="hidden" class="snp_optin_redirect_url" value="" /><input type="hidden" class="snp_show_cb_button" value="yes" /><input type="hidden" class="snp_popup_id" value="12954" /><input type="hidden" class="snp_popup_theme" value="theme14" /><input type="hidden" class="snp_overlay" value="default" /><input type="hidden" class="snp_cookie_conversion" value="30" /><input type="hidden" class="snp_cookie_close" value="-1" /><div class="snp-fb snp-theme14">
+<div class="color-top">
+<span style="background:#ef3e36;"></span>
+<span style="background:#abb92e;"></span>
+<span style="background:#f57826;"></span>
+<span style="background:#17b4e9;"></span>
+</div>
+<div class="headers">
+	<div class="snp-headers"><div class="snp-header">Weekly Marketing Tips</div></div><div class="snp-body"><div class="snp-text"><p>SEO, PPC, Social Media, Marketing, and WordPress Tips Delivered Right To Your Inbox, once a week. Let us help you increase your conversions and traffic for free!</div> 
+</div>
+
+    <div class="snp-img"><img src="http://cdn.okaymarketing.com/wp-content/uploads/2014/03/logo.png" alt=""/></div>
+    <div class="snp-right">
+
+	<div class="snp-form">
+	    <form action="#" method="post" class="snp-subscribeform snp_subscribeform">
+				<fieldset>	    
+		    		    <input type="text" name="email" id="snp_email" placeholder="Your E-mail:" class="snp-field snp-field-email" />
+		    <button type="submit" data-loading="" class="snp-submit">Subscribe Now!</button>
+		</fieldset>
+	    </form>
+	</div>
+		<a href="#" class="snp-close snp_nothanks">x</a></div>    </div>
+    <br style="clear: both;"/>
+</div>
+<style>.snp-pop-12954 .snp-theme14 { max-width: 800px;}
+.snp-pop-12954 .snp-theme14 .snp-header {font-size: 40px; color: #484848;}
+.snp-pop-12954 .snp-theme14 .snp-header2 {font-size: 16px; color: #757575;}
+.snp-pop-12954 .snp-theme14 .snp-text {font-size: 17px;}
+.snp-pop-12954 .snp-theme14 { color: #757575;}
+.snp-pop-12954 .snp-headers { border-bottom: 1px #757575 solid;}
+.snp-pop-12954 .snp-theme14 .snp-submit, .snp-pop-12954 .snp-theme14 .snp-submit:hover { background-color: #4192c3;}
+.snp-pop-12954 .snp-theme14 .snp-submit { color: #fff; border-bottom: none;}
+.snp-pop-12954 .snp-theme14 { background-color: #FFFFFF; }
+</style></div>		</div>
+		<script type="text/javascript">
+			var snp_timer;
+			var snp_timer_o;
+			var snp_ajax_url= 'http://okaymarketing.com/wp-admin/admin-ajax.php';
+			var snp_ignore_cookies = false;
+			var snp_is_interal_link;
+			jQuery(document).ready(function(){
+				jQuery('[placeholder]').placeholder();				jQuery(".snp_nothanks, .snp_closelink").click(function(){
+					jQuery.fancybox2.close();
+					return false;
+				});
+				jQuery(".snp_subscribeform").submit(function(){
+					return snp_onsubmit(jQuery(this));
+				});
+												var snp_open_after=jQuery('#snppopup-welcome .snp_open_after').val();
+								if(snp_open_after)
+								{
+									snp_timer_o=setTimeout("snp_open_popup('','','snppopup-welcome','welcome');",snp_open_after*1000);	
+								}
+								else
+								{
+									snp_open_popup('','','snppopup-welcome','welcome');
+								}
+								});	
+					</script>
+		<script type='text/javascript' src='http://cdn.okaymarketing.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9'></script>
+<script type='text/javascript' src='http://cdn.okaymarketing.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPhp.js?ver=3.0.9'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "http://okaymarketing.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "http://okaymarketing.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeDefault.css?ver=3.0.9";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.defaults['toolbar'] = false;
+	SyntaxHighlighter.all();
+</script>
+<link rel='stylesheet' id='scroll_to_top_button_style-css'  href='http://cdn.okaymarketing.com/wp-content/plugins/scroll-to-top-button/assets/css/style.css?ver=3.9.1' type='text/css' media='all' />
+<link rel='stylesheet' id='wp_review-style-css'  href='http://cdn.okaymarketing.com/wp-content/plugins/wp-review/assets/css/wp-review.css?ver=1.0' type='text/css' media='all' />
+<link rel='stylesheet' id='wp_review_tab_widget-css'  href='http://cdn.okaymarketing.com/wp-content/plugins/wp-review/assets/css/wp-review-tab-widget.css?ver=3.9.1' type='text/css' media='all' />
+<script type='text/javascript' src='http://cdn.okaymarketing.com/wp-content/plugins/easy-social-share-buttons/assets/js/easy-social-share-buttons.min.js?ver=1.3.9.5'></script>
+<script type='text/javascript' src='http://cdn.okaymarketing.com/wp-content/plugins/easy-social-share-buttons/assets/js/essb-mailform.js?ver=1.3.9.5'></script>
+<script type='text/javascript' src='http://cdn.okaymarketing.com/wp-includes/js/comment-reply.min.js?ver=3.9.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var scrollTopParams = {"scheme":"dark","size":"large"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://cdn.okaymarketing.com/wp-content/plugins/scroll-to-top-button/assets/js/scroll-to-top.js?ver=3.9.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wp_review_tab = {"ajax_url":"http:\/\/okaymarketing.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://cdn.okaymarketing.com/wp-content/plugins/wp-review/assets/js/wp-review-tab-widget.js?ver=3.9.1'></script>
+</body>
+</html>
