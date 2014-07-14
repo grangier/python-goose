@@ -41,7 +41,7 @@ class DocumentCleaner(object):
         "navbar|storytopbar-bucket|utility-bar|inline-share-tools"
         "|comment|PopularQuestions|contact|foot|footer|Footer|footnote"
         "|cnn_strycaptiontxt|cnn_html_slideshow|cnn_strylftcntnt"
-        "|links|meta$|shoutbox|sponsor"
+        "|^links$|meta$|shoutbox|sponsor"
         "|tags|socialnetworking|socialNetworking|cnnStryHghLght"
         "|cnn_stryspcvbx|^inset$|pagetools|post-attributes"
         "|welcome_form|contentTools2|the_answers"
