@@ -9,4 +9,5 @@ env/
 .idea
 ._*
 venv/
+.env/
 goose_extractor.egg-info/
