@@ -81,27 +81,37 @@ class UpgradedImageIExtractor(ImageExtractor):
         )
 
     def get_best_image(self, doc, topNode):
+        # first check for known occurrences
         image = self.check_known_elements()
         if image:
             return image
 
-        image = self.check_large_images(topNode, 0, 0)
-        if image:
-            return image
-
+        # then check for curated tags
         image = self.check_meta_tag()
         if image:
             return image
+
+        # then make best (and most costly) guess
+        if self.config.enable_image_fetching:
+            image = self.check_large_images(topNode, 0, 0)
+            if image:
+                return image
+
         return Image()
 
     def check_meta_tag(self):
-        # check link tag
-        image = self.check_link_tag()
+        # check opengraph tag
+        image = self.check_opengraph_tag()
         if image:
             return image
 
-        # check opengraph tag
-        image = self.check_opengraph_tag()
+        # check twitter card tag
+        image = self.check_twitter_card_tag()
+        if image:
+            return image
+
+        # check link tag
+        image = self.check_link_tag()
         if image:
             return image
 
@@ -335,6 +345,19 @@ class UpgradedImageIExtractor(ImageExtractor):
             src = self.parser.getAttribute(item, attr='content')
             if src:
                 return self.get_image(item, src, extraction_type='opengraph')
+        return None
+
+    def check_twitter_card_tag(self):
+        """\
+        checks to see if we were able to
+        find twitter card tags on this page
+        """
+        node = self.article.raw_doc
+        meta = self.parser.getElementsByTag(node, tag='meta', attr='property', value='twitter:image')
+        for item in meta:
+            src = self.parser.getAttribute(item, attr='content')
+            if src:
+                return self.get_image(item, src, extraction_type='twitter')
         return None
 
     def get_local_image(self, src):
