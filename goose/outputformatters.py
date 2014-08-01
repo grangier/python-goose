@@ -49,7 +49,7 @@ class OutputFormatter(object):
         """
         # we don't want to force the target language
         # so we use the article.meta_lang
-        if self.config.use_meta_language == True:
+        if self.config.use_meta_language:
             if self.article.meta_lang:
                 return self.article.meta_lang[:2]
         return self.config.target_language
