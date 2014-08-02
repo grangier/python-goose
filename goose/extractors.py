@@ -117,6 +117,27 @@ class ContentExtractor(object):
         # replace content
         title = title_pieces[large_text_index]
         return TITLE_REPLACEMENTS.replaceAll(title).strip()
+    
+
+    def check_opengraph_tag(self,val):
+        """\
+        checks to see if we were able to
+        find open graph tags on this page
+        """
+        node = self.article.raw_doc
+        meta = self.parser.getElementsByTag(node, tag='meta', attr='property', value=val)
+        for item in meta:
+            src = self.parser.getAttribute(item, attr='content')
+            if src:
+                return src
+        return None
+
+    def get_og_title(self):
+        """\
+        Get the open graph title for the document.
+        This will give, writters title of article.
+        """
+        return self.check_opengraph_tag("og:title")
 
     def get_favicon(self):
         """\

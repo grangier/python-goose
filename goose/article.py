@@ -27,6 +27,9 @@ class Article(object):
     def __init__(self):
         # title of the article
         self.title = None
+    
+        # open graph title of the article
+        self.og_title = None
 
         # stores the lovely, pure text from the article,
         # stripped of html, formatting, etc...

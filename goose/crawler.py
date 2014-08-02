@@ -99,6 +99,7 @@ class Crawler(object):
         # self.article.publish_date = config.publishDateExtractor.extract(doc)
         # self.article.additional_data = config.get_additionaldata_extractor.extract(doc)
         self.article.title = self.extractor.get_title()
+        self.article.og_title = self.extractor.get_og_title()
         self.article.meta_lang = self.extractor.get_meta_lang()
         self.article.meta_favicon = self.extractor.get_favicon()
         self.article.meta_description = self.extractor.get_meta_description()
@@ -106,6 +107,7 @@ class Crawler(object):
         self.article.canonical_link = self.extractor.get_canonical_link()
         self.article.domain = self.extractor.get_domain()
         self.article.tags = self.extractor.extract_tags()
+        self.article.og_image = self.image_extractor.get_og_image()
 
         # before we do any calcs on the body itself let's clean up the document
         self.article.doc = self.cleaner.clean()
@@ -145,7 +147,6 @@ class Crawler(object):
         doc = self.article.raw_doc
         top_node = self.article.top_node
         self.article.top_image = self.image_extractor.get_best_image(doc, top_node)
-        self.article.og_image = self.image_extractor.get_og_image()
 
     def get_html(self, crawl_candidate, parsing_candidate):
         # we got a raw_tml
