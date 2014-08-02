@@ -59,6 +59,10 @@ class Article(object):
         # holds the top Image object that
         # we think represents this article
         self.top_image = None
+        
+        # holds the open graph Image object that
+        # This is extracted from metadata, owner tells this represent this article
+        self.og_image = None
 
         # holds a set of tags that may have
         # been in the artcle, these are not meta keywords

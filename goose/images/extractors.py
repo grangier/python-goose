@@ -94,6 +94,14 @@ class UpgradedImageIExtractor(ImageExtractor):
             return image
         return Image()
 
+    def get_og_image(self):
+        # check opengraph tag
+        image = self.check_opengraph_tag()
+        if image:
+            return image
+        return Image()
+        
+
     def check_meta_tag(self):
         # check link tag
         image = self.check_link_tag()
