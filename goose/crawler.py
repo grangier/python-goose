@@ -117,10 +117,10 @@ class Crawler(object):
         # let's process it
         if self.article.top_node is not None:
 
-            # video handeling
+            # video handling
             self.video_extractor.get_videos()
 
-            # image handeling
+            # image handling
             if self.config.enable_image_fetching:
                 self.get_image()
 
