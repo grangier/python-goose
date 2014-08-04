@@ -62,6 +62,7 @@ class OutputFormatter(object):
         self.remove_negativescores_nodes()
         self.links_to_text()
         self.add_newline_to_br()
+        self.add_newline_to_paragraph()
         self.replace_with_text()
         self.remove_fewwords_paragraphs()
         return self.convert_to_text()
@@ -79,6 +80,14 @@ class OutputFormatter(object):
     def add_newline_to_br(self):
         for e in self.parser.getElementsByTag(self.top_node, tag='br'):
             e.text = r'\n'
+
+    def add_newline_to_paragraph(self):
+        for e in self.parser.getElementsByTag(self.top_node, tag='p'):
+            if e.text is not None:
+                e.text = e.text+r'\n'
+            else :
+                e.text = r'\n'
+                
 
     def links_to_text(self):
         """\
