@@ -1,0 +1,66 @@
+{
+    "basePath": "{{ url_for('api', _external=True) }}",
+    "apis": [
+        {
+            "path": "/extract.json",
+            "operations": [
+                {
+                    "method": "GET",
+                    "notes": "Processes the URL and returns the extracted content",
+                    "type": "Link",
+                    "nickname": "extract",
+                    "parameters": [
+                        {
+                          "name": "url",
+                          "description": "The URL",
+                          "required": true,
+                          "type": "string",
+                          "paramType": "query"
+                        }
+
+                    ]
+                }
+            ]
+        }
+    ],
+    "models": {
+                "Link": {
+                    "properties": {
+                        "title": {
+                            "type": "string"
+                        },
+                        "summary": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        },
+                        "published_at": {
+                            "type": "string"
+                        },
+                        "assets": {
+                            "type": "array",
+                            "items": { "$ref": "Asset" }
+                        }
+                    },
+                    "required": ["title", "content", "published_at", "assets", "summary"]
+                },
+                "Asset": {
+                    "properties": {
+                        "url": {
+                            "type": "string"
+                        },
+                        "width": {
+                            "type": "integer"
+                        },
+                        "height": {
+                            "type": "integer"
+                        },
+                        "type": {
+                            "type": "string, may be \"image\" or \"video\""
+                        }
+                    },
+                    "required": ["url", "type", "width", "height"]
+                }
+            }
+}

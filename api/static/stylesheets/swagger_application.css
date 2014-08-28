@@ -1,0 +1,10 @@
+@import url('/static/stylesheets/swagger/reset.css');
+@import url('/static/stylesheets/swagger/screen.css');
+
+.response_throbber {
+  display: block;
+  background-image: url('/static/images/swagger/throbber.gif');
+  width: 128px;
+  height: 16px;
+  float: left;
+}
