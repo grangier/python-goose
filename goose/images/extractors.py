@@ -200,7 +200,6 @@ class UpgradedImageIExtractor(ImageExtractor):
 
                             image_results.update({local_image: total_score})
                             cnt += 1
-                            cnt += 1
         return image_results
 
     def get_image(self, element, src, score=100, extraction_type="N/A"):
