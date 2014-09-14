@@ -26,8 +26,9 @@ import urllib2
 class HtmlFetcher(object):
 
     def __init__(self, config):
+        self.config = config
         # set header
-        self.headers = {'User-agent': config.browser_user_agent}
+        self.headers = {'User-agent': self.config.browser_user_agent}
 
     def get_url(self):
         # if we have a result
@@ -42,11 +43,14 @@ class HtmlFetcher(object):
             url = url.encode('utf-8')
 
         # set request
-        self.request = urllib2.Request(url, headers=self.headers)
-
+        self.request = urllib2.Request(
+                        url,
+                        headers=self.headers)
         # do request
         try:
-            self.result = urllib2.urlopen(self.request)
+            self.result = urllib2.urlopen(
+                            self.request,
+                            timeout=self.config.http_timeout)
         except:
             self.result = None
 
