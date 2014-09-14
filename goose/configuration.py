@@ -27,6 +27,8 @@ from goose.parsers import Parser
 from goose.parsers import ParserSoup
 from goose.version import __version__
 
+HTTP_DEFAULT_TIMEOUT = 30
+
 
 class Configuration(object):
 
@@ -87,6 +89,9 @@ class Configuration(object):
         # set the local storage path
         # make this configurable
         self.local_storage_path = os.path.join(tempfile.gettempdir(), 'goose')
+
+        # http timeout
+        self.http_timeout = HTTP_DEFAULT_TIMEOUT
 
     def get_parser(self):
         return Parser if self.parser_class == 'lxml' else ParserSoup
