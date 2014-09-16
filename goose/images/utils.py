@@ -113,7 +113,7 @@ class ImageUtils(object):
     def fetch(self, http_client, src):
         try:
             req = urllib2.Request(src)
-            f = urllib2.urlopen(req)
+            f = urllib2.urlopen(req, timeout=15)
             data = f.read()
             return data
         except:

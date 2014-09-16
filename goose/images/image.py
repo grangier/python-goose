@@ -42,7 +42,7 @@ class Image(object):
         self.width = 0
 
         # what kind of image extraction was used for this?
-        # bestGuess, linkTag, openGraph tags?
+        # bestGuess, linkTag, openGraph tags, twitter card?
         self.extraction_type = "NA"
 
         # stores how many bytes this image is.
