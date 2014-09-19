@@ -1,0 +1,13 @@
+{
+    "url": "http://www.timeforkids.com/news/gaga-goo-goo-clusters/54591", 
+    "expected": {
+        "top_image": {
+            "extraction_type": "known",
+            "src": "http://www.timeforkids.com/files/121019_googooclusters_tout.jpg",
+            "confidence_score": 90,
+            "bytes": 96446,
+            "height": 260,
+            "width": 488
+        }
+    }
+}

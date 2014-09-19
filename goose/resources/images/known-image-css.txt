@@ -7,3 +7,4 @@ lefigaro.fr^photo center
 cadres.apec.fr^noFieldsTable
 emploi.lesechos.fr^offerHeader
 linkfinance.fr^offerHeader
+timeforkids.com^content
