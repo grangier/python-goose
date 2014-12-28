@@ -41,11 +41,6 @@ A_HREF_TAG_SELECTOR = "a[href*='/tag/'], a[href*='/tags/'], a[href*='/topic/'], 
 RE_LANG = r'^[A-Za-z]{2}$'
 
 
-KNOWN_CONTENT_TAGS = [
-    {'attribute': 'itemprop', 'value': 'articleBody'}
-]
-
-
 class ContentExtractor(object):
 
     def __init__(self, config, article):
@@ -214,6 +209,22 @@ class ContentExtractor(object):
             return o.hostname
         return None
 
+    def get_articlebody(self):
+        article_body = self.parser.getElementsByTag(
+                            self.article.doc,
+                            attr='itemprop',
+                            value='articleBody')
+        if len(article_body):
+            article_body = article_body[0]
+            self.parser.setAttribute(article_body, "extraction", "microDataExtration")
+            return article_body
+        return None
+
+    def is_articlebody(self, node):
+        if self.parser.getAttribute(node, 'itemprop') == 'articleBody':
+            return True
+        return False
+
     def extract_tags(self):
         node = self.article.doc
 
@@ -236,10 +247,6 @@ class ContentExtractor(object):
         return set(tags)
 
     def calculate_best_node(self):
-
-        top_node_from_known_tags = self.get_top_node_from_known_tags()
-        if top_node_from_known_tags is not None:
-            return top_node_from_known_tags
 
         doc = self.article.doc
         top_node = None
@@ -313,22 +320,6 @@ class ContentExtractor(object):
 
         return top_node
 
-    def is_known_tags_element(self, node):
-        for tag in KNOWN_CONTENT_TAGS:
-            if self.parser.getAttribute(node, tag['attribute']) == tag['value']:
-                return True
-        return False
-
-    def get_top_node_from_known_tags(self):
-        for known_content_tag in KNOWN_CONTENT_TAGS:
-            content_tags = self.parser.getElementsByTag(self.article.doc,
-                                                        attr=known_content_tag['attribute'],
-                                                        value=known_content_tag['value'])
-        if len(content_tags):
-            top_node = content_tags[0]
-            self.parser.setAttribute(top_node, "extraction", "microDataExtration")
-            return content_tags[0]
-
     def is_boostable(self, node):
         """\
         alot of times the first paragraph might be the caption under an image
@@ -369,7 +360,7 @@ class ContentExtractor(object):
     def add_siblings(self, top_node):
         # in case the extraction used known attributes
         # we don't want to add sibilings
-        if self.is_known_tags_element(top_node):
+        if self.is_articlebody(top_node):
             return top_node
         baselinescore_siblings_para = self.get_siblings_score(top_node)
         results = self.walk_siblings(top_node)
@@ -508,6 +499,13 @@ class ContentExtractor(object):
         on like paragraphs and tables
         """
         nodes_to_check = []
+
+        # microdata
+        # set the most score to articleBody node
+        article_body_node = self.get_articlebody()
+        if article_body_node is not None:
+            self.update_score(article_body_node, 99)
+
         for tag in ['p', 'pre', 'td']:
             items = self.parser.getElementsByTag(doc, tag=tag)
             nodes_to_check += items
