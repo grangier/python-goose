@@ -373,7 +373,6 @@ class ContentExtractor(object):
             return top_node
         baselinescore_siblings_para = self.get_siblings_score(top_node)
         results = self.walk_siblings(top_node)
-        print results
         for current_node in results:
             ps = self.get_siblings_content(current_node, baselinescore_siblings_para)
             for p in ps:
