@@ -1,0 +1,6 @@
+{
+    "url": "http://exemple.com/test_opengraphcontent",
+    "expected": {
+        "cleaned_text": "Search-and-rescue teams were mobilized from across Southeast Asia on Sunday after a commercial airliner with 162 people on board lost contact with ground controllers off the coast of Borneo, a search effort that evoked a distressingly familiar mix of grief and mystery nine months after a Malaysia Airlines jetliner disappeared over the Indian Ocean."
+    }
+}
