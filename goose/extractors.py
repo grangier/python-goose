@@ -259,6 +259,15 @@ class ContentExtractor(object):
                 links.append(attr)
         return links
 
+    def extract_tweets(self):
+        tweets = []
+        items = self.parser.getElementsByTag(self.article.top_node, tag='blockquote', attr="class", value="twitter-tweet")
+        for i in items:
+            for attr in ['gravityScore', 'gravityNodes']:
+                self.parser.delAttribute(i, attr)
+            tweets.append(self.parser.nodeToString(i))
+        return tweets
+
     def extract_authors(self):
         authors = []
         author_nodes = self.parser.getElementsByTag(
