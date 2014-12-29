@@ -239,6 +239,17 @@ class ContentExtractor(object):
             return True
         return False
 
+    def extract_opengraph(self):
+        opengraph = {}
+        node = self.article.doc
+        metas = self.parser.getElementsByTag(node, 'meta')
+        for meta in metas:
+            attr = self.parser.getAttribute(meta, 'property')
+            if attr is not None and attr.startswith("og:"):
+                value = self.parser.getAttribute(meta, 'content')
+                opengraph.update({attr.split(":")[1]: value})
+        return opengraph
+
     def extract_tags(self):
         node = self.article.doc
 
