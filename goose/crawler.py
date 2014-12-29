@@ -106,6 +106,9 @@ class Crawler(object):
         self.article.domain = self.extractor.get_domain()
         self.article.tags = self.extractor.extract_tags()
 
+        # opengraph
+        self.article.opengraph = self.extractor.extract_opengraph()
+
         # before we do any calcs on the body itself let's clean up the document
         self.article.doc = self.cleaner.clean()
 
