@@ -119,6 +119,9 @@ class Crawler(object):
         # let's process it
         if self.article.top_node is not None:
 
+            # article links
+            self.article.links = self.extractor.extract_links()
+
             # video handeling
             self.video_extractor.get_videos()
 
@@ -128,6 +131,9 @@ class Crawler(object):
 
             # post cleanup
             self.article.top_node = self.extractor.post_cleanup()
+
+            # article links
+            self.article.links = self.extractor.extract_links()
 
             # clean_text
             self.article.cleaned_text = self.formatter.get_formatted_text()
