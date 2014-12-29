@@ -105,6 +105,7 @@ class Crawler(object):
         self.article.canonical_link = self.extractor.get_canonical_link()
         self.article.domain = self.extractor.get_domain()
         self.article.tags = self.extractor.extract_tags()
+        self.article.authors = self.extractor.extract_authors()
 
         # opengraph
         self.article.opengraph = self.extractor.extract_opengraph()
