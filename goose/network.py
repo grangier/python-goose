@@ -51,7 +51,7 @@ class HtmlFetcher(object):
             self.result = urllib2.urlopen(
                             self.request,
                             timeout=self.config.http_timeout)
-        except:
+        except Exception:
             self.result = None
 
         # read the result content

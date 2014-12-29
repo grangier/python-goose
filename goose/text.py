@@ -46,7 +46,7 @@ def encodeValue(value):
         value = smart_unicode(value)
     except (UnicodeEncodeError, DjangoUnicodeDecodeError):
         value = smart_str(value)
-    except:
+    except Exception:
         value = string_org
     return value
 
