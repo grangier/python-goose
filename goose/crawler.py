@@ -95,8 +95,7 @@ class Crawler(object):
         self.article.raw_html = raw_html
         self.article.doc = doc
         self.article.raw_doc = deepcopy(doc)
-        # TODO
-        # self.article.publish_date = config.publishDateExtractor.extract(doc)
+        self.article.publish_date = self.extractor.get_publish_date()
         # self.article.additional_data = config.get_additionaldata_extractor.extract(doc)
         self.article.title = self.extractor.get_title()
         self.article.meta_lang = self.extractor.get_meta_lang()

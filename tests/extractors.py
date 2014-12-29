@@ -361,6 +361,21 @@ class TestExtractions(TestExtractionBase):
         self.runArticleAssertions(article=article, fields=fields)
 
 
+class TestPublishDate(TestExtractionBase):
+
+    def test_publish_date(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
+    def test_publish_date_rnews(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
+    def test_publish_date_article(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
+
 class TestExtractWithUrl(TestExtractionBase):
 
     def test_get_canonical_url(self):
