@@ -67,6 +67,9 @@ class Article(object):
         # holds a dict of all opengrah data found
         self.opengraph = {}
 
+        # holds twitter embeds
+        self.tweets = []
+
         # holds a list of any movies
         # we found on the page like youtube, vimeo
         self.movies = []

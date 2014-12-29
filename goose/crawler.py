@@ -123,6 +123,9 @@ class Crawler(object):
             # article links
             self.article.links = self.extractor.extract_links()
 
+            # tweets
+            self.article.tweets = self.extractor.extract_tweets()
+
             # video handeling
             self.video_extractor.get_videos()
 
