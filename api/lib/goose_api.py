@@ -5,7 +5,6 @@ class GooseAPI:
     def __init__(self, url):
         self.url = url
         self.goose = Goose()
-        print Goose
         self.article = None
 
     def extract(self):
@@ -20,8 +19,8 @@ class GooseAPI:
             'links': self.article.links,
             'image': self.images(),
             'movies': self.movies(),
+            'tweets': self.article.tweets,
             'tags': list(self.article.tags),
-            #'assets': self.images()
         }
 
     def movies(self):
