@@ -439,6 +439,15 @@ class TestExtractionsRaw(TestExtractions):
         return article
 
 
+class TestArticleTweet(TestExtractionBase):
+
+    def test_tweet(self):
+        article = self.getArticle()
+        number_tweets = len(article.tweets)
+        expected_number_tweets = self.data['expected']['tweets']
+        self.assertEqual(number_tweets, expected_number_tweets)
+
+
 class TestArticleTags(TestExtractionBase):
 
     def test_tags_kexp(self):
