@@ -39,6 +39,12 @@ NO_STRINGS = set()
 A_REL_TAG_SELECTOR = "a[rel=tag]"
 A_HREF_TAG_SELECTOR = "a[href*='/tag/'], a[href*='/tags/'], a[href*='/topic/'], a[href*='?keyword=']"
 RE_LANG = r'^[A-Za-z]{2}$'
+KNOWN_PUBLISH_DATE_TAGS = [
+    {'attribute': 'property', 'value': 'rnews:datePublished', 'content': 'content'},
+    {'attribute': 'property', 'value': 'article:published_time', 'content': 'content'},
+    {'attribute': 'name', 'value': 'OriginalPublicationDate', 'content': 'content'},
+    {'attribute': 'itemprop', 'value': 'datePublished', 'content': 'datetime'},
+]
 
 
 class ContentExtractor(object):
@@ -117,6 +123,14 @@ class ContentExtractor(object):
         # replace content
         title = title_pieces[large_text_index]
         return TITLE_REPLACEMENTS.replaceAll(title).strip()
+
+    def get_publish_date(self):
+        for known_meta_tag in KNOWN_PUBLISH_DATE_TAGS:
+            meta_tags = self.parser.getElementsByTag(self.article.doc,
+                                                attr=known_meta_tag['attribute'],
+                                                value=known_meta_tag['value'])
+            if meta_tags:
+                return self.parser.getAttribute(meta_tags[0], known_meta_tag['content'])
 
     def get_favicon(self):
         """\
