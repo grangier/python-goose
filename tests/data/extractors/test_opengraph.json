@@ -1,0 +1,12 @@
+{
+    "url": "http://exemple.com/test_opengraphcontent",
+    "expected": {
+        "opengraph": {
+            "url": "http://www.somenews.com/2012/09/19/nyregion/some-news-article.html?pagewanted=all", 
+            "image": "http://graphics8.somenews.com/images/2012/09/19/region/some-news-image.jpg", 
+            "type": "article", 
+            "description": "Some News Happened in New York", 
+            "title": "Some News Article Story"
+        }
+    }
+}
