@@ -28,6 +28,9 @@ class Article(object):
         # title of the article
         self.title = None
 
+        #Author of the Article
+        self.author = None
+
         # stores the lovely, pure text from the article,
         # stripped of html, formatting, etc...
         # just raw text with paragraphs separated by newlines.

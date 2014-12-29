@@ -65,6 +65,49 @@ class ContentExtractor(object):
         # stopwords class
         self.stopwords_class = config.stopwords_class
 
+    def get_author(self):
+        import re
+        author = ''
+        doc = self.article.doc
+
+        #Look at meta tags first
+        author = self.get_meta_author()
+
+        if (author != None) & (author != ''):
+            return author
+
+        author_element = self.parser.getElementsByTag(doc, tag='a' , attr = 'href')
+        
+        # no author found
+        if author_element is None or len(author_element) == 0:
+            return author
+
+        for a in author_element:
+            a_href = self.parser.getAttribute(a,'href')
+            if a_href is not None:
+                #find url that has author, people or users
+                if re.search('.author.', a_href) is not None:
+                    author = self.clean_author(a_href)
+                    break
+                elif re.search('.people.', a_href) is not None:
+                    author = self.clean_author(a_href)
+                elif re.search('.users.', a_href) is not None:
+                    author = self.clean_author(a_href)
+        return author
+
+    def clean_author(self,a_href):
+        author_parts  = a_href.split('/')
+        
+        for a_p in author_parts:
+            a = author_parts.pop()
+            if a != '':
+                author = a
+                break
+        
+        author = author.replace('-' , ' ').title()
+        
+        return author
+
     def get_title(self):
         """\
         Fetch the article title and analyze it
@@ -191,6 +234,12 @@ class ContentExtractor(object):
         if the article has meta description set in the source, use that
         """
         return self.get_meta_content(self.article.doc, "meta[name=description]")
+
+    def get_meta_author(self):
+        """\
+        if the article has meta Author set in the source, use that
+        """
+        return self.get_meta_content(self.article.doc, "meta[name=Author]")
 
     def get_meta_keywords(self):
         """\

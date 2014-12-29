@@ -1,6 +1,7 @@
 *.pyc
 goose.egg-info/
 build/
+author.py
 dist/
 .DS_Store*
 ._.DS_Store*
