@@ -71,6 +71,9 @@ class Article(object):
         # we found on the page like youtube, vimeo
         self.movies = []
 
+        # holds links found in the main article
+        self.links = []
+
         # stores the final URL that we're going to try
         # and fetch content against, this would be expanded if any
         self.final_url = u""

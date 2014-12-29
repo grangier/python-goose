@@ -250,6 +250,15 @@ class ContentExtractor(object):
                 opengraph_dict.update({attr.split(":")[1]: value})
         return opengraph_dict
 
+    def extract_links(self):
+        links = []
+        items = self.parser.getElementsByTag(self.article.top_node, 'a')
+        for i in items:
+            attr = self.parser.getAttribute(i, 'href')
+            if attr:
+                links.append(attr)
+        return links
+
     def extract_tags(self):
         node = self.article.doc
 
