@@ -64,6 +64,9 @@ class Article(object):
         # been in the artcle, these are not meta keywords
         self.tags = set()
 
+        # holds a dict of all opengrah data found
+        self.opengraph = {}
+
         # holds a list of any movies
         # we found on the page like youtube, vimeo
         self.movies = []
