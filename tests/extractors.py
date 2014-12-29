@@ -375,6 +375,10 @@ class TestPublishDate(TestExtractionBase):
         article = self.getArticle()
         self.runArticleAssertions(article=article, fields=['publish_date'])
 
+    def test_publish_date_schema(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
 
 class TestExtractWithUrl(TestExtractionBase):
 
