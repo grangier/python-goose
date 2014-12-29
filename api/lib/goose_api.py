@@ -5,25 +5,45 @@ class GooseAPI:
     def __init__(self, url):
         self.url = url
         self.goose = Goose()
-        self.extracted_content = None
+        print Goose
+        self.article = None
 
     def extract(self):
-        self.extracted_content = self.goose.extract(url = self.url)
+        self.article = self.goose.extract(url=self.url)
         return {
-            'title': self.extracted_content.title,
-            'summary': self.extracted_content.meta_description,
-            'content': self.extracted_content.content_html,
-            'published_at': self.extracted_content.publish_date,
-            'assets': self.images()
+            'title': self.article.title,
+            'summary': self.article.meta_description,
+            'content': self.article.cleaned_text,
+            'published_at': self.article.publish_date,
+            'opengraph': self.article.opengraph,
+            'authors': self.article.authors,
+            'links': self.article.links,
+            'image': self.images(),
+            'movies': self.movies(),
+            'tags': list(self.article.tags),
+            #'assets': self.images()
         }
+
+    def movies(self):
+        movies = []
+        for movie in self.article.movies:
+            movies.append({
+                'embed_type': movie.embed_type,
+                'provider': movie.embed_type,
+                'width': movie.width,
+                'height': movie.height,
+                'embed_code': movie.embed_code,
+                'src': movie.src,
+            })
+        return movies
 
     def images(self):
         images = []
-        for image in self.extracted_content.images:
+        if self.article.top_image:
             images.append({
-                'url': image.src,
-                'width': image.width,
-                'height': image.height,
+                'url': self.article.top_image.src,
+                'width': self.article.top_image.width,
+                'height': self.article.top_image.height,
                 'type': 'image'
             })
         return images
