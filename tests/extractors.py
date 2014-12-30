@@ -285,16 +285,6 @@ class TestExtractions(TestExtractionBase):
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
-    def test_businessinsider1(self):
-        article = self.getArticle()
-        fields = ['cleaned_text']
-        self.runArticleAssertions(article=article, fields=fields)
-
-    def test_businessinsider2(self):
-        article = self.getArticle()
-        fields = ['cleaned_text']
-        self.runArticleAssertions(article=article, fields=fields)
-
     def test_businessinsider3(self):
         article = self.getArticle()
         fields = ['cleaned_text']
