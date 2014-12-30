@@ -26,7 +26,7 @@ class Article(object):
 
     def __init__(self):
         # title of the article
-        self.title = None
+        self.title = u""
 
         # stores the lovely, pure text from the article,
         # stripped of html, formatting, etc...
