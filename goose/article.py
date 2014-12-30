@@ -106,3 +106,26 @@ class Article(object):
 
         # A property bucket for consumers of goose to store custom data extractions.
         self.additional_data = {}
+
+    @property
+    def infos(self):
+        data = {
+            "meta": {
+                "description": self.meta_description,
+                "lang": self.meta_lang,
+                "keywords": self.meta_keywords,
+                "favicon": self.meta_favicon,
+                "canonical": self.canonical_link,
+            },
+            "domain": self.domain,
+            "title": self.title,
+            "cleaned_text": self.cleaned_text,
+            "opengraph": self.opengraph,
+            "tags": self.tags,
+            "tweets": self.tweets,
+            "movies": self.movies,
+            "links": self.links,
+            "authors": self.authors,
+            "publish_date": self.publish_date
+        }
+        return data
