@@ -26,7 +26,7 @@ class Article(object):
 
     def __init__(self):
         # title of the article
-        self.title = None
+        self.title = u""
 
         # stores the lovely, pure text from the article,
         # stripped of html, formatting, etc...
@@ -62,7 +62,7 @@ class Article(object):
 
         # holds a set of tags that may have
         # been in the artcle, these are not meta keywords
-        self.tags = set()
+        self.tags = []
 
         # holds a dict of all opengrah data found
         self.opengraph = {}
@@ -106,3 +106,32 @@ class Article(object):
 
         # A property bucket for consumers of goose to store custom data extractions.
         self.additional_data = {}
+
+    @property
+    def infos(self):
+        data = {
+            "meta": {
+                "description": self.meta_description,
+                "lang": self.meta_lang,
+                "keywords": self.meta_keywords,
+                "favicon": self.meta_favicon,
+                "canonical": self.canonical_link,
+            },
+            "image": None,
+            "domain": self.domain,
+            "title": self.title,
+            "cleaned_text": self.cleaned_text,
+            "opengraph": self.opengraph,
+            "tags": self.tags,
+            "tweets": self.tweets,
+            "movies": self.movies,
+            "links": self.links,
+            "authors": self.authors,
+            "publish_date": self.publish_date
+        }
+
+        # image
+        if self.top_image is not None:
+            data['image'] = self.top_image.src
+
+        return data
