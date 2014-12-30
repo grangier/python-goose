@@ -117,6 +117,7 @@ class Article(object):
                 "favicon": self.meta_favicon,
                 "canonical": self.canonical_link,
             },
+            "image": None,
             "domain": self.domain,
             "title": self.title,
             "cleaned_text": self.cleaned_text,
@@ -128,4 +129,9 @@ class Article(object):
             "authors": self.authors,
             "publish_date": self.publish_date
         }
+
+        # image
+        if self.top_image is not None:
+            data['image'] = self.top_image.src
+
         return data
