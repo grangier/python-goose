@@ -124,7 +124,7 @@ class Article(object):
             "opengraph": self.opengraph,
             "tags": self.tags,
             "tweets": self.tweets,
-            "movies": self.movies,
+            "movies": [],
             "links": self.links,
             "authors": self.authors,
             "publish_date": self.publish_date
@@ -132,6 +132,22 @@ class Article(object):
 
         # image
         if self.top_image is not None:
-            data['image'] = self.top_image.src
+            data['image'] = {
+                'url': self.top_image.src,
+                'width': self.top_image.width,
+                'height': self.top_image.height,
+                'type': 'image'
+            }
+
+        # movies
+        for movie in self.movies:
+            data['movies'].append({
+                'embed_type': movie.embed_type,
+                'provider': movie.provider,
+                'width': movie.width,
+                'height': movie.height,
+                'embed_code': movie.embed_code,
+                'src': movie.src,
+            })
 
         return data
