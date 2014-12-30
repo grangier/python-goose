@@ -62,7 +62,7 @@ class Article(object):
 
         # holds a set of tags that may have
         # been in the artcle, these are not meta keywords
-        self.tags = set()
+        self.tags = []
 
         # holds a dict of all opengrah data found
         self.opengraph = {}

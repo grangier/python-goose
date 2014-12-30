@@ -312,7 +312,7 @@ class ContentExtractor(object):
             if tag:
                 tags.append(tag)
 
-        return set(tags)
+        return list(set(tags))
 
     def calculate_best_node(self):
 
