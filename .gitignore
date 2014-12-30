@@ -8,5 +8,6 @@ env/
 *~
 .idea
 ._*
+*.egg
 venv/
 goose_extractor.egg-info/
