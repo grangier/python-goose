@@ -125,7 +125,7 @@ class TestExtractionBase(BaseMockTests):
                 continue
 
             # default assertion
-            msg = u"Error %s" % field
+            msg = u"Error %s \nexpected: %s\nresult: %s" % (field, expected_value, result_value)
             self.assertEqual(expected_value, result_value, msg=msg)
 
     def extract(self, instance):
