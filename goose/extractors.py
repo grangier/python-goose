@@ -51,6 +51,7 @@ KNOWN_PUBLISH_DATE_TAGS = [
 KNOWN_ARTICLE_CONTENT_TAGS = [
     {'attr': 'itemprop', 'value': 'articleBody'},
     {'attr': 'class', 'value': 'post-content'},
+    {'tag': 'article'},
 ]
 
 
@@ -268,27 +269,22 @@ class ContentExtractor(object):
         for item in KNOWN_ARTICLE_CONTENT_TAGS:
             nodes = self.parser.getElementsByTag(
                             self.article.doc,
-                            attr=item['attr'],
-                            value=item['value'])
+                            **item)
             if len(nodes):
                 return nodes[0]
         return None
 
-    def get_articlebody(self):
-        article_body = self.parser.getElementsByTag(
-                            self.article.doc,
-                            attr='itemprop',
-                            value='articleBody')
-        if len(article_body):
-            article_body = article_body[0]
-            self.parser.setAttribute(article_body, "extraction", "microDataExtration")
-            return article_body
-        return None
-
     def is_articlebody(self, node):
         for item in KNOWN_ARTICLE_CONTENT_TAGS:
-            if self.parser.getAttribute(node, item['attr']) == item['value']:
-                return True
+            # attribute
+            if "attr" in item and "value" in item:
+                if self.parser.getAttribute(node, item['attr']) == item['value']:
+                    return True
+            # tag
+            if "tag" in item:
+                if node.tag == item['tag']:
+                    return True
+
         return False
 
     def extract_opengraph(self):

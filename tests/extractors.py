@@ -345,11 +345,6 @@ class TestExtractions(TestExtractionBase):
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
-    def test_articlebody(self):
-        article = self.getArticle()
-        fields = ['cleaned_text']
-        self.runArticleAssertions(article=article, fields=fields)
-
     def test_opengraph(self):
         article = self.getArticle()
         fields = ['opengraph']
@@ -367,6 +362,24 @@ class TestExtractions(TestExtractionBase):
 
     def test_issue115(self):
         # https://github.com/grangier/python-goose/issues/115
+        article = self.getArticle()
+        fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
+
+class TestArticleTopNode(TestExtractionBase):
+
+    def test_articlebody_itemprop(self):
+        article = self.getArticle()
+        fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
+    def test_articlebody_attribute(self):
+        article = self.getArticle()
+        fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
+    def test_articlebody_tag(self):
         article = self.getArticle()
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
