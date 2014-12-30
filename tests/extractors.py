@@ -448,6 +448,15 @@ class TestArticleTweet(TestExtractionBase):
         self.assertEqual(number_tweets, expected_number_tweets)
 
 
+class TestArticleLinks(TestExtractionBase):
+
+    def test_links(self):
+        article = self.getArticle()
+        number_links = len(article.links)
+        expected_number_links = self.data['expected']['links']
+        self.assertEqual(number_links, expected_number_links)
+
+
 class TestArticleAuthor(TestExtractionBase):
 
     def test_author_schema(self):
