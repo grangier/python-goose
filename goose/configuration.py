@@ -31,7 +31,7 @@ HTTP_DEFAULT_TIMEOUT = 30
 
 AVAILABLE_PARSERS = {
     'lxml' : Parser,
-    'soupparser': ParserSoup,
+    'soup': ParserSoup,
 }
 
 
