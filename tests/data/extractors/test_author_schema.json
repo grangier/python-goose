@@ -1,0 +1,11 @@
+{
+    "url": "http://exemple.com/tweet/", 
+    "expected": {
+        "authors": [
+            "KEVIN SACK", 
+            "ADAM NOSSITER", 
+            "PAM BELLUCK", 
+            "SHERI FINK"
+        ]
+    }
+}
