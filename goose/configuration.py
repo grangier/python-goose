@@ -30,7 +30,7 @@ from goose.version import __version__
 HTTP_DEFAULT_TIMEOUT = 30
 
 AVAILABLE_PARSERS = {
-    'lxml' : Parser,
+    'lxml': Parser,
     'soup': ParserSoup,
 }
 
