@@ -66,11 +66,20 @@ class ContentExtractor(object):
         # article
         self.article = article
 
-        # language
-        self.language = config.target_language
-
         # stopwords class
         self.stopwords_class = config.stopwords_class
+
+    def get_language(self):
+        """\
+        Returns the language is by the article or
+        the configuration language
+        """
+        # we don't want to force the target language
+        # so we use the article.meta_lang
+        if self.config.use_meta_language:
+            if self.article.meta_lang:
+                return self.article.meta_lang[:2]
+        return self.config.target_language
 
     def clean_title(self, title):
         """Clean title with the use of og:site_name
@@ -371,7 +380,7 @@ class ContentExtractor(object):
 
         for node in nodes_to_check:
             text_node = self.parser.getText(node)
-            word_stats = self.stopwords_class(language=self.language).get_stopword_count(text_node)
+            word_stats = self.stopwords_class(language=self.get_language()).get_stopword_count(text_node)
             high_link_density = self.is_highlink_density(node)
             if word_stats.get_stopword_count() > 2 and not high_link_density:
                 nodes_with_text.append(node)
@@ -397,7 +406,7 @@ class ContentExtractor(object):
                         boost_score = float(5)
 
             text_node = self.parser.getText(node)
-            word_stats = self.stopwords_class(language=self.language).get_stopword_count(text_node)
+            word_stats = self.stopwords_class(language=self.get_language()).get_stopword_count(text_node)
             upscore = int(word_stats.get_stopword_count() + boost_score)
 
             # parent node
@@ -453,7 +462,7 @@ class ContentExtractor(object):
                 if steps_away >= max_stepsaway_from_node:
                     return False
                 paraText = self.parser.getText(current_node)
-                word_stats = self.stopwords_class(language=self.language).get_stopword_count(paraText)
+                word_stats = self.stopwords_class(language=self.get_language()).get_stopword_count(paraText)
                 if word_stats.get_stopword_count() > minimum_stopword_count:
                     return True
                 steps_away += 1
@@ -500,7 +509,7 @@ class ContentExtractor(object):
                 for first_paragraph in potential_paragraphs:
                     text = self.parser.getText(first_paragraph)
                     if len(text) > 0:
-                        word_stats = self.stopwords_class(language=self.language).get_stopword_count(text)
+                        word_stats = self.stopwords_class(language=self.get_language()).get_stopword_count(text)
                         paragraph_score = word_stats.get_stopword_count()
                         sibling_baseline_score = float(.30)
                         high_link_density = self.is_highlink_density(first_paragraph)
@@ -527,7 +536,7 @@ class ContentExtractor(object):
 
         for node in nodes_to_check:
             text_node = self.parser.getText(node)
-            word_stats = self.stopwords_class(language=self.language).get_stopword_count(text_node)
+            word_stats = self.stopwords_class(language=self.get_language()).get_stopword_count(text_node)
             high_link_density = self.is_highlink_density(node)
             if word_stats.get_stopword_count() > 2 and not high_link_density:
                 paragraphs_number += 1
