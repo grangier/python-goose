@@ -110,6 +110,13 @@ class Crawler(object):
         # opengraph
         self.article.opengraph = self.extractor.extract_opengraph()
 
+        # check for an articleBody
+        # if we find one force the article.doc to be the articleBody node
+        # this will prevent the cleaner to remove unwanted text content
+        article_body = self.extractor.get_articlebody()
+        if article_body is not None:
+            self.article.doc = article_body
+
         # before we do any calcs on the body itself let's clean up the document
         self.article.doc = self.cleaner.clean()
 
