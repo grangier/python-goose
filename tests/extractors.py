@@ -365,6 +365,11 @@ class TestExtractions(TestExtractionBase):
         fields = ['opengraph']
         self.runArticleAssertions(article=article, fields=fields)
 
+    def test_title_opengraph(self):
+        article = self.getArticle()
+        fields = ['title']
+        self.runArticleAssertions(article=article, fields=fields)
+
     def test_issue129(self):
         article = self.getArticle()
         fields = ['cleaned_text']

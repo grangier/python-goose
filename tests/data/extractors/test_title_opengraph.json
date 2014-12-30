@@ -1,0 +1,6 @@
+{
+    "url": "http://exemple.com/test_opengraphcontent",
+    "expected": {
+        "title": "Good article title"
+    }
+}
