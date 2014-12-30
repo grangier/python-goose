@@ -365,6 +365,12 @@ class TestExtractions(TestExtractionBase):
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
+    def test_issue115(self):
+        # https://github.com/grangier/python-goose/issues/115
+        article = self.getArticle()
+        fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
 
 class TestPublishDate(TestExtractionBase):
 
