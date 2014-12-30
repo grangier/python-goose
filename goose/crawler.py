@@ -108,10 +108,10 @@ class Crawler(object):
         self.article.authors = self.extractor.extract_authors()
         self.article.title = self.extractor.get_title()
 
-        # check for an articleBody
-        # if we find one force the article.doc to be the articleBody node
+        # check for known node as content body
+        # if we find one force the article.doc to be the found node
         # this will prevent the cleaner to remove unwanted text content
-        article_body = self.extractor.get_articlebody()
+        article_body = self.extractor.get_known_article_tags()
         if article_body is not None:
             self.article.doc = article_body
 
@@ -140,9 +140,6 @@ class Crawler(object):
 
             # post cleanup
             self.article.top_node = self.extractor.post_cleanup()
-
-            # article links
-            self.article.links = self.extractor.extract_links()
 
             # clean_text
             self.article.cleaned_text = self.formatter.get_formatted_text()

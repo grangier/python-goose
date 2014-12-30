@@ -40,11 +40,17 @@ NO_STRINGS = set()
 A_REL_TAG_SELECTOR = "a[rel=tag]"
 A_HREF_TAG_SELECTOR = "a[href*='/tag/'], a[href*='/tags/'], a[href*='/topic/'], a[href*='?keyword=']"
 RE_LANG = r'^[A-Za-z]{2}$'
+
 KNOWN_PUBLISH_DATE_TAGS = [
     {'attribute': 'property', 'value': 'rnews:datePublished', 'content': 'content'},
     {'attribute': 'property', 'value': 'article:published_time', 'content': 'content'},
     {'attribute': 'name', 'value': 'OriginalPublicationDate', 'content': 'content'},
     {'attribute': 'itemprop', 'value': 'datePublished', 'content': 'datetime'},
+]
+
+KNOWN_ARTICLE_CONTENT_TAGS = [
+    {'attr': 'itemprop', 'value': 'articleBody'},
+    {'attr': 'class', 'value': 'post-content'},
 ]
 
 
@@ -249,6 +255,16 @@ class ContentExtractor(object):
             return o.hostname
         return None
 
+    def get_known_article_tags(self):
+        for item in KNOWN_ARTICLE_CONTENT_TAGS:
+            nodes = self.parser.getElementsByTag(
+                            self.article.doc,
+                            attr=item['attr'],
+                            value=item['value'])
+            if len(nodes):
+                return nodes[0]
+        return None
+
     def get_articlebody(self):
         article_body = self.parser.getElementsByTag(
                             self.article.doc,
@@ -261,8 +277,9 @@ class ContentExtractor(object):
         return None
 
     def is_articlebody(self, node):
-        if self.parser.getAttribute(node, 'itemprop') == 'articleBody':
-            return True
+        for item in KNOWN_ARTICLE_CONTENT_TAGS:
+            if self.parser.getAttribute(node, item['attr']) == item['value']:
+                return True
         return False
 
     def extract_opengraph(self):
@@ -593,12 +610,6 @@ class ContentExtractor(object):
         on like paragraphs and tables
         """
         nodes_to_check = []
-
-        # microdata
-        # set the most score to articleBody node
-        article_body_node = self.get_articlebody()
-        if article_body_node is not None:
-            self.update_score(article_body_node, 99)
 
         for tag in ['p', 'pre', 'td']:
             items = self.parser.getElementsByTag(doc, tag=tag)
