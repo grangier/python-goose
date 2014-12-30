@@ -1,0 +1,6 @@
+{
+    "url": "http://lostinjit.blogspot.fr/2011/10/pypy-and-road-towards-scipy.html", 
+    "expected": {
+        "cleaned_text": "Recent PyPys effort to bring NumPy and the associated fundraiser"
+    }
+}
