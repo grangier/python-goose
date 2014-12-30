@@ -95,10 +95,9 @@ class Crawler(object):
         self.article.raw_html = raw_html
         self.article.doc = doc
         self.article.raw_doc = deepcopy(doc)
-        # TODO
-        # self.article.publish_date = config.publishDateExtractor.extract(doc)
+        self.article.opengraph = self.extractor.extract_opengraph()
+        self.article.publish_date = self.extractor.get_publish_date()
         # self.article.additional_data = config.get_additionaldata_extractor.extract(doc)
-        self.article.title = self.extractor.get_title()
         self.article.meta_lang = self.extractor.get_meta_lang()
         self.article.meta_favicon = self.extractor.get_favicon()
         self.article.meta_description = self.extractor.get_meta_description()
@@ -106,6 +105,15 @@ class Crawler(object):
         self.article.canonical_link = self.extractor.get_canonical_link()
         self.article.domain = self.extractor.get_domain()
         self.article.tags = self.extractor.extract_tags()
+        self.article.authors = self.extractor.extract_authors()
+        self.article.title = self.extractor.get_title()
+
+        # check for known node as content body
+        # if we find one force the article.doc to be the found node
+        # this will prevent the cleaner to remove unwanted text content
+        article_body = self.extractor.get_known_article_tags()
+        if article_body is not None:
+            self.article.doc = article_body
 
         # before we do any calcs on the body itself let's clean up the document
         self.article.doc = self.cleaner.clean()
@@ -117,10 +125,16 @@ class Crawler(object):
         # let's process it
         if self.article.top_node is not None:
 
-            # video handeling
+            # article links
+            self.article.links = self.extractor.extract_links()
+
+            # tweets
+            self.article.tweets = self.extractor.extract_tweets()
+
+            # video handling
             self.video_extractor.get_videos()
 
-            # image handeling
+            # image handling
             if self.config.enable_image_fetching:
                 self.get_image()
 

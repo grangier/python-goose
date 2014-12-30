@@ -30,6 +30,7 @@ from goose.utils import ReplaceSequence
 MOTLEY_REPLACEMENT = StringReplacement("&#65533;", "")
 ESCAPED_FRAGMENT_REPLACEMENT = StringReplacement(u"#!", u"?_escaped_fragment_=")
 TITLE_REPLACEMENTS = ReplaceSequence().create(u"&raquo;").append(u"»")
+TITLE_SPLITTERS = [u"|", u"-", u"»", u":"]
 PIPE_SPLITTER = StringSplitter("\\|")
 DASH_SPLITTER = StringSplitter(" - ")
 ARROWS_SPLITTER = StringSplitter("»")
@@ -39,6 +40,19 @@ NO_STRINGS = set()
 A_REL_TAG_SELECTOR = "a[rel=tag]"
 A_HREF_TAG_SELECTOR = "a[href*='/tag/'], a[href*='/tags/'], a[href*='/topic/'], a[href*='?keyword=']"
 RE_LANG = r'^[A-Za-z]{2}$'
+
+KNOWN_PUBLISH_DATE_TAGS = [
+    {'attribute': 'property', 'value': 'rnews:datePublished', 'content': 'content'},
+    {'attribute': 'property', 'value': 'article:published_time', 'content': 'content'},
+    {'attribute': 'name', 'value': 'OriginalPublicationDate', 'content': 'content'},
+    {'attribute': 'itemprop', 'value': 'datePublished', 'content': 'datetime'},
+]
+
+KNOWN_ARTICLE_CONTENT_TAGS = [
+    {'attr': 'itemprop', 'value': 'articleBody'},
+    {'attr': 'class', 'value': 'post-content'},
+    {'tag': 'article'},
+]
 
 
 class ContentExtractor(object):
@@ -53,50 +67,84 @@ class ContentExtractor(object):
         # article
         self.article = article
 
-        # language
-        self.language = config.target_language
-
         # stopwords class
         self.stopwords_class = config.stopwords_class
+
+    def get_language(self):
+        """\
+        Returns the language is by the article or
+        the configuration language
+        """
+        # we don't want to force the target language
+        # so we use the article.meta_lang
+        if self.config.use_meta_language:
+            if self.article.meta_lang:
+                return self.article.meta_lang[:2]
+        return self.config.target_language
+
+    def clean_title(self, title):
+        """Clean title with the use of og:site_name
+        in this case try to get ride of site name
+        and use TITLE_SPLITTERS to reformat title
+        """
+        # check if we have the site name in opengraph data
+        if "site_name" in self.article.opengraph.keys():
+            site_name = self.article.opengraph['site_name']
+            # remove the site name from title
+            title = title.replace(site_name, '').strip()
+
+        # try to remove the domain from url
+        if self.article.domain:
+            pattern = re.compile(self.article.domain, re.IGNORECASE)
+            title = pattern.sub("", title).strip()
+
+        # split the title in words
+        # TechCrunch | my wonderfull article
+        # my wonderfull article | TechCrunch
+        title_words = title.split()
+
+        # check if first letter is in TITLE_SPLITTERS
+        # if so remove it
+        if title_words[0] in TITLE_SPLITTERS:
+            title_words.pop(0)
+
+        # check if last letter is in TITLE_SPLITTERS
+        # if so remove it
+        if title_words[-1] in TITLE_SPLITTERS:
+            title_words.pop(-1)
+
+        # rebuild the title
+        title = u" ".join(title_words).strip()
+
+        return title
 
     def get_title(self):
         """\
         Fetch the article title and analyze it
         """
-
         title = ''
-        doc = self.article.doc
 
-        title_element = self.parser.getElementsByTag(doc, tag='title')
-        # no title found
-        if title_element is None or len(title_element) == 0:
-            return title
+        # rely on opengraph in case we have the data
+        if "title" in self.article.opengraph.keys():
+            title = self.article.opengraph['title']
+            return self.clean_title(title)
 
-        # title elem found
-        title_text = self.parser.getText(title_element[0])
-        used_delimeter = False
+        # try to fetch the meta headline
+        meta_headline = self.parser.getElementsByTag(
+                            self.article.doc,
+                            tag="meta",
+                            attr="name",
+                            value="headline")
+        if meta_headline is not None and len(meta_headline) > 0:
+            title = self.parser.getAttribute(meta_headline[0], 'content')
+            return self.clean_title(title)
 
-        # split title with |
-        if '|' in title_text:
-            title_text = self.split_title(title_text, PIPE_SPLITTER)
-            used_delimeter = True
+        # otherwise use the title meta
+        title_element = self.parser.getElementsByTag(self.article.doc, tag='title')
+        if title_element is not None and len(title_element) > 0:
+            title = self.parser.getText(title_element[0])
+            return self.clean_title(title)
 
-        # split title with -
-        if not used_delimeter and '-' in title_text:
-            title_text = self.split_title(title_text, DASH_SPLITTER)
-            used_delimeter = True
-
-        # split title with »
-        if not used_delimeter and u'»' in title_text:
-            title_text = self.split_title(title_text, ARROWS_SPLITTER)
-            used_delimeter = True
-
-        # split title with :
-        if not used_delimeter and ':' in title_text:
-            title_text = self.split_title(title_text, COLON_SPLITTER)
-            used_delimeter = True
-
-        title = MOTLEY_REPLACEMENT.replaceAll(title_text)
         return title
 
     def split_title(self, title, splitter):
@@ -117,6 +165,14 @@ class ContentExtractor(object):
         # replace content
         title = title_pieces[large_text_index]
         return TITLE_REPLACEMENTS.replaceAll(title).strip()
+
+    def get_publish_date(self):
+        for known_meta_tag in KNOWN_PUBLISH_DATE_TAGS:
+            meta_tags = self.parser.getElementsByTag(self.article.doc,
+                                                attr=known_meta_tag['attribute'],
+                                                value=known_meta_tag['value'])
+            if meta_tags:
+                return self.parser.getAttribute(meta_tags[0], known_meta_tag['content'])
 
     def get_favicon(self):
         """\
@@ -209,6 +265,82 @@ class ContentExtractor(object):
             return o.hostname
         return None
 
+    def get_known_article_tags(self):
+        for item in KNOWN_ARTICLE_CONTENT_TAGS:
+            nodes = self.parser.getElementsByTag(
+                            self.article.doc,
+                            **item)
+            if len(nodes):
+                return nodes[0]
+        return None
+
+    def is_articlebody(self, node):
+        for item in KNOWN_ARTICLE_CONTENT_TAGS:
+            # attribute
+            if "attr" in item and "value" in item:
+                if self.parser.getAttribute(node, item['attr']) == item['value']:
+                    return True
+            # tag
+            if "tag" in item:
+                if node.tag == item['tag']:
+                    return True
+
+        return False
+
+    def extract_opengraph(self):
+        opengraph_dict = {}
+        node = self.article.doc
+        metas = self.parser.getElementsByTag(node, 'meta')
+        for meta in metas:
+            attr = self.parser.getAttribute(meta, 'property')
+            if attr is not None and attr.startswith("og:"):
+                value = self.parser.getAttribute(meta, 'content')
+                opengraph_dict.update({attr.split(":")[1]: value})
+        return opengraph_dict
+
+    def extract_links(self):
+        links = []
+        items = self.parser.getElementsByTag(self.article.top_node, 'a')
+        for i in items:
+            attr = self.parser.getAttribute(i, 'href')
+            if attr:
+                links.append(attr)
+        return links
+
+    def extract_tweets(self):
+        tweets = []
+        items = self.parser.getElementsByTag(
+                        self.article.top_node,
+                        tag='blockquote',
+                        attr="class",
+                        value="twitter-tweet")
+
+        for i in items:
+            for attr in ['gravityScore', 'gravityNodes']:
+                self.parser.delAttribute(i, attr)
+            tweets.append(self.parser.nodeToString(i))
+
+        return tweets
+
+    def extract_authors(self):
+        authors = []
+        author_nodes = self.parser.getElementsByTag(
+                            self.article.doc,
+                            attr='itemprop',
+                            value='author')
+
+        for author in author_nodes:
+            name_nodes = self.parser.getElementsByTag(
+                            author,
+                            attr='itemprop',
+                            value='name')
+
+            if len(name_nodes) > 0:
+                name = self.parser.getText(name_nodes[0])
+                authors.append(name)
+
+        return list(set(authors))
+
     def extract_tags(self):
         node = self.article.doc
 
@@ -228,9 +360,10 @@ class ContentExtractor(object):
             if tag:
                 tags.append(tag)
 
-        return set(tags)
+        return list(set(tags))
 
     def calculate_best_node(self):
+
         doc = self.article.doc
         top_node = None
         nodes_to_check = self.nodes_to_check(doc)
@@ -243,7 +376,7 @@ class ContentExtractor(object):
 
         for node in nodes_to_check:
             text_node = self.parser.getText(node)
-            word_stats = self.stopwords_class(language=self.language).get_stopword_count(text_node)
+            word_stats = self.stopwords_class(language=self.get_language()).get_stopword_count(text_node)
             high_link_density = self.is_highlink_density(node)
             if word_stats.get_stopword_count() > 2 and not high_link_density:
                 nodes_with_text.append(node)
@@ -269,7 +402,7 @@ class ContentExtractor(object):
                         boost_score = float(5)
 
             text_node = self.parser.getText(node)
-            word_stats = self.stopwords_class(language=self.language).get_stopword_count(text_node)
+            word_stats = self.stopwords_class(language=self.get_language()).get_stopword_count(text_node)
             upscore = int(word_stats.get_stopword_count() + boost_score)
 
             # parent node
@@ -325,7 +458,7 @@ class ContentExtractor(object):
                 if steps_away >= max_stepsaway_from_node:
                     return False
                 paraText = self.parser.getText(current_node)
-                word_stats = self.stopwords_class(language=self.language).get_stopword_count(paraText)
+                word_stats = self.stopwords_class(language=self.get_language()).get_stopword_count(paraText)
                 if word_stats.get_stopword_count() > minimum_stopword_count:
                     return True
                 steps_away += 1
@@ -341,6 +474,10 @@ class ContentExtractor(object):
         return b
 
     def add_siblings(self, top_node):
+        # in case the extraction used known attributes
+        # we don't want to add sibilings
+        if self.is_articlebody(top_node):
+            return top_node
         baselinescore_siblings_para = self.get_siblings_score(top_node)
         results = self.walk_siblings(top_node)
         for current_node in results:
@@ -368,7 +505,7 @@ class ContentExtractor(object):
                 for first_paragraph in potential_paragraphs:
                     text = self.parser.getText(first_paragraph)
                     if len(text) > 0:
-                        word_stats = self.stopwords_class(language=self.language).get_stopword_count(text)
+                        word_stats = self.stopwords_class(language=self.get_language()).get_stopword_count(text)
                         paragraph_score = word_stats.get_stopword_count()
                         sibling_baseline_score = float(.30)
                         high_link_density = self.is_highlink_density(first_paragraph)
@@ -395,7 +532,7 @@ class ContentExtractor(object):
 
         for node in nodes_to_check:
             text_node = self.parser.getText(node)
-            word_stats = self.stopwords_class(language=self.language).get_stopword_count(text_node)
+            word_stats = self.stopwords_class(language=self.get_language()).get_stopword_count(text_node)
             high_link_density = self.is_highlink_density(node)
             if word_stats.get_stopword_count() > 2 and not high_link_density:
                 paragraphs_number += 1
@@ -478,6 +615,7 @@ class ContentExtractor(object):
         on like paragraphs and tables
         """
         nodes_to_check = []
+
         for tag in ['p', 'pre', 'td']:
             items = self.parser.getElementsByTag(doc, tag=tag)
             nodes_to_check += items

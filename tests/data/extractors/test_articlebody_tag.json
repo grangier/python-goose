@@ -1,0 +1,6 @@
+{
+    "url": "http://exemple.com/test_opengraphcontent",
+    "expected": {
+        "cleaned_text": "Search-and-rescue teams were mobilized "
+    }
+}

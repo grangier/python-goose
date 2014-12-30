@@ -125,7 +125,7 @@ class TestExtractionBase(BaseMockTests):
                 continue
 
             # default assertion
-            msg = u"Error %s" % field
+            msg = u"Error %s \nexpected: %s\nresult: %s" % (field, expected_value, result_value)
             self.assertEqual(expected_value, result_value, msg=msg)
 
     def extract(self, instance):
@@ -285,16 +285,6 @@ class TestExtractions(TestExtractionBase):
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
-    def test_businessinsider1(self):
-        article = self.getArticle()
-        fields = ['cleaned_text']
-        self.runArticleAssertions(article=article, fields=fields)
-
-    def test_businessinsider2(self):
-        article = self.getArticle()
-        fields = ['cleaned_text']
-        self.runArticleAssertions(article=article, fields=fields)
-
     def test_businessinsider3(self):
         article = self.getArticle()
         fields = ['cleaned_text']
@@ -355,6 +345,64 @@ class TestExtractions(TestExtractionBase):
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
+    def test_opengraph(self):
+        article = self.getArticle()
+        fields = ['opengraph']
+        self.runArticleAssertions(article=article, fields=fields)
+
+    def test_title_opengraph(self):
+        article = self.getArticle()
+        fields = ['title']
+        self.runArticleAssertions(article=article, fields=fields)
+
+    def test_issue129(self):
+        article = self.getArticle()
+        fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
+    def test_issue115(self):
+        # https://github.com/grangier/python-goose/issues/115
+        article = self.getArticle()
+        fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
+
+class TestArticleTopNode(TestExtractionBase):
+
+    def test_articlebody_itemprop(self):
+        article = self.getArticle()
+        fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
+    def test_articlebody_attribute(self):
+        article = self.getArticle()
+        fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
+    def test_articlebody_tag(self):
+        article = self.getArticle()
+        fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
+
+class TestPublishDate(TestExtractionBase):
+
+    def test_publish_date(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
+    def test_publish_date_rnews(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
+    def test_publish_date_article(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
+    def test_publish_date_schema(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
 
 class TestExtractWithUrl(TestExtractionBase):
 
@@ -408,6 +456,32 @@ class TestExtractionsRaw(TestExtractions):
     def extract(self, instance):
         article = instance.extract(raw_html=self.getRawHtml())
         return article
+
+
+class TestArticleTweet(TestExtractionBase):
+
+    def test_tweet(self):
+        article = self.getArticle()
+        number_tweets = len(article.tweets)
+        expected_number_tweets = self.data['expected']['tweets']
+        self.assertEqual(number_tweets, expected_number_tweets)
+
+
+class TestArticleLinks(TestExtractionBase):
+
+    def test_links(self):
+        article = self.getArticle()
+        number_links = len(article.links)
+        expected_number_links = self.data['expected']['links']
+        self.assertEqual(number_links, expected_number_links)
+
+
+class TestArticleAuthor(TestExtractionBase):
+
+    def test_author_schema(self):
+        article = self.getArticle()
+        fields = ['authors']
+        self.runArticleAssertions(article=article, fields=fields)
 
 
 class TestArticleTags(TestExtractionBase):

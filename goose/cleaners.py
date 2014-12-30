@@ -246,7 +246,8 @@ class DocumentCleaner(object):
                 bad_divs += 1
             elif div is not None:
                 replaceNodes = self.get_replacement_nodes(doc, div)
-                div.clear()
+                for child in self.parser.childNodes(div):
+                    div.remove(child)
 
                 for c, n in enumerate(replaceNodes):
                     div.insert(c, n)

@@ -46,7 +46,7 @@ def encodeValue(value):
         value = smart_unicode(value)
     except (UnicodeEncodeError, DjangoUnicodeDecodeError):
         value = smart_str(value)
-    except:
+    except Exception:
         value = string_org
     return value
 
@@ -95,7 +95,12 @@ class StopWords(object):
         # to generate dynamic path for file to load
         if not language in self._cached_stop_words:
             path = os.path.join('text', 'stopwords-%s.txt' % language)
-            self._cached_stop_words[language] = set(FileHelper.loadResourceFile(path).splitlines())
+            try:
+                content = FileHelper.loadResourceFile(path)
+                word_list = content.splitlines()
+            except IOError:
+                word_list = []
+            self._cached_stop_words[language] = set(word_list)
         self.STOP_WORDS = self._cached_stop_words[language]
 
     def remove_punctuation(self, content):
