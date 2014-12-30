@@ -131,10 +131,10 @@ class Crawler(object):
             # tweets
             self.article.tweets = self.extractor.extract_tweets()
 
-            # video handeling
+            # video handling
             self.video_extractor.get_videos()
 
-            # image handeling
+            # image handling
             if self.config.enable_image_fetching:
                 self.get_image()
 
