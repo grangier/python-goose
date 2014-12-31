@@ -21,5 +21,31 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-version_info = (1, 0, 24)
-__version__ = ".".join(map(str, version_info))
+from goose.extractors import BaseExtractor
+
+A_REL_TAG_SELECTOR = "a[rel=tag]"
+A_HREF_TAG_SELECTOR = "a[href*='/tag/'], a[href*='/tags/'], a[href*='/topic/'], a[href*='?keyword=']"
+
+
+class TagsExtractor(BaseExtractor):
+
+    def extract(self):
+        node = self.article.doc
+        tags = []
+
+        # node doesn't have chidren
+        if len(list(node)) == 0:
+            return tags
+
+        elements = self.parser.css_select(node, A_REL_TAG_SELECTOR)
+        if not elements:
+            elements = self.parser.css_select(node, A_HREF_TAG_SELECTOR)
+            if not elements:
+                return tags
+
+        for el in elements:
+            tag = self.parser.getText(el)
+            if tag:
+                tags.append(tag)
+
+        return list(set(tags))

@@ -21,5 +21,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-version_info = (1, 0, 24)
-__version__ = ".".join(map(str, version_info))
+from base import TestExtractionBase
+
+
+class TestArticleLinks(TestExtractionBase):
+
+    def test_links(self):
+        article = self.getArticle()
+        number_links = len(article.links)
+        expected_number_links = self.data['expected']['links']
+        self.assertEqual(number_links, expected_number_links)

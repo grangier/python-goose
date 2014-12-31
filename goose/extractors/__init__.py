@@ -21,5 +21,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-version_info = (1, 0, 24)
-__version__ = ".".join(map(str, version_info))
+
+class BaseExtractor(object):
+
+    def __init__(self, config, article):
+        # config
+        self.config = config
+
+        # parser
+        self.parser = self.config.get_parser()
+
+        # article
+        self.article = article
+
+        # stopwords class
+        self.stopwords_class = config.stopwords_class

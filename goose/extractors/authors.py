@@ -21,5 +21,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-version_info = (1, 0, 24)
-__version__ = ".".join(map(str, version_info))
+from goose.extractors import BaseExtractor
+
+
+class AuthorsExtractor(BaseExtractor):
+
+    def extract(self):
+        authors = []
+        author_nodes = self.parser.getElementsByTag(
+                            self.article.doc,
+                            attr='itemprop',
+                            value='author')
+
+        for author in author_nodes:
+            name_nodes = self.parser.getElementsByTag(
+                            author,
+                            attr='itemprop',
+                            value='name')
+
+            if len(name_nodes) > 0:
+                name = self.parser.getText(name_nodes[0])
+                authors.append(name)
+
+        return list(set(authors))

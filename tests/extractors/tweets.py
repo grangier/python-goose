@@ -21,5 +21,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-version_info = (1, 0, 24)
-__version__ = ".".join(map(str, version_info))
+from base import TestExtractionBase
+
+
+class TestArticleTweet(TestExtractionBase):
+
+    def test_tweet(self):
+        article = self.getArticle()
+        number_tweets = len(article.tweets)
+        expected_number_tweets = self.data['expected']['tweets']
+        self.assertEqual(number_tweets, expected_number_tweets)

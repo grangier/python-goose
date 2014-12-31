@@ -20,32 +20,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import os
-import json
-
-from .base import MockResponse
-from .extractors import TestExtractionBase
-
-from goose.utils import FileHelper
-
-CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
-
-
-class MockResponseVideos(MockResponse):
-    def content(self, req):
-        current_test = self.cls._get_current_testname()
-        path = os.path.join(CURRENT_PATH, "data", "videos", "%s.html" % current_test)
-        path = os.path.abspath(path)
-        content = FileHelper.loadResourceFile(path)
-        return content
+from base import TestExtractionBase
 
 
 class ImageExtractionTests(TestExtractionBase):
     """\
     Base Mock test case
     """
-    callback = MockResponseVideos
-
     def assert_movies(self, field, expected_value, result_value):
         # check if result_value is a list
         self.assertTrue(isinstance(result_value, list))
@@ -58,16 +39,6 @@ class ImageExtractionTests(TestExtractionBase):
             for k, v in expected.items():
                 r = getattr(video, k)
                 self.assertEqual(r, v)
-
-    def loadData(self):
-        """\
-
-        """
-        suite, module, cls, func = self.id().split('.')
-        path = os.path.join(CURRENT_PATH, "data", module, "%s.json" % func)
-        path = os.path.abspath(path)
-        content = FileHelper.loadResourceFile(path)
-        self.data = json.loads(content)
 
     def test_embed(self):
         article = self.getArticle()

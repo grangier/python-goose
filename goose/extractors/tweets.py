@@ -21,5 +21,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-version_info = (1, 0, 24)
-__version__ = ".".join(map(str, version_info))
+from goose.extractors import BaseExtractor
+
+
+class TweetsExtractor(BaseExtractor):
+
+    def extract(self):
+        tweets = []
+        items = self.parser.getElementsByTag(
+                        self.article.top_node,
+                        tag='blockquote',
+                        attr="class",
+                        value="twitter-tweet")
+
+        for i in items:
+            for attr in ['gravityScore', 'gravityNodes']:
+                self.parser.delAttribute(i, attr)
+            tweets.append(self.parser.nodeToString(i))
+
+        return tweets

@@ -21,5 +21,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-version_info = (1, 0, 24)
-__version__ = ".".join(map(str, version_info))
+from base import TestExtractionBase
+
+
+class TestArticleAuthor(TestExtractionBase):
+
+    def test_author_schema(self):
+        article = self.getArticle()
+        fields = ['authors']
+        self.runArticleAssertions(article=article, fields=fields)

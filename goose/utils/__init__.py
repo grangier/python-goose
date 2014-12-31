@@ -105,19 +105,6 @@ class URLHelper(object):
         return ParsingCandidate(final_url, link_hash)
 
 
-class StringSplitter(object):
-    """\
-
-    """
-    def __init__(self, pattern):
-        self.pattern = re.compile(pattern)
-
-    def split(self, string):
-        if not string:
-            return []
-        return self.pattern.split(string)
-
-
 class StringReplacement(object):
 
     def __init__(self, pattern, replaceWith):

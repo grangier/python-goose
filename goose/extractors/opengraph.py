@@ -21,5 +21,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-version_info = (1, 0, 24)
-__version__ = ".".join(map(str, version_info))
+from goose.extractors import BaseExtractor
+
+
+class OpenGraphExtractor(BaseExtractor):
+
+    def extract(self):
+        opengraph_dict = {}
+        node = self.article.doc
+        metas = self.parser.getElementsByTag(node, 'meta')
+        for meta in metas:
+            attr = self.parser.getAttribute(meta, 'property')
+            if attr is not None and attr.startswith("og:"):
+                value = self.parser.getAttribute(meta, 'content')
+                opengraph_dict.update({attr.split(":")[1]: value})
+        return opengraph_dict

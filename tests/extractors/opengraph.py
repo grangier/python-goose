@@ -21,5 +21,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-version_info = (1, 0, 24)
-__version__ = ".".join(map(str, version_info))
+from base import TestExtractionBase
+
+
+class TestOpenGraph(TestExtractionBase):
+
+    def test_opengraph(self):
+        article = self.getArticle()
+        fields = ['opengraph']
+        self.runArticleAssertions(article=article, fields=fields)

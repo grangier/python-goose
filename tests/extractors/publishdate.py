@@ -21,5 +21,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-version_info = (1, 0, 24)
-__version__ = ".".join(map(str, version_info))
+from base import TestExtractionBase
+
+
+class TestPublishDate(TestExtractionBase):
+
+    def test_publish_date(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
+    def test_publish_date_rnews(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
+    def test_publish_date_article(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
+    def test_publish_date_schema(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['publish_date'])

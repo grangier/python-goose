@@ -21,5 +21,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-version_info = (1, 0, 24)
-__version__ = ".".join(map(str, version_info))
+from goose.extractors import BaseExtractor
+
+
+class LinksExtractor(BaseExtractor):
+
+    def extract(self):
+        links = []
+        items = self.parser.getElementsByTag(self.article.top_node, 'a')
+        for i in items:
+            attr = self.parser.getAttribute(i, 'href')
+            if attr:
+                links.append(attr)
+        return links
