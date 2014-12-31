@@ -23,6 +23,7 @@ limitations under the License.
 import re
 from copy import deepcopy
 from urlparse import urlparse, urljoin
+from goose.extractors import BaseExtractor
 from goose.utils import StringSplitter
 from goose.utils import StringReplacement
 from goose.utils import ReplaceSequence
@@ -55,20 +56,7 @@ KNOWN_ARTICLE_CONTENT_TAGS = [
 ]
 
 
-class ContentExtractor(object):
-
-    def __init__(self, config, article):
-        # config
-        self.config = config
-
-        # parser
-        self.parser = self.config.get_parser()
-
-        # article
-        self.article = article
-
-        # stopwords class
-        self.stopwords_class = config.stopwords_class
+class ContentExtractor(BaseExtractor):
 
     def get_language(self):
         """\
