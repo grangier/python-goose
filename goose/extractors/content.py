@@ -29,13 +29,6 @@ from goose.extractors import BaseExtractor
 
 RE_LANG = r'^[A-Za-z]{2}$'
 
-KNOWN_PUBLISH_DATE_TAGS = [
-    {'attribute': 'property', 'value': 'rnews:datePublished', 'content': 'content'},
-    {'attribute': 'property', 'value': 'article:published_time', 'content': 'content'},
-    {'attribute': 'name', 'value': 'OriginalPublicationDate', 'content': 'content'},
-    {'attribute': 'itemprop', 'value': 'datePublished', 'content': 'datetime'},
-]
-
 KNOWN_ARTICLE_CONTENT_TAGS = [
     {'attr': 'itemprop', 'value': 'articleBody'},
     {'attr': 'class', 'value': 'post-content'},
@@ -56,14 +49,6 @@ class ContentExtractor(BaseExtractor):
             if self.article.meta_lang:
                 return self.article.meta_lang[:2]
         return self.config.target_language
-
-    def get_publish_date(self):
-        for known_meta_tag in KNOWN_PUBLISH_DATE_TAGS:
-            meta_tags = self.parser.getElementsByTag(self.article.doc,
-                                                attr=known_meta_tag['attribute'],
-                                                value=known_meta_tag['value'])
-            if meta_tags:
-                return self.parser.getAttribute(meta_tags[0], known_meta_tag['content'])
 
     def get_favicon(self):
         """\
