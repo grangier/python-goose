@@ -21,10 +21,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import os
-import json
 
-from .base import MockResponse
-from .extractors import TestExtractionBase
+from base import MockResponse
+from base import TestExtractionBase
 
 from goose.utils import FileHelper
 
@@ -34,7 +33,12 @@ CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 class MockResponseVideos(MockResponse):
     def content(self, req):
         current_test = self.cls._get_current_testname()
-        path = os.path.join(CURRENT_PATH, "data", "videos", "%s.html" % current_test)
+        path = os.path.join(
+                os.path.dirname(CURRENT_PATH),
+                "data",
+                "extractors",
+                "videos",
+                "%s.html" % current_test)
         path = os.path.abspath(path)
         content = FileHelper.loadResourceFile(path)
         return content
@@ -58,16 +62,6 @@ class ImageExtractionTests(TestExtractionBase):
             for k, v in expected.items():
                 r = getattr(video, k)
                 self.assertEqual(r, v)
-
-    def loadData(self):
-        """\
-
-        """
-        suite, module, cls, func = self.id().split('.')
-        path = os.path.join(CURRENT_PATH, "data", module, "%s.json" % func)
-        path = os.path.abspath(path)
-        content = FileHelper.loadResourceFile(path)
-        self.data = json.loads(content)
 
     def test_embed(self):
         article = self.getArticle()

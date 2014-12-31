@@ -23,26 +23,18 @@ limitations under the License.
 import os
 import json
 
-from base import BaseMockTests, MockResponse
+from base import BaseMockTests
+from base import MockResponseExtractors
 
 from goose import Goose
-from goose.utils import FileHelper
 from goose.configuration import Configuration
 from goose.text import StopWordsChinese
 from goose.text import StopWordsArabic
 from goose.text import StopWordsKorean
+from goose.utils import FileHelper
 
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
-
-
-class MockResponseExtractors(MockResponse):
-    def content(self, req):
-        current_test = self.cls._get_current_testname()
-        path = os.path.join(CURRENT_PATH, "data", "extractors", "%s.html" % current_test)
-        path = os.path.abspath(path)
-        content = FileHelper.loadResourceFile(path)
-        return content
 
 
 class TestExtractionBase(BaseMockTests):
@@ -52,8 +44,13 @@ class TestExtractionBase(BaseMockTests):
     callback = MockResponseExtractors
 
     def getRawHtml(self):
-        suite, module, cls, func = self.id().split('.')
-        path = os.path.join(CURRENT_PATH, "data", module, "%s.html" % func)
+        test, suite, module, cls, func = self.id().split('.')
+        path = os.path.join(
+                os.path.dirname(CURRENT_PATH),
+                "data",
+                suite,
+                module,
+                "%s.html" % func)
         path = os.path.abspath(path)
         content = FileHelper.loadResourceFile(path)
         return content
@@ -62,8 +59,13 @@ class TestExtractionBase(BaseMockTests):
         """\
 
         """
-        suite, module, cls, func = self.id().split('.')
-        path = os.path.join(CURRENT_PATH, "data", module, "%s.json" % func)
+        test, suite, module, cls, func = self.id().split('.')
+        path = os.path.join(
+                os.path.dirname(CURRENT_PATH),
+                "data",
+                suite,
+                module,
+                "%s.json" % func)
         path = os.path.abspath(path)
         content = FileHelper.loadResourceFile(path)
         self.data = json.loads(content)

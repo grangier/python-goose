@@ -26,7 +26,7 @@ import hashlib
 import unittest
 
 from base import MockResponse
-from extractors import TestExtractionBase
+from base import TestExtractionBase
 
 from goose.configuration import Configuration
 from goose.image import Image
