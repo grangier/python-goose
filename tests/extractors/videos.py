@@ -30,26 +30,10 @@ from goose.utils import FileHelper
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
-class MockResponseVideos(MockResponse):
-    def content(self, req):
-        current_test = self.cls._get_current_testname()
-        path = os.path.join(
-                os.path.dirname(CURRENT_PATH),
-                "data",
-                "extractors",
-                "videos",
-                "%s.html" % current_test)
-        path = os.path.abspath(path)
-        content = FileHelper.loadResourceFile(path)
-        return content
-
-
 class ImageExtractionTests(TestExtractionBase):
     """\
     Base Mock test case
     """
-    callback = MockResponseVideos
-
     def assert_movies(self, field, expected_value, result_value):
         # check if result_value is a list
         self.assertTrue(isinstance(result_value, list))

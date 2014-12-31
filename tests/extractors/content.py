@@ -95,23 +95,6 @@ class TestExtractionBase(BaseMockTests):
         msg = u"The beginning of the article text was not as expected!"
         self.assertEqual(expected_value, result_value, msg=msg)
 
-    def assert_tags(self, field, expected_value, result_value):
-        """\
-
-        """
-        # as we have a set in expected_value and a list in result_value
-        # make result_value a set
-        expected_value = set(expected_value)
-
-        # check if both have the same number of items
-        msg = (u"expected tags set and result tags set"
-                u"don't have the same number of items")
-        self.assertEqual(len(result_value), len(expected_value), msg=msg)
-
-        # check if each tag in result_value is in expected_value
-        for tag in result_value:
-            self.assertTrue(tag in expected_value)
-
     def runArticleAssertions(self, article, fields):
         """\
 
@@ -387,25 +370,6 @@ class TestArticleTopNode(TestExtractionBase):
         self.runArticleAssertions(article=article, fields=fields)
 
 
-class TestPublishDate(TestExtractionBase):
-
-    def test_publish_date(self):
-        article = self.getArticle()
-        self.runArticleAssertions(article=article, fields=['publish_date'])
-
-    def test_publish_date_rnews(self):
-        article = self.getArticle()
-        self.runArticleAssertions(article=article, fields=['publish_date'])
-
-    def test_publish_date_article(self):
-        article = self.getArticle()
-        self.runArticleAssertions(article=article, fields=['publish_date'])
-
-    def test_publish_date_schema(self):
-        article = self.getArticle()
-        self.runArticleAssertions(article=article, fields=['publish_date'])
-
-
 class TestExtractWithUrl(TestExtractionBase):
 
     def test_get_canonical_url(self):
@@ -483,35 +447,4 @@ class TestArticleAuthor(TestExtractionBase):
     def test_author_schema(self):
         article = self.getArticle()
         fields = ['authors']
-        self.runArticleAssertions(article=article, fields=fields)
-
-
-class TestArticleTags(TestExtractionBase):
-
-    def test_tags_kexp(self):
-        article = self.getArticle()
-        fields = ['tags']
-        self.runArticleAssertions(article=article, fields=fields)
-
-    def test_tags_deadline(self):
-        article = self.getArticle()
-        fields = ['tags']
-        self.runArticleAssertions(article=article, fields=fields)
-
-    def test_tags_wnyc(self):
-        article = self.getArticle()
-        fields = ['tags']
-        self.runArticleAssertions(article=article, fields=fields)
-
-    def test_tags_cnet(self):
-        article = self.getArticle()
-        fields = ['tags']
-        self.runArticleAssertions(article=article, fields=fields)
-
-    def test_tags_abcau(self):
-        """
-        Test ABC Australia page with "topics" tags
-        """
-        article = self.getArticle()
-        fields = ['tags']
         self.runArticleAssertions(article=article, fields=fields)

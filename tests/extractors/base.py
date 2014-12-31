@@ -114,13 +114,13 @@ class BaseMockTests(unittest.TestCase):
 
 class MockResponseExtractors(MockResponse):
     def content(self, req):
-        current_test = self.cls._get_current_testname()
+        test, suite, module, cls, func = self.cls.id().split('.')
         path = os.path.join(
                 os.path.dirname(CURRENT_PATH),
                 "data",
-                "extractors",
-                "content",
-                "%s.html" % current_test)
+                suite,
+                module,
+                "%s.html" % func)
         path = os.path.abspath(path)
         content = FileHelper.loadResourceFile(path)
         return content
@@ -183,23 +183,6 @@ class TestExtractionBase(BaseMockTests):
         result_value = result_value[0:len(expected_value)]
         msg = u"The beginning of the article text was not as expected!"
         self.assertEqual(expected_value, result_value, msg=msg)
-
-    def assert_tags(self, field, expected_value, result_value):
-        """\
-
-        """
-        # as we have a set in expected_value and a list in result_value
-        # make result_value a set
-        expected_value = set(expected_value)
-
-        # check if both have the same number of items
-        msg = (u"expected tags set and result tags set"
-                u"don't have the same number of items")
-        self.assertEqual(len(result_value), len(expected_value), msg=msg)
-
-        # check if each tag in result_value is in expected_value
-        for tag in result_value:
-            self.assertTrue(tag in expected_value)
 
     def runArticleAssertions(self, article, fields):
         """\
