@@ -24,8 +24,8 @@ import re
 import os
 from urlparse import urlparse, urljoin
 from goose.utils import FileHelper
-from goose.images.image import Image
-from goose.images.utils import ImageUtils
+from goose.image import Image
+from goose.utils.images import ImageUtils
 
 KNOWN_IMG_DOM_NAMES = [
     "yn-story-related-media",

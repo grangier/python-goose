@@ -29,10 +29,11 @@ from base import MockResponse
 from extractors import TestExtractionBase
 
 from goose.configuration import Configuration
-from goose.images.image import Image
-from goose.images.image import ImageDetails
-from goose.images.utils import ImageUtils
+from goose.image import Image
+from goose.image import ImageDetails
 from goose.utils import FileHelper
+from goose.utils.images import ImageUtils
+
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 

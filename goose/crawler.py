@@ -27,9 +27,9 @@ from goose.article import Article
 from goose.utils import URLHelper, RawHelper
 from goose.extractors.content import StandardContentExtractor
 from goose.extractors.videos import VideoExtractor
+from goose.extractors.images import UpgradedImageIExtractor
 from goose.cleaners import StandardDocumentCleaner
 from goose.outputformatters import StandardOutputFormatter
-from goose.images.extractors import UpgradedImageIExtractor
 
 from goose.network import HtmlFetcher
 
