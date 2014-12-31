@@ -27,7 +27,7 @@ from goose.article import Article
 from goose.utils import URLHelper, RawHelper
 from goose.extractors.content import StandardContentExtractor
 from goose.extractors.videos import VideoExtractor
-from goose.extractors.images import UpgradedImageIExtractor
+from goose.extractors.images import ImageExtractor
 from goose.cleaners import StandardDocumentCleaner
 from goose.outputformatters import StandardOutputFormatter
 
@@ -176,7 +176,7 @@ class Crawler(object):
         return html
 
     def get_image_extractor(self):
-        return UpgradedImageIExtractor(self.config, self.article)
+        return ImageExtractor(self.config, self.article)
 
     def get_video_extractor(self):
         return VideoExtractor(self.config, self.article)

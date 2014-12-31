@@ -44,10 +44,6 @@ class DepthTraversal(object):
 
 
 class ImageExtractor(object):
-    pass
-
-
-class UpgradedImageIExtractor(ImageExtractor):
 
     def __init__(self, config, article):
         self.custom_site_mapping = {}
