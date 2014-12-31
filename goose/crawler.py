@@ -29,6 +29,7 @@ from goose.extractors.content import StandardContentExtractor
 from goose.extractors.videos import VideoExtractor
 from goose.extractors.title import TitleExtractor
 from goose.extractors.images import ImageExtractor
+from goose.extractors.links import LinksExtractor
 from goose.cleaners import StandardDocumentCleaner
 from goose.outputformatters import StandardOutputFormatter
 
@@ -64,6 +65,9 @@ class Crawler(object):
 
         # init the output formatter
         self.formatter = self.get_formatter()
+
+        # links extractor
+        self.links_extractor = self.get_links_extractor()
 
         # video extractor
         self.video_extractor = self.get_video_extractor()
@@ -131,7 +135,7 @@ class Crawler(object):
         if self.article.top_node is not None:
 
             # article links
-            self.article.links = self.extractor.extract_links()
+            self.article.links = self.links_extractor.extract()
 
             # tweets
             self.article.tweets = self.extractor.extract_tweets()
@@ -178,6 +182,9 @@ class Crawler(object):
             'result': self.htmlfetcher.result,
             })
         return html
+
+    def get_links_extractor(self):
+        return LinksExtractor(self.config, self.article)
 
     def get_title_extractor(self):
         return TitleExtractor(self.config, self.article)
