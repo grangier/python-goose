@@ -20,130 +20,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import os
-import json
+from base import TestExtractionBase
 
-from base import BaseMockTests
-from base import MockResponseExtractors
-
-from goose import Goose
-from goose.configuration import Configuration
 from goose.text import StopWordsChinese
 from goose.text import StopWordsArabic
 from goose.text import StopWordsKorean
-from goose.utils import FileHelper
-
-
-CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
-
-
-class TestExtractionBase(BaseMockTests):
-    """\
-    Extraction test case
-    """
-    callback = MockResponseExtractors
-
-    def getRawHtml(self):
-        test, suite, module, cls, func = self.id().split('.')
-        path = os.path.join(
-                os.path.dirname(CURRENT_PATH),
-                "data",
-                suite,
-                module,
-                "%s.html" % func)
-        path = os.path.abspath(path)
-        content = FileHelper.loadResourceFile(path)
-        return content
-
-    def loadData(self):
-        """\
-
-        """
-        test, suite, module, cls, func = self.id().split('.')
-        path = os.path.join(
-                os.path.dirname(CURRENT_PATH),
-                "data",
-                suite,
-                module,
-                "%s.json" % func)
-        path = os.path.abspath(path)
-        content = FileHelper.loadResourceFile(path)
-        self.data = json.loads(content)
-
-    def assert_cleaned_text(self, field, expected_value, result_value):
-        """\
-
-        """
-        # # TODO : handle verbose level in tests
-        # print "\n=======================::. ARTICLE REPORT %s .::======================\n" % self.id()
-        # print 'expected_value (%s) \n' % len(expected_value)
-        # print expected_value
-        # print "-------"
-        # print 'result_value (%s) \n' % len(result_value)
-        # print result_value
-
-        # cleaned_text is Null
-        msg = u"Resulting article text was NULL!"
-        self.assertNotEqual(result_value, None, msg=msg)
-
-        # cleaned_text length
-        msg = u"Article text was not as long as expected beginning!"
-        self.assertTrue(len(expected_value) <= len(result_value), msg=msg)
-
-        # clean_text value
-        result_value = result_value[0:len(expected_value)]
-        msg = u"The beginning of the article text was not as expected!"
-        self.assertEqual(expected_value, result_value, msg=msg)
-
-    def runArticleAssertions(self, article, fields):
-        """\
-
-        """
-        for field in fields:
-            expected_value = self.data['expected'][field]
-            result_value = getattr(article, field, None)
-
-            # custom assertion for a given field
-            assertion = 'assert_%s' % field
-            if hasattr(self, assertion):
-                getattr(self, assertion)(field, expected_value, result_value)
-                continue
-
-            # default assertion
-            msg = u"Error %s \nexpected: %s\nresult: %s" % (field, expected_value, result_value)
-            self.assertEqual(expected_value, result_value, msg=msg)
-
-    def extract(self, instance):
-        article = instance.extract(url=self.data['url'])
-        return article
-
-    def getConfig(self):
-        config = Configuration()
-        config.enable_image_fetching = False
-        return config
-
-    def getArticle(self):
-        """\
-
-        """
-        # load test case data
-        self.loadData()
-
-        # basic configuration
-        # no image fetching
-        config = self.getConfig()
-        self.parser = config.get_parser()
-
-        # target language
-        # needed for non english language most of the time
-        target_language = self.data.get('target_language')
-        if target_language:
-            config.target_language = target_language
-            config.use_meta_language = False
-
-        # run goose
-        g = Goose(config=config)
-        return self.extract(g)
 
 
 class TestExtractions(TestExtractionBase):
@@ -330,11 +211,6 @@ class TestExtractions(TestExtractionBase):
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
-    def test_opengraph(self):
-        article = self.getArticle()
-        fields = ['opengraph']
-        self.runArticleAssertions(article=article, fields=fields)
-
     def test_title_opengraph(self):
         article = self.getArticle()
         fields = ['title']
@@ -422,15 +298,6 @@ class TestExtractionsRaw(TestExtractions):
     def extract(self, instance):
         article = instance.extract(raw_html=self.getRawHtml())
         return article
-
-
-class TestArticleLinks(TestExtractionBase):
-
-    def test_links(self):
-        article = self.getArticle()
-        number_links = len(article.links)
-        expected_number_links = self.data['expected']['links']
-        self.assertEqual(number_links, expected_number_links)
 
 
 class TestArticleAuthor(TestExtractionBase):

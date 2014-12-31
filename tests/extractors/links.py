@@ -24,9 +24,10 @@ limitations under the License.
 from base import TestExtractionBase
 
 
-class TestOpenGraph(TestExtractionBase):
+class TestArticleLinks(TestExtractionBase):
 
-    def test_opengraph(self):
+    def test_links(self):
         article = self.getArticle()
-        fields = ['opengraph']
-        self.runArticleAssertions(article=article, fields=fields)
+        number_links = len(article.links)
+        expected_number_links = self.data['expected']['links']
+        self.assertEqual(number_links, expected_number_links)
