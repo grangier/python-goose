@@ -192,25 +192,6 @@ class ContentExtractor(BaseExtractor):
                 opengraph_dict.update({attr.split(":")[1]: value})
         return opengraph_dict
 
-    def extract_authors(self):
-        authors = []
-        author_nodes = self.parser.getElementsByTag(
-                            self.article.doc,
-                            attr='itemprop',
-                            value='author')
-
-        for author in author_nodes:
-            name_nodes = self.parser.getElementsByTag(
-                            author,
-                            attr='itemprop',
-                            value='name')
-
-            if len(name_nodes) > 0:
-                name = self.parser.getText(name_nodes[0])
-                authors.append(name)
-
-        return list(set(authors))
-
     def extract_tags(self):
         node = self.article.doc
 
