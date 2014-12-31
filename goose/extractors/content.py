@@ -46,12 +46,6 @@ class ContentExtractor(BaseExtractor):
                 return self.article.meta_lang[:2]
         return self.config.target_language
 
-    def get_domain(self):
-        if self.article.final_url:
-            o = urlparse(self.article.final_url)
-            return o.hostname
-        return None
-
     def get_known_article_tags(self):
         for item in KNOWN_ARTICLE_CONTENT_TAGS:
             nodes = self.parser.getElementsByTag(

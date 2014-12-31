@@ -33,6 +33,12 @@ RE_LANG = r'^[A-Za-z]{2}$'
 
 class MetasExtractor(BaseExtractor):
 
+    def get_domain(self):
+        if self.article.final_url:
+            o = urlparse(self.article.final_url)
+            return o.hostname
+        return None
+
     def get_favicon(self):
         """\
         Extract the favicon from a website
@@ -124,5 +130,6 @@ class MetasExtractor(BaseExtractor):
             "keywords": self.get_meta_keywords(),
             "lang": self.get_meta_lang(),
             "favicon": self.get_favicon(),
-            "canonical": self.get_canonical_link()
+            "canonical": self.get_canonical_link(),
+            "domain": self.get_domain()
         }
