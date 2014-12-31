@@ -33,6 +33,7 @@ from goose.extractors.links import LinksExtractor
 from goose.extractors.tweets import TweetsExtractor
 from goose.extractors.authors import AuthorsExtractor
 from goose.extractors.tags import TagsExtractor
+from goose.extractors.opengraph import OpenGraphExtractor
 from goose.cleaners import StandardDocumentCleaner
 from goose.outputformatters import StandardOutputFormatter
 
@@ -68,6 +69,9 @@ class Crawler(object):
 
         # init the output formatter
         self.formatter = self.get_formatter()
+
+        # opengraph_ extractor
+        self.opengraph_extractor = self.get_opengraph_extractor()
 
         # tags extractor
         self.tags_extractor = self.get_tags_extractor()
@@ -116,7 +120,10 @@ class Crawler(object):
         self.article.raw_html = raw_html
         self.article.doc = doc
         self.article.raw_doc = deepcopy(doc)
-        self.article.opengraph = self.extractor.extract_opengraph()
+
+        # open graph
+        self.article.opengraph = self.opengraph_extractor.extract()
+
         self.article.publish_date = self.extractor.get_publish_date()
         # self.article.additional_data = config.get_additionaldata_extractor.extract(doc)
         self.article.meta_lang = self.extractor.get_meta_lang()
@@ -200,6 +207,9 @@ class Crawler(object):
             'result': self.htmlfetcher.result,
             })
         return html
+
+    def get_opengraph_extractor(self):
+        return OpenGraphExtractor(self.config, self.article)
 
     def get_tags_extractor(self):
         return TagsExtractor(self.config, self.article)

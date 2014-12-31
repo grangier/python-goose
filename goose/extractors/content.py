@@ -178,17 +178,6 @@ class ContentExtractor(BaseExtractor):
 
         return False
 
-    def extract_opengraph(self):
-        opengraph_dict = {}
-        node = self.article.doc
-        metas = self.parser.getElementsByTag(node, 'meta')
-        for meta in metas:
-            attr = self.parser.getAttribute(meta, 'property')
-            if attr is not None and attr.startswith("og:"):
-                value = self.parser.getAttribute(meta, 'content')
-                opengraph_dict.update({attr.split(":")[1]: value})
-        return opengraph_dict
-
     def calculate_best_node(self):
 
         doc = self.article.doc

@@ -24,5 +24,15 @@ limitations under the License.
 from goose.extractors import BaseExtractor
 
 
-class ContentOpenGraphExtractor(BaseExtractor):
-    pass
+class OpenGraphExtractor(BaseExtractor):
+
+    def extract(self):
+        opengraph_dict = {}
+        node = self.article.doc
+        metas = self.parser.getElementsByTag(node, 'meta')
+        for meta in metas:
+            attr = self.parser.getAttribute(meta, 'property')
+            if attr is not None and attr.startswith("og:"):
+                value = self.parser.getAttribute(meta, 'content')
+                opengraph_dict.update({attr.split(":")[1]: value})
+        return opengraph_dict
