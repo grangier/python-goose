@@ -32,6 +32,7 @@ from goose.extractors.images import ImageExtractor
 from goose.extractors.links import LinksExtractor
 from goose.extractors.tweets import TweetsExtractor
 from goose.extractors.authors import AuthorsExtractor
+from goose.extractors.tags import TagsExtractor
 from goose.cleaners import StandardDocumentCleaner
 from goose.outputformatters import StandardOutputFormatter
 
@@ -67,6 +68,9 @@ class Crawler(object):
 
         # init the output formatter
         self.formatter = self.get_formatter()
+
+        # tags extractor
+        self.tags_extractor = self.get_tags_extractor()
 
         # authors extractor
         self.authors_extractor = self.get_authors_extractor()
@@ -121,7 +125,9 @@ class Crawler(object):
         self.article.meta_keywords = self.extractor.get_meta_keywords()
         self.article.canonical_link = self.extractor.get_canonical_link()
         self.article.domain = self.extractor.get_domain()
-        self.article.tags = self.extractor.extract_tags()
+
+        # tags
+        self.article.tags = self.tags_extractor.extract()
 
         # authors
         self.article.authors = self.authors_extractor.extract()
@@ -194,6 +200,9 @@ class Crawler(object):
             'result': self.htmlfetcher.result,
             })
         return html
+
+    def get_tags_extractor(self):
+        return TagsExtractor(self.config, self.article)
 
     def get_authors_extractor(self):
         return AuthorsExtractor(self.config, self.article)

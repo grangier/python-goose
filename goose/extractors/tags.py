@@ -23,6 +23,29 @@ limitations under the License.
 
 from goose.extractors import BaseExtractor
 
+A_REL_TAG_SELECTOR = "a[rel=tag]"
+A_HREF_TAG_SELECTOR = "a[href*='/tag/'], a[href*='/tags/'], a[href*='/topic/'], a[href*='?keyword=']"
 
-class ContentTagsExtractor(BaseExtractor):
-    pass
+
+class TagsExtractor(BaseExtractor):
+
+    def extract(self):
+        node = self.article.doc
+        tags = []
+
+        # node doesn't have chidren
+        if len(list(node)) == 0:
+            return tags
+
+        elements = self.parser.css_select(node, A_REL_TAG_SELECTOR)
+        if not elements:
+            elements = self.parser.css_select(node, A_HREF_TAG_SELECTOR)
+            if not elements:
+                return tags
+
+        for el in elements:
+            tag = self.parser.getText(el)
+            if tag:
+                tags.append(tag)
+
+        return list(set(tags))

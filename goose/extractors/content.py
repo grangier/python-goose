@@ -27,9 +27,6 @@ from urlparse import urlparse, urljoin
 
 from goose.extractors import BaseExtractor
 
-NO_STRINGS = []
-A_REL_TAG_SELECTOR = "a[rel=tag]"
-A_HREF_TAG_SELECTOR = "a[href*='/tag/'], a[href*='/tags/'], a[href*='/topic/'], a[href*='?keyword=']"
 RE_LANG = r'^[A-Za-z]{2}$'
 
 KNOWN_PUBLISH_DATE_TAGS = [
@@ -191,27 +188,6 @@ class ContentExtractor(BaseExtractor):
                 value = self.parser.getAttribute(meta, 'content')
                 opengraph_dict.update({attr.split(":")[1]: value})
         return opengraph_dict
-
-    def extract_tags(self):
-        node = self.article.doc
-
-        # node doesn't have chidren
-        if len(list(node)) == 0:
-            return NO_STRINGS
-
-        elements = self.parser.css_select(node, A_REL_TAG_SELECTOR)
-        if not elements:
-            elements = self.parser.css_select(node, A_HREF_TAG_SELECTOR)
-            if not elements:
-                return NO_STRINGS
-
-        tags = []
-        for el in elements:
-            tag = self.parser.getText(el)
-            if tag:
-                tags.append(tag)
-
-        return list(set(tags))
 
     def calculate_best_node(self):
 
