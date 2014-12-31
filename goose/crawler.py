@@ -35,6 +35,7 @@ from goose.extractors.authors import AuthorsExtractor
 from goose.extractors.tags import TagsExtractor
 from goose.extractors.opengraph import OpenGraphExtractor
 from goose.extractors.publishdate import PublishDateExtractor
+from goose.extractors.metas import MetasExtractor
 from goose.cleaners import StandardDocumentCleaner
 from goose.outputformatters import StandardOutputFormatter
 
@@ -70,6 +71,9 @@ class Crawler(object):
 
         # init the output formatter
         self.formatter = self.get_formatter()
+
+        # metas extractor
+        self.metas_extractor = self.get_metas_extractor()
 
         # publishdate extractor
         self.publishdate_extractor = self.get_publishdate_extractor()
@@ -131,12 +135,15 @@ class Crawler(object):
         # publishdate
         self.article.publish_date = self.publishdate_extractor.extract()
 
-        # self.article.additional_data = config.get_additionaldata_extractor.extract(doc)
-        self.article.meta_lang = self.extractor.get_meta_lang()
-        self.article.meta_favicon = self.extractor.get_favicon()
-        self.article.meta_description = self.extractor.get_meta_description()
-        self.article.meta_keywords = self.extractor.get_meta_keywords()
-        self.article.canonical_link = self.extractor.get_canonical_link()
+        # meta
+        metas = self.metas_extractor.extract()
+        self.article.meta_lang = metas['lang']
+        self.article.meta_favicon = metas['favicon']
+        self.article.meta_description = metas['description']
+        self.article.meta_keywords = metas['keywords']
+        self.article.canonical_link = metas['canonical']
+
+        # domain
         self.article.domain = self.extractor.get_domain()
 
         # tags
@@ -213,6 +220,9 @@ class Crawler(object):
             'result': self.htmlfetcher.result,
             })
         return html
+
+    def get_metas_extractor(self):
+        return MetasExtractor(self.config, self.article)
 
     def get_publishdate_extractor(self):
         return PublishDateExtractor(self.config, self.article)

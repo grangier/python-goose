@@ -20,14 +20,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import re
-
 from copy import deepcopy
-from urlparse import urlparse, urljoin
 
 from goose.extractors import BaseExtractor
 
-RE_LANG = r'^[A-Za-z]{2}$'
 
 KNOWN_ARTICLE_CONTENT_TAGS = [
     {'attr': 'itemprop', 'value': 'articleBody'},
@@ -49,91 +45,6 @@ class ContentExtractor(BaseExtractor):
             if self.article.meta_lang:
                 return self.article.meta_lang[:2]
         return self.config.target_language
-
-    def get_favicon(self):
-        """\
-        Extract the favicon from a website
-        http://en.wikipedia.org/wiki/Favicon
-        <link rel="shortcut icon" type="image/png" href="favicon.png" />
-        <link rel="icon" type="image/png" href="favicon.png" />
-        """
-        kwargs = {'tag': 'link', 'attr': 'rel', 'value': 'icon'}
-        meta = self.parser.getElementsByTag(self.article.doc, **kwargs)
-        if meta:
-            favicon = self.parser.getAttribute(meta[0], 'href')
-            return favicon
-        return ''
-
-    def get_meta_lang(self):
-        """\
-        Extract content language from meta
-        """
-        # we have a lang attribute in html
-        attr = self.parser.getAttribute(self.article.doc, attr='lang')
-        if attr is None:
-            # look up for a Content-Language in meta
-            items = [
-                {'tag': 'meta', 'attr': 'http-equiv', 'value': 'content-language'},
-                {'tag': 'meta', 'attr': 'name', 'value': 'lang'}
-            ]
-            for item in items:
-                meta = self.parser.getElementsByTag(self.article.doc, **item)
-                if meta:
-                    attr = self.parser.getAttribute(meta[0], attr='content')
-                    break
-
-        if attr:
-            value = attr[:2]
-            if re.search(RE_LANG, value):
-                return value.lower()
-
-        return None
-
-    def get_meta_content(self, doc, metaName):
-        """\
-        Extract a given meta content form document
-        """
-        meta = self.parser.css_select(doc, metaName)
-        content = None
-
-        if meta is not None and len(meta) > 0:
-            content = self.parser.getAttribute(meta[0], 'content')
-
-        if content:
-            return content.strip()
-
-        return ''
-
-    def get_meta_description(self):
-        """\
-        if the article has meta description set in the source, use that
-        """
-        return self.get_meta_content(self.article.doc, "meta[name=description]")
-
-    def get_meta_keywords(self):
-        """\
-        if the article has meta keywords set in the source, use that
-        """
-        return self.get_meta_content(self.article.doc, "meta[name=keywords]")
-
-    def get_canonical_link(self):
-        """\
-        if the article has meta canonical link set in the url
-        """
-        if self.article.final_url:
-            kwargs = {'tag': 'link', 'attr': 'rel', 'value': 'canonical'}
-            meta = self.parser.getElementsByTag(self.article.doc, **kwargs)
-            if meta is not None and len(meta) > 0:
-                href = self.parser.getAttribute(meta[0], 'href')
-                if href:
-                    href = href.strip()
-                    o = urlparse(href)
-                    if not o.hostname:
-                        z = urlparse(self.article.final_url)
-                        domain = '%s://%s' % (z.scheme, z.hostname)
-                        href = urljoin(domain, href)
-                    return href
-        return self.article.final_url
 
     def get_domain(self):
         if self.article.final_url:
