@@ -298,11 +298,3 @@ class TestExtractionsRaw(TestExtractions):
     def extract(self, instance):
         article = instance.extract(raw_html=self.getRawHtml())
         return article
-
-
-class TestArticleAuthor(TestExtractionBase):
-
-    def test_author_schema(self):
-        article = self.getArticle()
-        fields = ['authors']
-        self.runArticleAssertions(article=article, fields=fields)
