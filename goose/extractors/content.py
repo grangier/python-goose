@@ -20,33 +20,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import re
 from copy import deepcopy
-from urlparse import urlparse, urljoin
-from goose.utils import StringSplitter
-from goose.utils import StringReplacement
-from goose.utils import ReplaceSequence
 
-MOTLEY_REPLACEMENT = StringReplacement("&#65533;", "")
-ESCAPED_FRAGMENT_REPLACEMENT = StringReplacement(u"#!", u"?_escaped_fragment_=")
-TITLE_REPLACEMENTS = ReplaceSequence().create(u"&raquo;").append(u"»")
-TITLE_SPLITTERS = [u"|", u"-", u"»", u":"]
-PIPE_SPLITTER = StringSplitter("\\|")
-DASH_SPLITTER = StringSplitter(" - ")
-ARROWS_SPLITTER = StringSplitter("»")
-COLON_SPLITTER = StringSplitter(":")
-SPACE_SPLITTER = StringSplitter(' ')
-NO_STRINGS = []
-A_REL_TAG_SELECTOR = "a[rel=tag]"
-A_HREF_TAG_SELECTOR = "a[href*='/tag/'], a[href*='/tags/'], a[href*='/topic/'], a[href*='?keyword=']"
-RE_LANG = r'^[A-Za-z]{2}$'
+from goose.extractors import BaseExtractor
 
-KNOWN_PUBLISH_DATE_TAGS = [
-    {'attribute': 'property', 'value': 'rnews:datePublished', 'content': 'content'},
-    {'attribute': 'property', 'value': 'article:published_time', 'content': 'content'},
-    {'attribute': 'name', 'value': 'OriginalPublicationDate', 'content': 'content'},
-    {'attribute': 'itemprop', 'value': 'datePublished', 'content': 'datetime'},
-]
 
 KNOWN_ARTICLE_CONTENT_TAGS = [
     {'attr': 'itemprop', 'value': 'articleBody'},
@@ -55,20 +32,7 @@ KNOWN_ARTICLE_CONTENT_TAGS = [
 ]
 
 
-class ContentExtractor(object):
-
-    def __init__(self, config, article):
-        # config
-        self.config = config
-
-        # parser
-        self.parser = self.config.get_parser()
-
-        # article
-        self.article = article
-
-        # stopwords class
-        self.stopwords_class = config.stopwords_class
+class ContentExtractor(BaseExtractor):
 
     def get_language(self):
         """\
@@ -81,189 +45,6 @@ class ContentExtractor(object):
             if self.article.meta_lang:
                 return self.article.meta_lang[:2]
         return self.config.target_language
-
-    def clean_title(self, title):
-        """Clean title with the use of og:site_name
-        in this case try to get ride of site name
-        and use TITLE_SPLITTERS to reformat title
-        """
-        # check if we have the site name in opengraph data
-        if "site_name" in self.article.opengraph.keys():
-            site_name = self.article.opengraph['site_name']
-            # remove the site name from title
-            title = title.replace(site_name, '').strip()
-
-        # try to remove the domain from url
-        if self.article.domain:
-            pattern = re.compile(self.article.domain, re.IGNORECASE)
-            title = pattern.sub("", title).strip()
-
-        # split the title in words
-        # TechCrunch | my wonderfull article
-        # my wonderfull article | TechCrunch
-        title_words = title.split()
-
-        # check if first letter is in TITLE_SPLITTERS
-        # if so remove it
-        if title_words[0] in TITLE_SPLITTERS:
-            title_words.pop(0)
-
-        # check if last letter is in TITLE_SPLITTERS
-        # if so remove it
-        if title_words[-1] in TITLE_SPLITTERS:
-            title_words.pop(-1)
-
-        # rebuild the title
-        title = u" ".join(title_words).strip()
-
-        return title
-
-    def get_title(self):
-        """\
-        Fetch the article title and analyze it
-        """
-        title = ''
-
-        # rely on opengraph in case we have the data
-        if "title" in self.article.opengraph.keys():
-            title = self.article.opengraph['title']
-            return self.clean_title(title)
-
-        # try to fetch the meta headline
-        meta_headline = self.parser.getElementsByTag(
-                            self.article.doc,
-                            tag="meta",
-                            attr="name",
-                            value="headline")
-        if meta_headline is not None and len(meta_headline) > 0:
-            title = self.parser.getAttribute(meta_headline[0], 'content')
-            return self.clean_title(title)
-
-        # otherwise use the title meta
-        title_element = self.parser.getElementsByTag(self.article.doc, tag='title')
-        if title_element is not None and len(title_element) > 0:
-            title = self.parser.getText(title_element[0])
-            return self.clean_title(title)
-
-        return title
-
-    def split_title(self, title, splitter):
-        """\
-        Split the title to best part possible
-        """
-        large_text_length = 0
-        large_text_index = 0
-        title_pieces = splitter.split(title)
-
-        # find the largest title piece
-        for i in range(len(title_pieces)):
-            current = title_pieces[i]
-            if len(current) > large_text_length:
-                large_text_length = len(current)
-                large_text_index = i
-
-        # replace content
-        title = title_pieces[large_text_index]
-        return TITLE_REPLACEMENTS.replaceAll(title).strip()
-
-    def get_publish_date(self):
-        for known_meta_tag in KNOWN_PUBLISH_DATE_TAGS:
-            meta_tags = self.parser.getElementsByTag(self.article.doc,
-                                                attr=known_meta_tag['attribute'],
-                                                value=known_meta_tag['value'])
-            if meta_tags:
-                return self.parser.getAttribute(meta_tags[0], known_meta_tag['content'])
-
-    def get_favicon(self):
-        """\
-        Extract the favicon from a website
-        http://en.wikipedia.org/wiki/Favicon
-        <link rel="shortcut icon" type="image/png" href="favicon.png" />
-        <link rel="icon" type="image/png" href="favicon.png" />
-        """
-        kwargs = {'tag': 'link', 'attr': 'rel', 'value': 'icon'}
-        meta = self.parser.getElementsByTag(self.article.doc, **kwargs)
-        if meta:
-            favicon = self.parser.getAttribute(meta[0], 'href')
-            return favicon
-        return ''
-
-    def get_meta_lang(self):
-        """\
-        Extract content language from meta
-        """
-        # we have a lang attribute in html
-        attr = self.parser.getAttribute(self.article.doc, attr='lang')
-        if attr is None:
-            # look up for a Content-Language in meta
-            items = [
-                {'tag': 'meta', 'attr': 'http-equiv', 'value': 'content-language'},
-                {'tag': 'meta', 'attr': 'name', 'value': 'lang'}
-            ]
-            for item in items:
-                meta = self.parser.getElementsByTag(self.article.doc, **item)
-                if meta:
-                    attr = self.parser.getAttribute(meta[0], attr='content')
-                    break
-
-        if attr:
-            value = attr[:2]
-            if re.search(RE_LANG, value):
-                return value.lower()
-
-        return None
-
-    def get_meta_content(self, doc, metaName):
-        """\
-        Extract a given meta content form document
-        """
-        meta = self.parser.css_select(doc, metaName)
-        content = None
-
-        if meta is not None and len(meta) > 0:
-            content = self.parser.getAttribute(meta[0], 'content')
-
-        if content:
-            return content.strip()
-
-        return ''
-
-    def get_meta_description(self):
-        """\
-        if the article has meta description set in the source, use that
-        """
-        return self.get_meta_content(self.article.doc, "meta[name=description]")
-
-    def get_meta_keywords(self):
-        """\
-        if the article has meta keywords set in the source, use that
-        """
-        return self.get_meta_content(self.article.doc, "meta[name=keywords]")
-
-    def get_canonical_link(self):
-        """\
-        if the article has meta canonical link set in the url
-        """
-        if self.article.final_url:
-            kwargs = {'tag': 'link', 'attr': 'rel', 'value': 'canonical'}
-            meta = self.parser.getElementsByTag(self.article.doc, **kwargs)
-            if meta is not None and len(meta) > 0:
-                href = self.parser.getAttribute(meta[0], 'href')
-                if href:
-                    href = href.strip()
-                    o = urlparse(href)
-                    if not o.hostname:
-                        z = urlparse(self.article.final_url)
-                        domain = '%s://%s' % (z.scheme, z.hostname)
-                        href = urljoin(domain, href)
-                    return href
-        return self.article.final_url
-
-    def get_domain(self):
-        if self.article.final_url:
-            o = urlparse(self.article.final_url)
-            return o.hostname
-        return None
 
     def get_known_article_tags(self):
         for item in KNOWN_ARTICLE_CONTENT_TAGS:
@@ -286,81 +67,6 @@ class ContentExtractor(object):
                     return True
 
         return False
-
-    def extract_opengraph(self):
-        opengraph_dict = {}
-        node = self.article.doc
-        metas = self.parser.getElementsByTag(node, 'meta')
-        for meta in metas:
-            attr = self.parser.getAttribute(meta, 'property')
-            if attr is not None and attr.startswith("og:"):
-                value = self.parser.getAttribute(meta, 'content')
-                opengraph_dict.update({attr.split(":")[1]: value})
-        return opengraph_dict
-
-    def extract_links(self):
-        links = []
-        items = self.parser.getElementsByTag(self.article.top_node, 'a')
-        for i in items:
-            attr = self.parser.getAttribute(i, 'href')
-            if attr:
-                links.append(attr)
-        return links
-
-    def extract_tweets(self):
-        tweets = []
-        items = self.parser.getElementsByTag(
-                        self.article.top_node,
-                        tag='blockquote',
-                        attr="class",
-                        value="twitter-tweet")
-
-        for i in items:
-            for attr in ['gravityScore', 'gravityNodes']:
-                self.parser.delAttribute(i, attr)
-            tweets.append(self.parser.nodeToString(i))
-
-        return tweets
-
-    def extract_authors(self):
-        authors = []
-        author_nodes = self.parser.getElementsByTag(
-                            self.article.doc,
-                            attr='itemprop',
-                            value='author')
-
-        for author in author_nodes:
-            name_nodes = self.parser.getElementsByTag(
-                            author,
-                            attr='itemprop',
-                            value='name')
-
-            if len(name_nodes) > 0:
-                name = self.parser.getText(name_nodes[0])
-                authors.append(name)
-
-        return list(set(authors))
-
-    def extract_tags(self):
-        node = self.article.doc
-
-        # node doesn't have chidren
-        if len(list(node)) == 0:
-            return NO_STRINGS
-
-        elements = self.parser.css_select(node, A_REL_TAG_SELECTOR)
-        if not elements:
-            elements = self.parser.css_select(node, A_HREF_TAG_SELECTOR)
-            if not elements:
-                return NO_STRINGS
-
-        tags = []
-        for el in elements:
-            tag = self.parser.getText(el)
-            if tag:
-                tags.append(tag)
-
-        return list(set(tags))
 
     def calculate_best_node(self):
 

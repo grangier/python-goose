@@ -21,25 +21,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from goose.videos.videos import Video
+from goose.extractors import BaseExtractor
+from goose.video import Video
 
 VIDEOS_TAGS = ['iframe', 'embed', 'object', 'video']
 VIDEO_PROVIDERS = ['youtube', 'vimeo', 'dailymotion', 'kewego']
 
 
-class VideoExtractor(object):
+class VideoExtractor(BaseExtractor):
     """\
     Extracts a list of video from Article top node
     """
     def __init__(self, config, article):
-        # article
-        self.article = article
-
-        # config
-        self.config = config
-
-        # parser
-        self.parser = self.config.get_parser()
+        super(VideoExtractor, self).__init__(config, article)
 
         # candidates
         self.candidates = []

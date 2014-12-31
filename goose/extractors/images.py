@@ -22,10 +22,13 @@ limitations under the License.
 """
 import re
 import os
+
 from urlparse import urlparse, urljoin
+
+from goose.extractors import BaseExtractor
+from goose.image import Image
 from goose.utils import FileHelper
-from goose.images.image import Image
-from goose.images.utils import ImageUtils
+from goose.utils.images import ImageUtils
 
 KNOWN_IMG_DOM_NAMES = [
     "yn-story-related-media",
@@ -43,24 +46,14 @@ class DepthTraversal(object):
         self.sibling_depth = sibling_depth
 
 
-class ImageExtractor(object):
-    pass
-
-
-class UpgradedImageIExtractor(ImageExtractor):
+class ImageExtractor(BaseExtractor):
 
     def __init__(self, config, article):
+        super(ImageExtractor, self).__init__(config, article)
+
         self.custom_site_mapping = {}
+
         self.load_customesite_mapping()
-
-        # article
-        self.article = article
-
-        # config
-        self.config = config
-
-        # parser
-        self.parser = self.config.get_parser()
 
         # What's the minimum bytes for an image we'd accept is
         self.images_min_bytes = 4000
