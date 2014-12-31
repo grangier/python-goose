@@ -43,7 +43,13 @@ class MockResponseImage(MockResponse):
     def image_content(self, req):
         md5_hash = hashlib.md5(req.get_full_url()).hexdigest()
         current_test = self.cls._get_current_testname()
-        path = os.path.join(CURRENT_PATH, "data", "images", current_test, md5_hash)
+        path = os.path.join(
+                os.path.dirname(CURRENT_PATH),
+                "data",
+                "extractors",
+                "images",
+                current_test,
+                md5_hash)
         path = os.path.abspath(path)
         f = open(path, 'rb')
         content = f.read()
@@ -52,7 +58,13 @@ class MockResponseImage(MockResponse):
 
     def html_content(self, req):
         current_test = self.cls._get_current_testname()
-        path = os.path.join(CURRENT_PATH, "data", "images", current_test, "%s.html" % current_test)
+        path = os.path.join(
+                os.path.dirname(CURRENT_PATH),
+                "data",
+                "extractors",
+                "images",
+                current_test,
+                "%s.html" % current_test)
         path = os.path.abspath(path)
         return FileHelper.loadResourceFile(path)
 
@@ -72,8 +84,15 @@ class ImageExtractionTests(TestExtractionBase):
         """\
 
         """
-        suite, module, cls, func = self.id().split('.')
-        path = os.path.join(CURRENT_PATH, "data", module, func, "%s.json" % func)
+        test, suite, module, cls, func = self.id().split('.')
+        path = os.path.join(
+                os.path.dirname(CURRENT_PATH),
+                "data",
+                suite,
+                module,
+                func,
+                "%s.json" % func)
+
         path = os.path.abspath(path)
         content = FileHelper.loadResourceFile(path)
         self.data = json.loads(content)
@@ -158,7 +177,7 @@ class ImageExtractionTests(TestExtractionBase):
 class ImageUtilsTests(unittest.TestCase):
 
     def setUp(self):
-        self.path = 'tests/data/images/test_basic_image/50850547cc7310bc53e30e802c6318f1'
+        self.path = 'tests/data/extractors/images/test_basic_image/50850547cc7310bc53e30e802c6318f1'
         self.expected_results = {
             'width': 476,
             'height': 317,
