@@ -21,22 +21,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import re
+
 from copy import deepcopy
 from urlparse import urlparse, urljoin
-from goose.extractors import BaseExtractor
-from goose.utils import StringSplitter
-from goose.utils import StringReplacement
-from goose.utils import ReplaceSequence
 
-MOTLEY_REPLACEMENT = StringReplacement("&#65533;", "")
-ESCAPED_FRAGMENT_REPLACEMENT = StringReplacement(u"#!", u"?_escaped_fragment_=")
-TITLE_REPLACEMENTS = ReplaceSequence().create(u"&raquo;").append(u"»")
-TITLE_SPLITTERS = [u"|", u"-", u"»", u":"]
-PIPE_SPLITTER = StringSplitter("\\|")
-DASH_SPLITTER = StringSplitter(" - ")
-ARROWS_SPLITTER = StringSplitter("»")
-COLON_SPLITTER = StringSplitter(":")
-SPACE_SPLITTER = StringSplitter(' ')
+from goose.extractors import BaseExtractor
+
 NO_STRINGS = []
 A_REL_TAG_SELECTOR = "a[rel=tag]"
 A_HREF_TAG_SELECTOR = "a[href*='/tag/'], a[href*='/tags/'], a[href*='/topic/'], a[href*='?keyword=']"
@@ -69,90 +59,6 @@ class ContentExtractor(BaseExtractor):
             if self.article.meta_lang:
                 return self.article.meta_lang[:2]
         return self.config.target_language
-
-    def clean_title(self, title):
-        """Clean title with the use of og:site_name
-        in this case try to get ride of site name
-        and use TITLE_SPLITTERS to reformat title
-        """
-        # check if we have the site name in opengraph data
-        if "site_name" in self.article.opengraph.keys():
-            site_name = self.article.opengraph['site_name']
-            # remove the site name from title
-            title = title.replace(site_name, '').strip()
-
-        # try to remove the domain from url
-        if self.article.domain:
-            pattern = re.compile(self.article.domain, re.IGNORECASE)
-            title = pattern.sub("", title).strip()
-
-        # split the title in words
-        # TechCrunch | my wonderfull article
-        # my wonderfull article | TechCrunch
-        title_words = title.split()
-
-        # check if first letter is in TITLE_SPLITTERS
-        # if so remove it
-        if title_words[0] in TITLE_SPLITTERS:
-            title_words.pop(0)
-
-        # check if last letter is in TITLE_SPLITTERS
-        # if so remove it
-        if title_words[-1] in TITLE_SPLITTERS:
-            title_words.pop(-1)
-
-        # rebuild the title
-        title = u" ".join(title_words).strip()
-
-        return title
-
-    def get_title(self):
-        """\
-        Fetch the article title and analyze it
-        """
-        title = ''
-
-        # rely on opengraph in case we have the data
-        if "title" in self.article.opengraph.keys():
-            title = self.article.opengraph['title']
-            return self.clean_title(title)
-
-        # try to fetch the meta headline
-        meta_headline = self.parser.getElementsByTag(
-                            self.article.doc,
-                            tag="meta",
-                            attr="name",
-                            value="headline")
-        if meta_headline is not None and len(meta_headline) > 0:
-            title = self.parser.getAttribute(meta_headline[0], 'content')
-            return self.clean_title(title)
-
-        # otherwise use the title meta
-        title_element = self.parser.getElementsByTag(self.article.doc, tag='title')
-        if title_element is not None and len(title_element) > 0:
-            title = self.parser.getText(title_element[0])
-            return self.clean_title(title)
-
-        return title
-
-    def split_title(self, title, splitter):
-        """\
-        Split the title to best part possible
-        """
-        large_text_length = 0
-        large_text_index = 0
-        title_pieces = splitter.split(title)
-
-        # find the largest title piece
-        for i in range(len(title_pieces)):
-            current = title_pieces[i]
-            if len(current) > large_text_length:
-                large_text_length = len(current)
-                large_text_index = i
-
-        # replace content
-        title = title_pieces[large_text_index]
-        return TITLE_REPLACEMENTS.replaceAll(title).strip()
 
     def get_publish_date(self):
         for known_meta_tag in KNOWN_PUBLISH_DATE_TAGS:

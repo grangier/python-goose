@@ -27,6 +27,7 @@ from goose.article import Article
 from goose.utils import URLHelper, RawHelper
 from goose.extractors.content import StandardContentExtractor
 from goose.extractors.videos import VideoExtractor
+from goose.extractors.title import TitleExtractor
 from goose.extractors.images import ImageExtractor
 from goose.cleaners import StandardDocumentCleaner
 from goose.outputformatters import StandardOutputFormatter
@@ -66,6 +67,9 @@ class Crawler(object):
 
         # video extractor
         self.video_extractor = self.get_video_extractor()
+
+        # title extractor
+        self.title_extractor = self.get_title_extractor()
 
         # image extrator
         self.image_extractor = self.get_image_extractor()
@@ -107,7 +111,7 @@ class Crawler(object):
         self.article.domain = self.extractor.get_domain()
         self.article.tags = self.extractor.extract_tags()
         self.article.authors = self.extractor.extract_authors()
-        self.article.title = self.extractor.get_title()
+        self.article.title = self.title_extractor.extract()
 
         # check for known node as content body
         # if we find one force the article.doc to be the found node
@@ -174,6 +178,9 @@ class Crawler(object):
             'result': self.htmlfetcher.result,
             })
         return html
+
+    def get_title_extractor(self):
+        return TitleExtractor(self.config, self.article)
 
     def get_image_extractor(self):
         return ImageExtractor(self.config, self.article)
