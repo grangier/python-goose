@@ -59,7 +59,7 @@ class Goose(object):
         pass
 
     def crawl(self, crawl_candiate):
-        parsers = self.config.available_parsers
+        parsers = list(self.config.available_parsers)
         parsers.remove(self.config.parser_class)
         try:
             crawler = Crawler(self.config)
