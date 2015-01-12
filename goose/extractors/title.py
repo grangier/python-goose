@@ -51,6 +51,9 @@ class TitleExtractor(BaseExtractor):
         # my wonderfull article | TechCrunch
         title_words = title.split()
 
+        if not title_words:
+            return str()
+
         # check if first letter is in TITLE_SPLITTERS
         # if so remove it
         if title_words[0] in TITLE_SPLITTERS:
