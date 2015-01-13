@@ -79,7 +79,7 @@ class TitleExtractor(BaseExtractor):
                 largest_text_length = current_len
                 title = current
 
-        return title
+        return title.strip().rstrip()
 
     def get_title(self):
         """\
