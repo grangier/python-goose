@@ -44,7 +44,9 @@ class TitleExtractor(BaseExtractor):
             title = pattern.sub("", title).strip()
 
         # Remove Title splitters
-        title = u" ".join(re.split('\|| |:|»|-',title)).strip()
+        title_words = re.split('\|| |:|»|-', title)
+        title = u" ".join(w for w in title_words if w != '').strip()
+
         return title
 
     def get_title(self):
