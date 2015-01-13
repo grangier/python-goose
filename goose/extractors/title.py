@@ -64,6 +64,21 @@ class TitleExtractor(BaseExtractor):
         # rebuild the title
         title = u" ".join(title_words).strip()
 
+        # Check if clean was bad, then apply old clean method
+        title_pieces = tuple()
+        for splitter in TITLE_SPLITTERS:
+            if splitter in title:
+                title_pieces = title.split(splitter)
+                break
+
+        largest_text_length = 0
+        # find the largest title piece
+        for current in title_pieces:
+            current_len = len(current)
+            if current_len > largest_text_length:
+                largest_text_length = current_len
+                title = current
+
         return title
 
     def get_title(self):
