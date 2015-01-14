@@ -30,3 +30,8 @@ class TestTitle(TestExtractionBase):
         article = self.getArticle()
         fields = ['title']
         self.runArticleAssertions(article=article, fields=fields)
+
+    def test_title_opengraph_empty(self):
+        article = self.getArticle()
+        fields = ['title']
+        self.runArticleAssertions(article=article, fields=fields)
