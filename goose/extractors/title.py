@@ -25,9 +25,6 @@ import re
 from goose.extractors import BaseExtractor
 
 
-TITLE_SPLITTERS = [u"|", u"-", u"»", u":"]
-
-
 class TitleExtractor(BaseExtractor):
 
     def clean_title(self, title):
@@ -46,24 +43,10 @@ class TitleExtractor(BaseExtractor):
             pattern = re.compile(self.article.domain, re.IGNORECASE)
             title = pattern.sub("", title).strip()
 
-        # split the title in words
-        # TechCrunch | my wonderfull article
-        # my wonderfull article | TechCrunch
-        title_words = title.split()
-
-        # check if first letter is in TITLE_SPLITTERS
-        # if so remove it
-        if title_words[0] in TITLE_SPLITTERS:
-            title_words.pop(0)
-
-        # check if last letter is in TITLE_SPLITTERS
-        # if so remove it
-        if title_words[-1] in TITLE_SPLITTERS:
-            title_words.pop(-1)
-
-        # rebuild the title
-        title = u" ".join(title_words).strip()
-
+        # Remove Title splitters
+        title_words = re.split('\|| |:|»|-', title)
+        title_words = [w.strip() for w in title_words if w != '']
+        title = u" ".join(w for w in title_words).strip()
         return title
 
     def get_title(self):
