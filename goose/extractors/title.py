@@ -50,7 +50,7 @@ class TitleExtractor(BaseExtractor):
         # TechCrunch | my wonderfull article
         # my wonderfull article | TechCrunch
         title_words = title.split()
-        
+
         # check for an empty title
         # so that we don't get an IndexError below
         if len(title_words) == 0:
