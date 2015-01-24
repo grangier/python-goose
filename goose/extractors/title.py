@@ -51,6 +51,11 @@ class TitleExtractor(BaseExtractor):
         # my wonderfull article | TechCrunch
         title_words = title.split()
 
+        # check for an empty title
+        # so that we don't get an IndexError below
+        if len(title_words) == 0:
+            return u""
+
         # check if first letter is in TITLE_SPLITTERS
         # if so remove it
         if title_words[0] in TITLE_SPLITTERS:
