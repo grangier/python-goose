@@ -20,15 +20,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import sys
+# the default recursion limit is 1000
+sys.setrecursionlimit(2000)
 import os
 import platform
 from tempfile import mkstemp
+import traceback
 
 from goose.version import version_info, __version__
 from goose.configuration import Configuration
 from goose.crawler import CrawlCandidate
 from goose.crawler import Crawler
-
 
 class Goose(object):
     """\
@@ -48,7 +51,7 @@ class Goose(object):
             self.config = config
 
     def extract(self, url=None, raw_html=None):
-        """\
+        """
         Main method to extract an article object from a URL,
         pass in a url and get back a Article
         """
@@ -61,12 +64,17 @@ class Goose(object):
     def crawl(self, crawl_candiate):
         parsers = list(self.config.available_parsers)
         parsers.remove(self.config.parser_class)
+        article = None
         try:
             crawler = Crawler(self.config)
             article = crawler.crawl(crawl_candiate)
         except (UnicodeDecodeError, ValueError):
             self.config.parser_class = parsers[0]
-            return self.crawl(crawl_candiate)
+            try:
+                if isinstance(crawl_candiate, basestring):
+                    return self.crawl(crawl_candiate)
+            except exception as e:
+                print >> sys.stderr, 'Article Crawl error: ', traceback.format_exec()
         return article
 
     def initialize(self):
