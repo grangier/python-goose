@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -21,17 +21,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import re
-
+import traceback
+import sys
 from goose.extractors import BaseExtractor
 
 
-TITLE_SPLITTERS = [u"|", u"-", u"»", u":"]
+TITLE_SPLITTERS = set([u"|", u"-", u"»", u":"])
 
 
 class TitleExtractor(BaseExtractor):
 
     def clean_title(self, title):
-        """Clean title with the use of og:site_name
+        """
+        Clean title with the use of og:site_name
         in this case try to get ride of site name
         and use TITLE_SPLITTERS to reformat title
         """
@@ -51,54 +53,51 @@ class TitleExtractor(BaseExtractor):
         # my wonderfull article | TechCrunch
         title_words = title.split()
 
-        # check for an empty title
-        # so that we don't get an IndexError below
-        if len(title_words) == 0:
-            return u""
-
-        # check if first letter is in TITLE_SPLITTERS
-        # if so remove it
-        if title_words[0] in TITLE_SPLITTERS:
-            title_words.pop(0)
-
-        # check if last letter is in TITLE_SPLITTERS
-        # if so remove it
-        if title_words[-1] in TITLE_SPLITTERS:
-            title_words.pop(-1)
-
-        # rebuild the title
-        title = u" ".join(title_words).strip()
+        title = u""
+        # check if first and last words are in TITLE_SPLITTERS
+        # if so remove them
+        for i in 0, -1:
+            if title_words and next ((
+                True for w in TITLE_SPLITTERS if title_words[i] in w), \
+                False):
+                title_words.pop(i)
+            # rebuild the title
+            title = u" ".join(title_words).strip()
 
         return title
 
     def get_title(self):
-        """\
+        """
         Fetch the article title and analyze it
         """
-        title = ''
+        title = u""
+        try:
+            # rely on opengraph in case we have the data
+            title_ = self.article.opengraph.get('title', '')
+            if title_:
+                # handle tags without any title: <meta property="og:title" />
+                return self.clean_title(title_)
 
-        # rely on opengraph in case we have the data
-        if "title" in self.article.opengraph.keys():
-            title = self.article.opengraph['title']
-            return self.clean_title(title)
+            # try to fetch the meta headline
+            meta_headline = self.parser.getElementsByTag(
+                                self.article.doc,
+                                tag="meta",
+                                attr="name",
+                                value="headline")
+            if meta_headline:
+                title_ = self.parser.getAttribute(meta_headline[0], 'content')
+                if title_:
+                    return self.clean_title(title_)
 
-        # try to fetch the meta headline
-        meta_headline = self.parser.getElementsByTag(
-                            self.article.doc,
-                            tag="meta",
-                            attr="name",
-                            value="headline")
-        if meta_headline is not None and len(meta_headline) > 0:
-            title = self.parser.getAttribute(meta_headline[0], 'content')
-            return self.clean_title(title)
-
-        # otherwise use the title meta
-        title_element = self.parser.getElementsByTag(self.article.doc, tag='title')
-        if title_element is not None and len(title_element) > 0:
-            title = self.parser.getText(title_element[0])
-            return self.clean_title(title)
-
-        return title
+            # otherwise use the title meta
+            title_element = self.parser.getElementsByTag(self.article.doc, tag='title')
+            if title_element:
+                title_ = self.parser.getText(title_element[0])
+                if title_:
+                    return self.clean_title(title_)
+        except:
+            print >> sys.stderr, 'ERROR when getting title: ', traceback.format_exec()
+            return title
 
     def extract(self):
         return self.get_title()
