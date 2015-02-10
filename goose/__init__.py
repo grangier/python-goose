@@ -20,13 +20,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import sys
-# the default recursion limit is 1000
-sys.setrecursionlimit(2000)
 import os
 import platform
 from tempfile import mkstemp
 import traceback
+import sys
 
 from goose.version import version_info, __version__
 from goose.configuration import Configuration
