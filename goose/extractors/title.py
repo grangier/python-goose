@@ -76,28 +76,29 @@ class TitleExtractor(BaseExtractor):
             title_ = self.article.opengraph.get('title', '')
             if title_:
                 # handle tags without any title: <meta property="og:title" />
-                return self.clean_title(title_)
-
-            # try to fetch the meta headline
-            meta_headline = self.parser.getElementsByTag(
-                                self.article.doc,
-                                tag="meta",
-                                attr="name",
-                                value="headline")
-            if meta_headline:
-                title_ = self.parser.getAttribute(meta_headline[0], 'content')
-                if title_:
-                    return self.clean_title(title_)
-
-            # otherwise use the title meta
-            title_element = self.parser.getElementsByTag(self.article.doc, tag='title')
-            if title_element:
-                title_ = self.parser.getText(title_element[0])
-                if title_:
-                    return self.clean_title(title_)
+                title = self.clean_title(title_)
+            else:
+                # try to fetch the meta headline
+                meta_headline = self.parser.getElementsByTag(
+                                    self.article.doc,
+                                    tag="meta",
+                                    attr="name",
+                                    value="headline")
+                if meta_headline:
+                    title_ = self.parser.getAttribute(meta_headline[0], 'content')
+                    if title_:
+                        title = self.clean_title(title_)
+                else:
+                    # otherwise use the title meta
+                    title_element = self.parser.getElementsByTag(self.article.doc, tag='title')
+                    if title_element:
+                        title_ = self.parser.getText(title_element[0])
+                        if title_:
+                            title = self.clean_title(title_)
         except:
             print >> sys.stderr, 'ERROR when getting title: ', traceback.format_exec()
-            return title
+        
+        return title
 
     def extract(self):
         return self.get_title()
