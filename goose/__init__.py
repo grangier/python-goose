@@ -68,11 +68,10 @@ class Goose(object):
             article = crawler.crawl(crawl_candiate)
         except (UnicodeDecodeError, ValueError):
             self.config.parser_class = parsers[0]
-            try:
-                if isinstance(crawl_candiate, basestring):
-                    return self.crawl(crawl_candiate)
-            except exception as e:
-                print >> sys.stderr, 'Article Crawl error: ', traceback.format_exec()
+            if isinstance(crawl_candiate, basestring):
+                return self.crawl(crawl_candiate)
+        except Exception as e:
+            print >> sys.stderr, 'Article Crawl error: ', traceback.format_exec()
         return article
 
     def initialize(self):
