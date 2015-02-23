@@ -96,7 +96,7 @@ class TitleExtractor(BaseExtractor):
                         if title_:
                             title = self.clean_title(title_)
         except:
-            print >> sys.stderr, 'ERROR when getting title: ', traceback.format_exec()
+            print >> sys.stderr, 'ERROR when getting title: ', traceback.format_exc()
         
         return title
 
