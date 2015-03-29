@@ -32,7 +32,7 @@ class TitleExtractor(BaseExtractor):
 
     def clean_title(self, title):
         """Clean title with the use of og:site_name
-        in this case try to get ride of site name
+        in this case try to get rid of site name
         and use TITLE_SPLITTERS to reformat title
         """
         # check if we have the site name in opengraph data
