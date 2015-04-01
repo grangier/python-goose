@@ -26,6 +26,7 @@ from lxml import etree
 from copy import deepcopy
 from goose.text import innerTrim
 from goose.text import encodeValue
+import re
 
 
 class Parser(object):
@@ -51,7 +52,12 @@ class Parser(object):
     @classmethod
     def fromstring(self, html):
         html = encodeValue(html)
+
+        # remove <?xml> tag because it breaks the lxml html parser
+        html = re.sub(r'<\?xml version\=[\"\'][0-9]\.[0-9][\"\'] encoding\=(.*?)\?>', '', html)
+
         self.doc = lxml.html.fromstring(html)
+
         return self.doc
 
     @classmethod
