@@ -10,4 +10,5 @@ env/
 ._*
 *.egg
 venv/
+.env/
 goose_extractor.egg-info/
