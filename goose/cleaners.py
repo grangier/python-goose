@@ -179,7 +179,7 @@ class DocumentCleaner(object):
             # node is a p
             # and already have some replacement text
             if self.parser.getTag(kid) == 'p' and len(replacement_text) > 0:
-                newNode = self.get_flushed_buffer(''.join(replacement_text), doc)
+                newNode = self.get_flushed_buffer(' '.join(replacement_text), doc)
                 nodes_to_return.append(newNode)
                 replacement_text = []
                 nodes_to_return.append(kid)
@@ -221,7 +221,7 @@ class DocumentCleaner(object):
 
         # flush out anything still remaining
         if(len(replacement_text) > 0):
-            new_node = self.get_flushed_buffer(''.join(replacement_text), doc)
+            new_node = self.get_flushed_buffer(' '.join(replacement_text), doc)
             nodes_to_return.append(new_node)
             replacement_text = []
 
