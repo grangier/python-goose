@@ -22,6 +22,8 @@ limitations under the License.
 """
 
 import os
+import sys
+
 from setuptools import setup, find_packages
 from imp import load_source
 
@@ -53,6 +55,11 @@ try:
 except Exception:
     long_description = description
 
+requirements = ['Pillow', 'lxml', 'cssselect', 'jieba', 'nltk', 'six']
+if sys.version_info.major == 2:
+    requirements.append('beautifulsoup')
+
+
 setup(name='goose-extractor',
     version=version.__version__,
     description=description,
@@ -66,6 +73,6 @@ setup(name='goose-extractor',
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
-    install_requires=['Pillow', 'lxml', 'cssselect', 'jieba', 'nltk'],
+    install_requires=requirements,
     test_suite="tests"
 )
