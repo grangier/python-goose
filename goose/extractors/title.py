@@ -32,7 +32,7 @@ class TitleExtractor(BaseExtractor):
 
     def clean_title(self, title):
         """Clean title with the use of og:site_name
-        in this case try to get ride of site name
+        in this case try to get rid of site name
         and use TITLE_SPLITTERS to reformat title
         """
         # check if we have the site name in opengraph data
@@ -50,6 +50,11 @@ class TitleExtractor(BaseExtractor):
         # TechCrunch | my wonderfull article
         # my wonderfull article | TechCrunch
         title_words = title.split()
+
+        # check for an empty title
+        # so that we don't get an IndexError below
+        if len(title_words) == 0:
+            return u""
 
         # check if first letter is in TITLE_SPLITTERS
         # if so remove it
