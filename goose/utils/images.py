@@ -22,8 +22,12 @@ limitations under the License.
 """
 import hashlib
 import os
-import urllib2
+try:
+    from urllib2 import urlopen, Request
+except ImportError:
+    from urllib.request import urlopen, Request
 from PIL import Image
+
 from goose.utils.encoding import smart_str
 from goose.image import ImageDetails
 from goose.image import LocallyStoredImage
@@ -115,8 +119,8 @@ class ImageUtils(object):
     @classmethod
     def fetch(self, http_client, src):
         try:
-            req = urllib2.Request(src)
-            f = urllib2.urlopen(req)
+            req = Request(src)
+            f = urlopen(req)
             data = f.read()
             return data
         except Exception:

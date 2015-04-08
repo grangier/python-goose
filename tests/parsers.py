@@ -22,6 +22,7 @@ limitations under the License.
 """
 import os
 import unittest
+import sys
 
 from goose.utils import FileHelper
 from goose.parsers import Parser
@@ -260,5 +261,7 @@ class TestParser(ParserBase):
 
 
 class TestParserSoup(ParserBase):
+
+    @unittest.skipIf(sys.version_info.major != 2, "supported only in python2")
     def setUp(self):
         self.parser = ParserSoup

@@ -21,7 +21,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import lxml.html
-from lxml.html import soupparser
+
+import six
+
 from lxml import etree
 from copy import deepcopy
 from goose.text import innerTrim
@@ -56,7 +58,7 @@ class Parser(object):
 
     @classmethod
     def nodeToString(self, node):
-        return etree.tostring(node)
+        return etree.tostring(node, encoding=six.text_type)
 
     @classmethod
     def replaceTag(self, node, tag):
@@ -239,6 +241,7 @@ class ParserSoup(Parser):
 
     @classmethod
     def fromstring(self, html):
+        from lxml.html import soupparser
         html = encodeValue(html)
         self.doc = soupparser.fromstring(html)
         return self.doc

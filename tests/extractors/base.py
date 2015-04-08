@@ -22,11 +22,18 @@ limitations under the License.
 """
 import os
 import json
-import urllib2
 import unittest
 import socket
 
-from StringIO import StringIO
+try:
+    import urllib2
+except ImportError:
+    import urllib.request as urllib2
+
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 from goose import Goose
 from goose.utils import FileHelper

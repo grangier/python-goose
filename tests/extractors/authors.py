@@ -21,12 +21,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from base import TestExtractionBase
+from __future__ import absolute_import
+
+from .base import TestExtractionBase
 
 
 class TestArticleAuthor(TestExtractionBase):
 
     def test_author_schema(self):
         article = self.getArticle()
-        fields = ['authors']
-        self.runArticleAssertions(article=article, fields=fields)
+        field = 'authors'
+
+        # Do not call self.runArticleAssertions because need to sort results,
+        # because set not save ordering, so test failed;
+
+        expected_value = self.data['expected'][field]
+        result_value = getattr(article, field, None)
+
+        expected_value.sort()
+        result_value.sort()
+
+        # default assertion
+        msg = u"Error %s \nexpected: %s\nresult: %s" % (field, expected_value, result_value)
+        self.assertEqual(expected_value, result_value, msg=msg)

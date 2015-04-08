@@ -22,8 +22,10 @@ limitations under the License.
 """
 
 import re
-from urlparse import urljoin
-from urlparse import urlparse
+try:
+    from urlparse import urlparse, urljoin
+except ImportError:
+    from urllib.parse import urlparse, urljoin
 
 from goose.extractors import BaseExtractor
 
