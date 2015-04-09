@@ -59,6 +59,8 @@ except Exception:
 requirements = ['Pillow', 'lxml', 'cssselect', 'jieba', 'nltk', 'six']
 if sys.version_info[0] == 2:
     requirements.append('beautifulsoup')
+    if sys.version_info[1] < 7:
+        requirements.append('unittest2')
 
 
 setup(name='goose-extractor',

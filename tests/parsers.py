@@ -21,7 +21,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import os
-import unittest
+try:
+    import unittest2 as unittest  # Need to support skipIf in python 2.6
+except ImportError:
+    import unittest
+
 import six
 
 from goose.utils import FileHelper
