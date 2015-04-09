@@ -23,11 +23,7 @@ limitations under the License.
 import re
 import os
 
-try:
-    from urlparse import urlparse, urljoin
-except ImportError:
-    from urllib.parse import urlparse, urljoin
-
+from six.moves.urllib.parse import urlparse, urljoin
 
 from goose.extractors import BaseExtractor
 from goose.image import Image

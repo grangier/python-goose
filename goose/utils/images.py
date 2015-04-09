@@ -22,10 +22,9 @@ limitations under the License.
 """
 import hashlib
 import os
-try:
-    from urllib2 import urlopen, Request
-except ImportError:
-    from urllib.request import urlopen, Request
+
+from six.moves.urllib.request import urlopen, Request
+
 from PIL import Image
 
 from goose.utils.encoding import smart_str

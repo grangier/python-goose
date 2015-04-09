@@ -30,10 +30,7 @@ try:
 except ImportError:
     import urllib.request as urllib2
 
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
+from six import StringIO
 
 from goose import Goose
 from goose.utils import FileHelper
