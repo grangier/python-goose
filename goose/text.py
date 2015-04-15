@@ -34,6 +34,28 @@ from goose.utils.encoding import DjangoUnicodeDecodeError
 TABSSPACE = re.compile(r'[\s\t]+')
 
 
+def get_encodings_from_content(content):
+    """
+    Code from:
+    https://github.com/sigmavirus24/requests-toolbelt/blob/master/requests_toolbelt/utils/deprecated.py
+    Return encodings from given content string.
+    :param content: string to extract encodings from.
+    """
+    find_charset = re.compile(
+        r'<meta.*?charset=["\']*(.+?)["\'>]', flags=re.I
+    ).findall
+
+    find_pragma = re.compile(
+        r'<meta.*?content=["\']*;?charset=(.+?)["\'>]', flags=re.I
+    ).findall
+
+    find_xml = re.compile(
+        r'^<\?xml.*?encoding=["\']*(.+?)["\'>]'
+    ).findall
+
+    return find_charset(content) + find_pragma(content) + find_xml(content)
+
+
 def innerTrim(value):
     if isinstance(value, (six.text_type, six.string_types)):
         # remove tab and white space
@@ -46,9 +68,15 @@ def innerTrim(value):
 def encodeValue(value):
     string_org = value
     try:
-        value = smart_unicode(value)
-    except (UnicodeEncodeError, DjangoUnicodeDecodeError):
-        value = smart_str(value)
+        encoding = get_encodings_from_content(value)
+        if encoding:
+            # If encoding is set we must pass bytes to lxml.html.fromstring or will get exception;
+            value = smart_str(value)
+        else:
+            try:
+                value = smart_unicode(value)
+            except (UnicodeEncodeError, DjangoUnicodeDecodeError):
+                value = smart_str(value)
     except Exception:
         value = string_org
     return value
