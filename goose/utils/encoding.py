@@ -115,9 +115,13 @@ def smart_str(s, encoding='utf-8', strings_only=False, errors='strict'):
         return s
     # if isinstance(s, Promise):
     #     return unicode(s).encode(encoding, errors)
-    if not isinstance(s, six.string_types):
+    if isinstance(s, six.text_type):
+        return s.encode(encoding, errors)
+    elif not isinstance(s, (six.binary_type, six.string_types)):
         try:
-            return str(s)
+            if six.PY2:
+                return str(s)
+            return str(s).encode(encoding, errors)
         except UnicodeEncodeError:
             if isinstance(s, Exception):
                 # An Exception subclass containing non-ASCII data that doesn't
@@ -126,8 +130,6 @@ def smart_str(s, encoding='utf-8', strings_only=False, errors='strict'):
                 return ' '.join([smart_str(arg, encoding, strings_only,
                         errors) for arg in s])
             return six.text_type(s).encode(encoding, errors)
-    elif isinstance(s, six.text_type):
-        return s.encode(encoding, errors)
     elif s and encoding != 'utf-8':
         return s.decode('utf-8', errors).encode(encoding, errors)
     else:
