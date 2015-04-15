@@ -68,15 +68,9 @@ def innerTrim(value):
 def encodeValue(value):
     string_org = value
     try:
-        encoding = get_encodings_from_content(value)
-        if encoding:
-            # If encoding is set we must pass bytes to lxml.html.fromstring or will get exception;
-            value = smart_str(value)
-        else:
-            try:
-                value = smart_unicode(value)
-            except (UnicodeEncodeError, DjangoUnicodeDecodeError):
-                value = smart_str(value)
+        value = smart_unicode(value)
+    except (UnicodeEncodeError, DjangoUnicodeDecodeError):
+        value = smart_str(value)
     except Exception:
         value = string_org
     return value
