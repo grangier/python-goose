@@ -23,7 +23,7 @@ limitations under the License.
 import re
 import os
 
-from urlparse import urlparse, urljoin
+from six.moves.urllib.parse import urlparse, urljoin
 
 from goose.extractors import BaseExtractor
 from goose.image import Image

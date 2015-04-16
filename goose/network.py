@@ -20,7 +20,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import urllib2
+import six
+
+try:
+    from urllib2 import urlopen, Request
+except ImportError:
+    from urllib.request import urlopen, Request
 
 
 class HtmlFetcher(object):
@@ -39,18 +44,14 @@ class HtmlFetcher(object):
 
     def get_html(self, url):
         # utf-8 encode unicode url
-        if isinstance(url, unicode):
+        if isinstance(url, six.text_type) and six.PY2:
             url = url.encode('utf-8')
 
         # set request
-        self.request = urllib2.Request(
-                        url,
-                        headers=self.headers)
+        self.request = Request(url, headers=self.headers)
         # do request
         try:
-            self.result = urllib2.urlopen(
-                            self.request,
-                            timeout=self.config.http_timeout)
+            self.result = urlopen(self.request, timeout=self.config.http_timeout)
         except Exception:
             self.result = None
 

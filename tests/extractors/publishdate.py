@@ -21,7 +21,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from base import TestExtractionBase
+from __future__ import absolute_import
+
+from .base import TestExtractionBase
 
 
 class TestPublishDate(TestExtractionBase):

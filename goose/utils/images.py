@@ -22,8 +22,11 @@ limitations under the License.
 """
 import hashlib
 import os
-import urllib2
+
+from six.moves.urllib.request import urlopen, Request
+
 from PIL import Image
+
 from goose.utils.encoding import smart_str
 from goose.image import ImageDetails
 from goose.image import LocallyStoredImage
@@ -35,9 +38,9 @@ class ImageUtils(object):
     def get_image_dimensions(self, identify_program, path):
         image_details = ImageDetails()
         try:
-            image = Image.open(path)
-            image_details.set_mime_type(image.format)
-            width, height = image.size
+            with Image.open(path) as image:
+                image_details.set_mime_type(image.format)
+                width, height = image.size
             image_details.set_width(width)
             image_details.set_height(height)
         except IOError:
@@ -115,8 +118,8 @@ class ImageUtils(object):
     @classmethod
     def fetch(self, http_client, src):
         try:
-            req = urllib2.Request(src)
-            f = urllib2.urlopen(req)
+            req = Request(src)
+            f = urlopen(req)
             data = f.read()
             return data
         except Exception:

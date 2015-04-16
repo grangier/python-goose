@@ -22,8 +22,8 @@ limitations under the License.
 """
 
 import re
-from urlparse import urljoin
-from urlparse import urlparse
+
+from six.moves.urllib.parse import urlparse, urljoin
 
 from goose.extractors import BaseExtractor
 
