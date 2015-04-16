@@ -41,18 +41,30 @@ def get_encodings_from_content(content):
     Return encodings from given content string.
     :param content: string to extract encodings from.
     """
-    find_charset = re.compile(
-        r'<meta.*?charset=["\']*(.+?)["\'>]', flags=re.I
-    ).findall
+    if isinstance(content, six.binary_type) and six.PY3:
+        find_charset = re.compile(
+            br'<meta.*?charset=["\']*(.+?)["\'>]', flags=re.I
+        ).findall
 
-    find_pragma = re.compile(
-        r'<meta.*?content=["\']*;?charset=(.+?)["\'>]', flags=re.I
-    ).findall
+        find_pragma = re.compile(
+            br'<meta.*?content=["\']*;?charset=(.+?)["\'>]', flags=re.I
+        ).findall
 
-    find_xml = re.compile(
-        r'^<\?xml.*?encoding=["\']*(.+?)["\'>]'
-    ).findall
+        find_xml = re.compile(
+            br'^<\?xml.*?encoding=["\']*(.+?)["\'>]'
+        ).findall
+    else:
+        find_charset = re.compile(
+            r'<meta.*?charset=["\']*(.+?)["\'>]', flags=re.I
+        ).findall
 
+        find_pragma = re.compile(
+            r'<meta.*?content=["\']*;?charset=(.+?)["\'>]', flags=re.I
+        ).findall
+
+        find_xml = re.compile(
+            r'^<\?xml.*?encoding=["\']*(.+?)["\'>]'
+        ).findall
     return find_charset(content) + find_pragma(content) + find_xml(content)
 
 

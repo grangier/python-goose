@@ -117,7 +117,7 @@ def smart_str(s, encoding='utf-8', strings_only=False, errors='strict'):
     #     return unicode(s).encode(encoding, errors)
     if isinstance(s, six.text_type):
         return s.encode(encoding, errors)
-    elif not isinstance(s, (six.binary_type, six.string_types)):
+    elif not isinstance(s, six.binary_type):
         try:
             if six.PY2:
                 return str(s)
@@ -130,7 +130,5 @@ def smart_str(s, encoding='utf-8', strings_only=False, errors='strict'):
                 return ' '.join([smart_str(arg, encoding, strings_only,
                         errors) for arg in s])
             return six.text_type(s).encode(encoding, errors)
-    elif s and encoding != 'utf-8':
-        return s.decode('utf-8', errors).encode(encoding, errors)
     else:
         return s
