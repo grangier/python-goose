@@ -43,7 +43,7 @@ CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 class MockResponseImage(MockResponse):
 
     def image_content(self, req):
-        md5_hash = hashlib.md5(req.get_full_url()).hexdigest()
+        md5_hash = hashlib.md5(req.get_full_url().encode("utf-8")).hexdigest()
         current_test = self.cls._get_current_testname()
         path = os.path.join(
                 os.path.dirname(CURRENT_PATH),
