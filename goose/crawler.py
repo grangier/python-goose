@@ -181,6 +181,7 @@ class Crawler(object):
 
             # image handling
             if self.config.enable_image_fetching:
+                self.image_extractor = self.get_image_extractor() # Hotfix for #219
                 self.get_image()
 
             # post cleanup
