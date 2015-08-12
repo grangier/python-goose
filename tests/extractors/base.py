@@ -25,6 +25,7 @@ import json
 import urllib2
 import unittest
 import socket
+import mimetools
 
 from StringIO import StringIO
 
@@ -53,7 +54,8 @@ class MockResponse():
     def response(self, req):
         data = self.content(req)
         url = req.get_full_url()
-        resp = urllib2.addinfourl(StringIO(data), data, url)
+        headers = mimetools.Message(StringIO(''))
+        resp = urllib2.addinfourl(StringIO(data), headers, url)
         resp.code = self.code
         resp.msg = self.msg
         return resp
