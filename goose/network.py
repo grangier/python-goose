@@ -21,6 +21,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import urllib2
+import StringIO
+import gzip
 
 
 class HtmlFetcher(object):
@@ -48,9 +50,16 @@ class HtmlFetcher(object):
                         headers=self.headers)
         # do request
         try:
-            self.result = urllib2.urlopen(
+            response = urllib2.urlopen(
                             self.request,
                             timeout=self.config.http_timeout)
+            if response.info().get('Content-Encoding') == 'gzip':
+                buf = StringIO.StringIO(response.read())
+                f = gzip.GzipFile(fileobj=buf)
+                self.result = f
+            else:
+                self.result = request
+
         except Exception:
             self.result = None
 
