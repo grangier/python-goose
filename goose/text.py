@@ -28,6 +28,7 @@ from goose.utils.encoding import smart_unicode
 from goose.utils.encoding import smart_str
 from goose.utils.encoding import DjangoUnicodeDecodeError
 
+SPACE_SYMBOLS = re.compile(ur'[\s\xa0\t]')
 TABSSPACE = re.compile(r'[\s\t]+')
 
 
@@ -106,12 +107,14 @@ class StopWords(object):
     def remove_punctuation(self, content):
         # code taken form
         # http://stackoverflow.com/questions/265960/best-way-to-strip-punctuation-from-a-string-in-python
+        translate = lambda data: data.translate(self.TRANS_TABLE, string.punctuation)
         if isinstance(content, unicode):
-            content = content.encode('utf-8')
-        return content.translate(self.TRANS_TABLE, string.punctuation)
+            return translate(content.encode('utf-8')).decode('utf-8')  # Don't forget to decode back if encoded
+        else:
+            return translate(content)
 
     def candiate_words(self, stripped_input):
-        return stripped_input.split(' ')
+        return re.split(SPACE_SYMBOLS, stripped_input)
 
     def get_stopword_count(self, content):
         if not content:
