@@ -63,7 +63,7 @@ class TitleExtractor(BaseExtractor):
 
         # check if last letter is in TITLE_SPLITTERS
         # if so remove it
-        if title_words[-1] in TITLE_SPLITTERS:
+        if len(title_words) != 0 and title_words[-1] in TITLE_SPLITTERS:
             title_words.pop(-1)
 
         # rebuild the title
