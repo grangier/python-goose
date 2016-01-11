@@ -21,7 +21,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import os
-import unittest
+try:
+    import unittest2 as unittest  # Need to support skipIf in python 2.6
+except ImportError:
+    import unittest
+
+import six
 
 from goose.utils import FileHelper
 from goose.parsers import Parser
@@ -254,11 +259,28 @@ class ParserBase(unittest.TestCase):
         # remove an unexistant attribute
         self.parser.delAttribute(div,  attr="bla")
 
+    def test_encoding(self):
+        """
+        If pass unicode string to lxml.html.fromstring with encoding set in document will receive:
+        "ValueError: Unicode strings with encoding declaration are not supported.
+        Please use bytes input or XML fragments without declaration."
+        Test for this case.
+        """
+        html = u"""<?xml version="1.0" encoding="utf-8"?>
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        """
+        html += u'<html><body>'
+        html += u'<p>Я рядочок</p>'
+        html += u'</body></html>'
+        self.parser.fromstring(html)
+
 
 class TestParser(ParserBase):
     pass
 
 
 class TestParserSoup(ParserBase):
+
+    @unittest.skipIf(six.PY3, "supported only in python2")
     def setUp(self):
         self.parser = ParserSoup

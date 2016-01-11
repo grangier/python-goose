@@ -21,7 +21,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import os
-import platform
 from tempfile import mkstemp
 
 from goose.version import version_info, __version__
@@ -64,9 +63,12 @@ class Goose(object):
         try:
             crawler = Crawler(self.config)
             article = crawler.crawl(crawl_candiate)
-        except (UnicodeDecodeError, ValueError):
-            self.config.parser_class = parsers[0]
-            return self.crawl(crawl_candiate)
+        except (UnicodeDecodeError, ValueError) as e:
+            if parsers:
+                self.config.parser_class = parsers[0]
+                return self.crawl(crawl_candiate)
+            else:
+                raise e
         return article
 
     def initialize(self):
