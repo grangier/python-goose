@@ -22,11 +22,16 @@ limitations under the License.
 """
 import os
 import json
-import urllib2
 import unittest
 import socket
 
-from StringIO import StringIO
+try:
+    import urllib2
+except ImportError:
+    import urllib.request as urllib2
+
+import six
+from six import StringIO, BytesIO
 
 from goose import Goose
 from goose.utils import FileHelper
@@ -47,13 +52,16 @@ class MockResponse():
     def __init__(self, cls):
         self.cls = cls
 
-    def content(self):
+    def content(self, req):
         return "response"
 
     def response(self, req):
         data = self.content(req)
         url = req.get_full_url()
-        resp = urllib2.addinfourl(StringIO(data), data, url)
+        if isinstance(data, six.binary_type):
+            resp = urllib2.addinfourl(BytesIO(data), data, url)
+        else:
+            resp = urllib2.addinfourl(StringIO(data), data, url)
         resp.code = self.code
         resp.msg = self.msg
         return resp

@@ -260,7 +260,7 @@ class ContentExtractor(BaseExtractor):
         if score_string:
             current_score = int(score_string)
 
-        new_score = current_score + addToScore
+        new_score = current_score + int(addToScore)
         self.parser.setAttribute(node, "gravityScore", str(new_score))
 
     def update_node_count(self, node, add_to_count):

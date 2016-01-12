@@ -46,7 +46,7 @@ class Image(object):
         self.extraction_type = "NA"
 
         # stores how many bytes this image is.
-        self.bytes = long(0)
+        self.bytes = 0
 
     def get_src(self):
         return self.src
@@ -87,7 +87,7 @@ class ImageDetails(object):
 class LocallyStoredImage(object):
 
     def __init__(self, src='', local_filename='',
-        link_hash='', bytes=long(0), file_extension='', height=0, width=0):
+                 link_hash='', bytes=0, file_extension='', height=0, width=0):
         self.src = src
         self.local_filename = local_filename
         self.link_hash = link_hash
