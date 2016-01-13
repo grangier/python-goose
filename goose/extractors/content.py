@@ -52,7 +52,7 @@ class ContentExtractor(BaseExtractor):
                             self.article.doc,
                             **item)
             if len(nodes):
-                return nodes[0]
+                return nodes
         return None
 
     def is_articlebody(self, node):
@@ -315,16 +315,17 @@ class ContentExtractor(BaseExtractor):
             return None
         return int(grvScoreString)
 
-    def nodes_to_check(self, doc):
+    def nodes_to_check(self, docs):
         """\
         returns a list of nodes we want to search
         on like paragraphs and tables
         """
         nodes_to_check = []
 
-        for tag in ['p', 'pre', 'td']:
-            items = self.parser.getElementsByTag(doc, tag=tag)
-            nodes_to_check += items
+        for doc in docs:
+            for tag in ['p', 'pre', 'td']:
+                items = self.parser.getElementsByTag(doc, tag=tag)
+                nodes_to_check += items
         return nodes_to_check
 
     def is_table_and_no_para_exist(self, e):

@@ -161,7 +161,10 @@ class Crawler(object):
             self.article.doc = article_body
 
         # before we do any calcs on the body itself let's clean up the document
-        self.article.doc = self.cleaner.clean()
+        if not isinstance(self.article.doc, list):
+            self.article.doc = [self.cleaner.clean(self.article.doc)]
+        else:
+            self.article.doc = map(lambda doc1: self.cleaner.clean(doc1), self.article.doc)
 
         # big stuff
         self.article.top_node = self.extractor.calculate_best_node()
