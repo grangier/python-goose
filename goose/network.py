@@ -44,7 +44,7 @@ class HtmlFetcher(object):
         response = self._connection.get(url)
         if response.ok:
             self._url = response.url
-            text = response.text
+            text = response.content
         else:
             self._url = None
             text = None
