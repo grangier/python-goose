@@ -21,41 +21,32 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import six
-
-try:
-    from urllib2 import urlopen, Request
-except ImportError:
-    from urllib.request import urlopen, Request
+import requests
 
 
 class HtmlFetcher(object):
 
     def __init__(self, config):
         self.config = config
-        # set header
-        self.headers = {'User-agent': self.config.browser_user_agent}
+        self._connection = requests.Session()
+        self._connection.headers = {'User-agent': self.config.browser_user_agent}
+
+        self._url = None
 
     def get_url(self):
-        # if we have a result
-        # get the final_url
-        if self.result is not None:
-            return self.result.geturl()
-        return None
+        return self._url
 
     def get_html(self, url):
         # utf-8 encode unicode url
         if isinstance(url, six.text_type) and six.PY2:
             url = url.encode('utf-8')
 
-        # set request
-        self.request = Request(url, headers=self.headers)
-        # do request
-        try:
-            self.result = urlopen(self.request, timeout=self.config.http_timeout)
-        except Exception:
-            self.result = None
+        response = self._connection.get(url)
+        if response.ok:
+            self._url = response.url
+            text = response.text
+        else:
+            self._url = None
+            text = None
 
-        # read the result content
-        if self.result is not None:
-            return self.result.read()
-        return None
+        return text
