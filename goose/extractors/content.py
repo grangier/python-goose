@@ -26,6 +26,7 @@ from goose.extractors import BaseExtractor
 
 
 KNOWN_ARTICLE_CONTENT_TAGS = [
+    {'attr': 'class', 'value': 'short-story'},
     {'attr': 'itemprop', 'value': 'articleBody'},
     {'attr': 'class', 'value': 'post-content'},
     {'attr': 'class', 'value': 'g-content'},
@@ -48,12 +49,13 @@ class ContentExtractor(BaseExtractor):
         return self.config.target_language
 
     def get_known_article_tags(self):
+        nodes = []
         for item in KNOWN_ARTICLE_CONTENT_TAGS:
-            nodes = self.parser.getElementsByTag(
-                            self.article.doc,
-                            **item)
-            if len(nodes):
-                return nodes
+            nodes.extend(self.parser.getElementsByTag(
+                         self.article.doc,
+                         **item))
+        if len(nodes):
+            return nodes
         return None
 
     def is_articlebody(self, node):
