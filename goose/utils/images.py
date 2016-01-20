@@ -116,8 +116,6 @@ class ImageUtils(object):
     @classmethod
     def fetch(self, http_client, src):
         try:
-            f = http_client.fetch(src)
-            data = f.content
-            return data
+            return http_client.fetch(src)
         except Exception:
             return None
