@@ -57,10 +57,11 @@ except Exception:
     long_description = description
 
 requirements = ['Pillow', 'lxml', 'cssselect', 'jieba', 'nltk', 'six', 'requests']
+test_requirements = ['requests_mock']
 if sys.version_info[0] == 2:
     requirements.append('beautifulsoup')
     if sys.version_info[1] < 7:
-        requirements.append('unittest2')
+        test_requirements.append('unittest2')
 
 setup(name='goose-extractor',
       version=version.__version__,
@@ -77,5 +78,5 @@ setup(name='goose-extractor',
       zip_safe=False,
       install_requires=requirements,
       test_suite="tests",
-      tests_require=['requests_mock']
+      tests_require=test_requirements
       )
