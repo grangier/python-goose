@@ -20,9 +20,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import html
 from six.moves.html_parser import HTMLParser
-import sys
 
 from goose.text import innerTrim
 
@@ -69,7 +67,7 @@ class OutputFormatter(object):
         self.remove_fewwords_paragraphs()
         return self.convert_to_text()
 
-    _text_parser = HTMLParser() if sys.version_info[0] == 2 else html
+    _text_parser = HTMLParser()
 
     def convert_to_text(self):
         txts = []
