@@ -77,7 +77,6 @@ class MockResponseImage(MockResponse):
         yield self.cls.data['url'], self.html_content()
         img_url = self.cls.data['expected']['top_image']['src']
         if img_url:
-            print(img_url)
             yield img_url, self.image_content(img_url)
         # self.image_content()
 
