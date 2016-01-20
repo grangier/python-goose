@@ -22,7 +22,6 @@ limitations under the License.
 """
 import hashlib
 import os
-import requests
 
 from PIL import Image
 
@@ -117,7 +116,7 @@ class ImageUtils(object):
     @classmethod
     def fetch(self, http_client, src):
         try:
-            f = requests.get(src)
+            f = http_client.get(src)
             data = f.content
             return data
         except Exception:

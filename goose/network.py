@@ -24,7 +24,7 @@ import six
 import requests
 
 
-class HtmlFetcher(object):
+class NetworkFetcher(object):
 
     def __init__(self, config):
         self.config = config
@@ -36,7 +36,7 @@ class HtmlFetcher(object):
     def get_url(self):
         return self._url
 
-    def get_html(self, url):
+    def fetch(self, url):
         # utf-8 encode unicode url
         if isinstance(url, six.text_type) and six.PY2:
             url = url.encode('utf-8')
