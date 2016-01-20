@@ -1,5 +1,4 @@
 requests
-requests_mock
 Pillow
 lxml
 cssselect

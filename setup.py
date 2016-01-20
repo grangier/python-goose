@@ -56,26 +56,26 @@ try:
 except Exception:
     long_description = description
 
-requirements = ['Pillow', 'lxml', 'cssselect', 'jieba', 'nltk', 'six', 'requests', 'requests_mock']
+requirements = ['Pillow', 'lxml', 'cssselect', 'jieba', 'nltk', 'six', 'requests']
 if sys.version_info[0] == 2:
     requirements.append('beautifulsoup')
     if sys.version_info[1] < 7:
         requirements.append('unittest2')
 
-
 setup(name='goose-extractor',
-    version=version.__version__,
-    description=description,
-    long_description=long_description,
-    keywords='scrapping, extractor, web scrapping',
-    classifiers=CLASSIFIERS,
-    author='Xavier Grangier',
-    author_email='grangier@gmail.com',
-    url='https://github.com/grangier/python-goose',
-    license='Apache',
-    packages=find_packages(),
-    include_package_data=True,
-    zip_safe=False,
-    install_requires=requirements,
-    test_suite="tests"
-)
+      version=version.__version__,
+      description=description,
+      long_description=long_description,
+      keywords='scrapping, extractor, web scrapping',
+      classifiers=CLASSIFIERS,
+      author='Xavier Grangier',
+      author_email='grangier@gmail.com',
+      url='https://github.com/grangier/python-goose',
+      license='Apache',
+      packages=find_packages(),
+      include_package_data=True,
+      zip_safe=False,
+      install_requires=requirements,
+      test_suite="tests",
+      tests_require=['requests_mock']
+      )
