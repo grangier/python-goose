@@ -53,48 +53,8 @@ class MockResponse:
     def __init__(self, cls):
         self.cls = cls
 
-    def content(self, req):
-        return "response"
-
-    def response(self, req):
-        data = self.content(req)
-        url = req.get_full_url()
-        if isinstance(data, six.binary_type):
-            resp = urllib2.addinfourl(BytesIO(data), data, url)
-        else:
-            resp = urllib2.addinfourl(StringIO(data), data, url)
-        resp.code = self.code
-        resp.msg = self.msg
-        return resp
-
-
-class MockHTTPHandler(urllib2.HTTPHandler, urllib2.HTTPSHandler):
-    """\
-    Mocked HTTPHandler in order to query APIs locally
-    """
-    cls = None
-
-    def https_open(self, req):
-        return self.http_open(req)
-
-    def http_open(self, req):
-        r = self.cls.callback(self.cls)
-        return r.response(req)
-
-    @staticmethod
-    def patch(cls):
-        opener = urllib2.build_opener(MockHTTPHandler)
-        urllib2.install_opener(opener)
-        # dirty !
-        for h in opener.handlers:
-            if isinstance(h, MockHTTPHandler):
-                h.cls = cls
-        return [h for h in opener.handlers if isinstance(h, MockHTTPHandler)][0]
-
-    @staticmethod
-    def unpatch():
-        # urllib2
-        urllib2._opener = None
+    def contents(self):
+        pass
 
 
 class BaseMockTests(unittest.TestCase):
@@ -107,10 +67,8 @@ class BaseMockTests(unittest.TestCase):
         # patch DNS
         self.original_getaddrinfo = socket.getaddrinfo
         socket.getaddrinfo = self.new_getaddrinfo
-        MockHTTPHandler.patch(self)
 
     def tearDown(self):
-        MockHTTPHandler.unpatch()
         # DNS
         socket.getaddrinfo = self.original_getaddrinfo
 
@@ -122,7 +80,7 @@ class BaseMockTests(unittest.TestCase):
 
 
 class MockResponseExtractors(MockResponse):
-    def content(self, req):
+    def contents(self):
         test, suite, module, cls, func = self.cls.id().split('.')
         path = os.path.join(
                 os.path.dirname(CURRENT_PATH),
@@ -132,7 +90,7 @@ class MockResponseExtractors(MockResponse):
                 "%s.html" % func)
         path = os.path.abspath(path)
         content = FileHelper.loadResourceFile(path)
-        return content
+        yield self.cls.data['url'], content.encode('utf-8')
 
 
 class TestExtractionBase(BaseMockTests):
@@ -220,10 +178,11 @@ class TestExtractionBase(BaseMockTests):
             self.assertEqual(expected_value, result_value, msg=msg)
 
     def extract(self, instance):
-        url = self.data['url']
+        article_url = self.data['url']
         with requests_mock.mock() as m:
-            m.get(url, content=self.getRawHtml().encode('utf-8'))
-            article = instance.extract(url=url)
+            for url, content in self.callback(self).contents():
+                m.get(url, content=content)
+            article = instance.extract(url=article_url)
             return article
 
     def getConfig(self):
