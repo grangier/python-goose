@@ -22,8 +22,7 @@ limitations under the License.
 """
 import hashlib
 import os
-
-from six.moves.urllib.request import urlopen, Request
+import requests
 
 from PIL import Image
 
@@ -118,9 +117,8 @@ class ImageUtils(object):
     @classmethod
     def fetch(self, http_client, src):
         try:
-            req = Request(src)
-            f = urlopen(req)
-            data = f.read()
+            f = requests.get(src)
+            data = f.content
             return data
         except Exception:
             return None
