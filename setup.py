@@ -56,7 +56,7 @@ try:
 except Exception:
     long_description = description
 
-requirements = ['Pillow', 'lxml', 'cssselect', 'jieba', 'nltk', 'six', 'requests']
+requirements = ['Pillow', 'lxml', 'cssselect', 'jieba', 'nltk', 'six', 'requests', 'requests_mock']
 if sys.version_info[0] == 2:
     requirements.append('beautifulsoup')
     if sys.version_info[1] < 7:

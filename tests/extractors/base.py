@@ -24,6 +24,7 @@ import os
 import json
 import unittest
 import socket
+import requests_mock
 
 try:
     import urllib2
@@ -42,7 +43,7 @@ CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 # Response
-class MockResponse():
+class MockResponse:
     """\
     Base mock response class
     """
@@ -140,6 +141,14 @@ class TestExtractionBase(BaseMockTests):
     """
     callback = MockResponseExtractors
 
+    def setUp(self):
+        # patch DNS
+        self.original_getaddrinfo = socket.getaddrinfo
+        socket.getaddrinfo = self.new_getaddrinfo
+
+    def tearDown(self):
+        socket.getaddrinfo = self.original_getaddrinfo
+
     def getRawHtml(self):
         test, suite, module, cls, func = self.id().split('.')
         path = os.path.join(
@@ -211,8 +220,11 @@ class TestExtractionBase(BaseMockTests):
             self.assertEqual(expected_value, result_value, msg=msg)
 
     def extract(self, instance):
-        article = instance.extract(url=self.data['url'])
-        return article
+        url = self.data['url']
+        with requests_mock.mock() as m:
+            m.get(url, content=self.getRawHtml().encode('utf-8'))
+            article = instance.extract(url=url)
+            return article
 
     def getConfig(self):
         config = Configuration()
