@@ -25,15 +25,6 @@ from copy import deepcopy
 from goose.extractors import BaseExtractor
 
 
-KNOWN_ARTICLE_CONTENT_TAGS = [
-    {'attr': 'class', 'value': 'short-story'},
-    {'attr': 'itemprop', 'value': 'articleBody'},
-    {'attr': 'class', 'value': 'post-content'},
-    {'attr': 'class', 'value': 'g-content'},
-    {'tag': 'article'},
-]
-
-
 class ContentExtractor(BaseExtractor):
 
     def get_language(self):
@@ -50,7 +41,7 @@ class ContentExtractor(BaseExtractor):
 
     def get_known_article_tags(self):
         nodes = []
-        for item in KNOWN_ARTICLE_CONTENT_TAGS:
+        for item in self.config.known_context_patterns:
             nodes.extend(self.parser.getElementsByTag(
                          self.article.doc,
                          **item))
@@ -59,7 +50,7 @@ class ContentExtractor(BaseExtractor):
         return None
 
     def is_articlebody(self, node):
-        for item in KNOWN_ARTICLE_CONTENT_TAGS:
+        for item in self.config.known_context_patterns:
             # attribute
             if "attr" in item and "value" in item:
                 if self.parser.getAttribute(node, item['attr']) == item['value']:
