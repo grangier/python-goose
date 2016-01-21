@@ -41,7 +41,7 @@ class NetworkFetcher(object):
         if isinstance(url, six.text_type) and six.PY2:
             url = url.encode('utf-8')
 
-        response = self._connection.get(url)
+        response = self._connection.get(url, timeout=self.config.http_timeout)
         if response.ok:
             self._url = response.url
             text = response.content
