@@ -31,9 +31,6 @@ try:
 except ImportError:
     import urllib.request as urllib2
 
-import six
-from six import StringIO, BytesIO
-
 from goose import Goose
 from goose.utils import FileHelper
 from goose.configuration import Configuration
