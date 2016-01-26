@@ -35,7 +35,7 @@ class NetworkFetcher(object):
     def __init__(self, config):
         self.config = config
         self._connection = requests.Session()
-        self._connection.headers = {'User-agent': self.config.browser_user_agent}
+        self._connection.headers['User-agent'] = self.config.browser_user_agent
 
         self._url = None
 
