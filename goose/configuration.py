@@ -115,6 +115,9 @@ class Configuration(object):
         # known context patterns. Goose at first will search context at dom nodes, qualifying these patterns
         self.known_context_patterns = KNOWN_ARTICLE_CONTENT_PATTERNS
 
+        # Strict mode. Generate exceptions on errors instead of swallowing them
+        self.strict = True
+
     def get_parser(self):
         return AVAILABLE_PARSERS[self.parser_class]
 

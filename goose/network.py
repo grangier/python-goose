@@ -24,6 +24,12 @@ import six
 import requests
 
 
+class NetworkError(RuntimeError):
+    def __init__(self, status_code, reason):
+        self.reason = reason
+        self.status_code = status_code
+
+
 class NetworkFetcher(object):
 
     def __init__(self, config):
@@ -48,5 +54,7 @@ class NetworkFetcher(object):
         else:
             self._url = None
             text = None
+            if self.config.strict:
+                raise NetworkError(response.status_code, response.reason)
 
         return text
