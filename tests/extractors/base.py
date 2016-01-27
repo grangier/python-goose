@@ -22,11 +22,14 @@ limitations under the License.
 """
 import os
 import json
-import urllib2
 import unittest
 import socket
+import requests_mock
 
-from StringIO import StringIO
+try:
+    import urllib2
+except ImportError:
+    import urllib.request as urllib2
 
 from goose import Goose
 from goose.utils import FileHelper
@@ -37,7 +40,7 @@ CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 # Response
-class MockResponse():
+class MockResponse:
     """\
     Base mock response class
     """
@@ -47,45 +50,8 @@ class MockResponse():
     def __init__(self, cls):
         self.cls = cls
 
-    def content(self):
-        return "response"
-
-    def response(self, req):
-        data = self.content(req)
-        url = req.get_full_url()
-        resp = urllib2.addinfourl(StringIO(data), data, url)
-        resp.code = self.code
-        resp.msg = self.msg
-        return resp
-
-
-class MockHTTPHandler(urllib2.HTTPHandler, urllib2.HTTPSHandler):
-    """\
-    Mocked HTTPHandler in order to query APIs locally
-    """
-    cls = None
-
-    def https_open(self, req):
-        return self.http_open(req)
-
-    def http_open(self, req):
-        r = self.cls.callback(self.cls)
-        return r.response(req)
-
-    @staticmethod
-    def patch(cls):
-        opener = urllib2.build_opener(MockHTTPHandler)
-        urllib2.install_opener(opener)
-        # dirty !
-        for h in opener.handlers:
-            if isinstance(h, MockHTTPHandler):
-                h.cls = cls
-        return [h for h in opener.handlers if isinstance(h, MockHTTPHandler)][0]
-
-    @staticmethod
-    def unpatch():
-        # urllib2
-        urllib2._opener = None
+    def contents(self):
+        pass
 
 
 class BaseMockTests(unittest.TestCase):
@@ -98,10 +64,8 @@ class BaseMockTests(unittest.TestCase):
         # patch DNS
         self.original_getaddrinfo = socket.getaddrinfo
         socket.getaddrinfo = self.new_getaddrinfo
-        MockHTTPHandler.patch(self)
 
     def tearDown(self):
-        MockHTTPHandler.unpatch()
         # DNS
         socket.getaddrinfo = self.original_getaddrinfo
 
@@ -113,7 +77,7 @@ class BaseMockTests(unittest.TestCase):
 
 
 class MockResponseExtractors(MockResponse):
-    def content(self, req):
+    def contents(self):
         test, suite, module, cls, func = self.cls.id().split('.')
         path = os.path.join(
                 os.path.dirname(CURRENT_PATH),
@@ -123,7 +87,7 @@ class MockResponseExtractors(MockResponse):
                 "%s.html" % func)
         path = os.path.abspath(path)
         content = FileHelper.loadResourceFile(path)
-        return content
+        yield self.cls.data['url'], content.encode('utf-8')
 
 
 class TestExtractionBase(BaseMockTests):
@@ -131,6 +95,14 @@ class TestExtractionBase(BaseMockTests):
     Extraction test case
     """
     callback = MockResponseExtractors
+
+    def setUp(self):
+        # patch DNS
+        self.original_getaddrinfo = socket.getaddrinfo
+        socket.getaddrinfo = self.new_getaddrinfo
+
+    def tearDown(self):
+        socket.getaddrinfo = self.original_getaddrinfo
 
     def getRawHtml(self):
         test, suite, module, cls, func = self.id().split('.')
@@ -203,8 +175,12 @@ class TestExtractionBase(BaseMockTests):
             self.assertEqual(expected_value, result_value, msg=msg)
 
     def extract(self, instance):
-        article = instance.extract(url=self.data['url'])
-        return article
+        article_url = self.data['url']
+        with requests_mock.mock() as m:
+            for url, content in self.callback(self).contents():
+                m.get(url, content=content)
+            article = instance.extract(url=article_url)
+            return article
 
     def getConfig(self):
         config = Configuration()

@@ -23,16 +23,54 @@ limitations under the License.
 import os
 import re
 import string
+
+import six
+
 from goose.utils import FileHelper
 from goose.utils.encoding import smart_unicode
 from goose.utils.encoding import smart_str
 from goose.utils.encoding import DjangoUnicodeDecodeError
 
+SPACE_SYMBOLS = re.compile(r'[\s\xa0\t]')
 TABSSPACE = re.compile(r'[\s\t]+')
 
 
+def get_encodings_from_content(content):
+    """
+    Code from:
+    https://github.com/sigmavirus24/requests-toolbelt/blob/master/requests_toolbelt/utils/deprecated.py
+    Return encodings from given content string.
+    :param content: string to extract encodings from.
+    """
+    if isinstance(content, six.binary_type) and six.PY3:
+        find_charset = re.compile(
+            br'<meta.*?charset=["\']*(.+?)["\'>]', flags=re.I
+        ).findall
+
+        find_pragma = re.compile(
+            br'<meta.*?content=["\']*;?charset=(.+?)["\'>]', flags=re.I
+        ).findall
+
+        find_xml = re.compile(
+            br'^<\?xml.*?encoding=["\']*(.+?)["\'>]'
+        ).findall
+    else:
+        find_charset = re.compile(
+            r'<meta.*?charset=["\']*(.+?)["\'>]', flags=re.I
+        ).findall
+
+        find_pragma = re.compile(
+            r'<meta.*?content=["\']*;?charset=(.+?)["\'>]', flags=re.I
+        ).findall
+
+        find_xml = re.compile(
+            r'^<\?xml.*?encoding=["\']*(.+?)["\'>]'
+        ).findall
+    return find_charset(content) + find_pragma(content) + find_xml(content)
+
+
 def innerTrim(value):
-    if isinstance(value, (unicode, str)):
+    if isinstance(value, (six.text_type, six.string_types)):
         # remove tab and white space
         value = re.sub(TABSSPACE, ' ', value)
         value = ''.join(value.splitlines())
@@ -87,7 +125,6 @@ class WordStats(object):
 class StopWords(object):
 
     PUNCTUATION = re.compile("[^\\p{Ll}\\p{Lu}\\p{Lt}\\p{Lo}\\p{Nd}\\p{Pc}\\s]")
-    TRANS_TABLE = string.maketrans('', '')
     _cached_stop_words = {}
 
     def __init__(self, language='en'):
@@ -106,12 +143,13 @@ class StopWords(object):
     def remove_punctuation(self, content):
         # code taken form
         # http://stackoverflow.com/questions/265960/best-way-to-strip-punctuation-from-a-string-in-python
-        if isinstance(content, unicode):
-            content = content.encode('utf-8')
-        return content.translate(self.TRANS_TABLE, string.punctuation)
+        if not isinstance(content, six.text_type):
+            content = content.decode('utf-8')
+        tbl = dict.fromkeys(ord(x) for x in string.punctuation)
+        return content.translate(tbl)
 
     def candiate_words(self, stripped_input):
-        return stripped_input.split(' ')
+        return re.split(SPACE_SYMBOLS, stripped_input)
 
     def get_stopword_count(self, content):
         if not content:

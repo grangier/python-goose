@@ -20,6 +20,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+from __future__ import unicode_literals
+
 from goose.utils import ReplaceSequence
 
 
@@ -48,7 +50,7 @@ class DocumentCleaner(object):
         "|communitypromo|runaroundLeft|subscribe|vcard|articleheadings"
         "|date|^print$|popup|author-dropdown|tools|socialtools|byline"
         "|konafilter|KonaFilter|breadcrumbs|^fn$|wp-caption-text"
-        "|legende|ajoutVideo|timestamp|js_replies"
+        "|legende|ajoutVideo|timestamp|js_replies|disclaim"
         )
         self.regexp_namespace = "http://exslt.org/regular-expressions"
         self.nauthy_ids_re = "//*[re:test(@id, '%s', 'i')]" % self.remove_nodes_re
@@ -66,8 +68,7 @@ class DocumentCleaner(object):
                                             .append("\t")\
                                             .append("^\\s+$")
 
-    def clean(self):
-        doc_to_clean = self.article.doc
+    def clean(self, doc_to_clean):
         doc_to_clean = self.clean_body_classes(doc_to_clean)
         doc_to_clean = self.clean_article_tags(doc_to_clean)
         doc_to_clean = self.clean_em_tags(doc_to_clean)

@@ -23,7 +23,7 @@ limitations under the License.
 import re
 import os
 
-from urlparse import urlparse, urljoin
+from six.moves.urllib.parse import urlparse, urljoin
 
 from goose.extractors import BaseExtractor
 from goose.image import Image
@@ -48,9 +48,10 @@ class DepthTraversal(object):
 
 class ImageExtractor(BaseExtractor):
 
-    def __init__(self, config, article):
+    def __init__(self, fetcher, config, article):
         super(ImageExtractor, self).__init__(config, article)
 
+        self.fetcher = fetcher
         self.custom_site_mapping = {}
 
         self.load_customesite_mapping()
@@ -333,9 +334,7 @@ class ImageExtractor(BaseExtractor):
         """\
         returns the bytes of the image file on disk
         """
-        local_image = ImageUtils.store_image(None,
-                                    self.link_hash, src, self.config)
-        return local_image
+        return ImageUtils.store_image(self.fetcher, self.link_hash, src, self.config)
 
     def get_clean_domain(self):
         if self.article.domain:

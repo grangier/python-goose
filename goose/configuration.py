@@ -22,6 +22,9 @@ limitations under the License.
 """
 import os
 import tempfile
+
+import six
+
 from goose.text import StopWords
 from goose.parsers import Parser
 from goose.parsers import ParserSoup
@@ -30,9 +33,19 @@ from goose.version import __version__
 HTTP_DEFAULT_TIMEOUT = 30
 
 AVAILABLE_PARSERS = {
-    'lxml': Parser,
-    'soup': ParserSoup,
+    'lxml': Parser
 }
+
+if six.PY2:
+    AVAILABLE_PARSERS['soup'] = ParserSoup
+
+KNOWN_ARTICLE_CONTENT_PATTERNS = [
+    {'attr': 'class', 'value': 'short-story'},
+    {'attr': 'itemprop', 'value': 'articleBody'},
+    {'attr': 'class', 'value': 'post-content'},
+    {'attr': 'class', 'value': 'g-content'},
+    {'tag': 'article'},
+]
 
 
 class Configuration(object):
@@ -98,6 +111,12 @@ class Configuration(object):
 
         # http timeout
         self.http_timeout = HTTP_DEFAULT_TIMEOUT
+
+        # known context patterns. Goose at first will search context at dom nodes, qualifying these patterns
+        self.known_context_patterns = KNOWN_ARTICLE_CONTENT_PATTERNS
+
+        # Strict mode. Generate exceptions on errors instead of swallowing them
+        self.strict = True
 
     def get_parser(self):
         return AVAILABLE_PARSERS[self.parser_class]

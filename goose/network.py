@@ -20,41 +20,41 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import urllib2
+import six
+import requests
 
 
-class HtmlFetcher(object):
+class NetworkError(RuntimeError):
+    def __init__(self, status_code, reason):
+        self.reason = reason
+        self.status_code = status_code
+
+
+class NetworkFetcher(object):
 
     def __init__(self, config):
         self.config = config
-        # set header
-        self.headers = {'User-agent': self.config.browser_user_agent}
+        self._connection = requests.Session()
+        self._connection.headers['User-agent'] = self.config.browser_user_agent
+
+        self._url = None
 
     def get_url(self):
-        # if we have a result
-        # get the final_url
-        if self.result is not None:
-            return self.result.geturl()
-        return None
+        return self._url
 
-    def get_html(self, url):
+    def fetch(self, url):
         # utf-8 encode unicode url
-        if isinstance(url, unicode):
+        if isinstance(url, six.text_type) and six.PY2:
             url = url.encode('utf-8')
 
-        # set request
-        self.request = urllib2.Request(
-                        url,
-                        headers=self.headers)
-        # do request
-        try:
-            self.result = urllib2.urlopen(
-                            self.request,
-                            timeout=self.config.http_timeout)
-        except Exception:
-            self.result = None
+        response = self._connection.get(url, timeout=self.config.http_timeout)
+        if response.ok:
+            self._url = response.url
+            text = response.content
+        else:
+            self._url = None
+            text = None
+            if self.config.strict:
+                raise NetworkError(response.status_code, response.reason)
 
-        # read the result content
-        if self.result is not None:
-            return self.result.read()
-        return None
+        return text

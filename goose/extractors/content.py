@@ -25,13 +25,6 @@ from copy import deepcopy
 from goose.extractors import BaseExtractor
 
 
-KNOWN_ARTICLE_CONTENT_TAGS = [
-    {'attr': 'itemprop', 'value': 'articleBody'},
-    {'attr': 'class', 'value': 'post-content'},
-    {'tag': 'article'},
-]
-
-
 class ContentExtractor(BaseExtractor):
 
     def get_language(self):
@@ -47,16 +40,17 @@ class ContentExtractor(BaseExtractor):
         return self.config.target_language
 
     def get_known_article_tags(self):
-        for item in KNOWN_ARTICLE_CONTENT_TAGS:
-            nodes = self.parser.getElementsByTag(
-                            self.article.doc,
-                            **item)
-            if len(nodes):
-                return nodes[0]
+        nodes = []
+        for item in self.config.known_context_patterns:
+            nodes.extend(self.parser.getElementsByTag(
+                         self.article.doc,
+                         **item))
+        if len(nodes):
+            return nodes
         return None
 
     def is_articlebody(self, node):
-        for item in KNOWN_ARTICLE_CONTENT_TAGS:
+        for item in self.config.known_context_patterns:
             # attribute
             if "attr" in item and "value" in item:
                 if self.parser.getAttribute(node, item['attr']) == item['value']:
@@ -260,7 +254,7 @@ class ContentExtractor(BaseExtractor):
         if score_string:
             current_score = int(score_string)
 
-        new_score = current_score + addToScore
+        new_score = current_score + int(addToScore)
         self.parser.setAttribute(node, "gravityScore", str(new_score))
 
     def update_node_count(self, node, add_to_count):
@@ -315,16 +309,17 @@ class ContentExtractor(BaseExtractor):
             return None
         return int(grvScoreString)
 
-    def nodes_to_check(self, doc):
+    def nodes_to_check(self, docs):
         """\
         returns a list of nodes we want to search
         on like paragraphs and tables
         """
         nodes_to_check = []
 
-        for tag in ['p', 'pre', 'td']:
-            items = self.parser.getElementsByTag(doc, tag=tag)
-            nodes_to_check += items
+        for doc in docs:
+            for tag in ['p', 'pre', 'td']:
+                items = self.parser.getElementsByTag(doc, tag=tag)
+                nodes_to_check += items
         return nodes_to_check
 
     def is_table_and_no_para_exist(self, e):

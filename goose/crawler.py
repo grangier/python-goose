@@ -39,7 +39,7 @@ from goose.extractors.metas import MetasExtractor
 from goose.cleaners import StandardDocumentCleaner
 from goose.outputformatters import StandardOutputFormatter
 
-from goose.network import HtmlFetcher
+from goose.network import NetworkFetcher
 
 
 class CrawlCandidate(object):
@@ -99,11 +99,13 @@ class Crawler(object):
         # title extractor
         self.title_extractor = self.get_title_extractor()
 
+        # html fetcher
+        self.fetcher = NetworkFetcher(self.config)
+
         # image extrator
         self.image_extractor = self.get_image_extractor()
 
-        # html fetcher
-        self.htmlfetcher = HtmlFetcher(self.config)
+
 
         # TODO : log prefix
         self.logPrefix = "crawler:"
@@ -161,7 +163,10 @@ class Crawler(object):
             self.article.doc = article_body
 
         # before we do any calcs on the body itself let's clean up the document
-        self.article.doc = self.cleaner.clean()
+        if not isinstance(self.article.doc, list):
+            self.article.doc = [self.cleaner.clean(self.article.doc)]
+        else:
+            self.article.doc = list(map(lambda doc1: self.cleaner.clean(deepcopy(doc1)), self.article.doc))
 
         # big stuff
         self.article.top_node = self.extractor.calculate_best_node()
@@ -212,11 +217,7 @@ class Crawler(object):
             return crawl_candidate.raw_html
 
         # fetch HTML
-        html = self.htmlfetcher.get_html(parsing_candidate.url)
-        self.article.additional_data.update({
-            'request': self.htmlfetcher.request,
-            'result': self.htmlfetcher.result,
-            })
+        html = self.fetcher.fetch(parsing_candidate.url)
         return html
 
     def get_metas_extractor(self):
@@ -244,7 +245,7 @@ class Crawler(object):
         return TitleExtractor(self.config, self.article)
 
     def get_image_extractor(self):
-        return ImageExtractor(self.config, self.article)
+        return ImageExtractor(self.fetcher, self.config, self.article)
 
     def get_video_extractor(self):
         return VideoExtractor(self.config, self.article)

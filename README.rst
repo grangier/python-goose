@@ -180,7 +180,7 @@ class.
 
 
 Goose in Korean
-----------------
+---------------
 
 In order to use Goose in Korean you have to use the StopWordsKorean
 class.
@@ -196,24 +196,6 @@ class.
     경기도 용인에 자리 잡은 민간 시험인증 전문기업 ㈜디지털이엠씨(www.digitalemc.com). 
     14년째 세계 각국의 통신·안전·전파 규격 시험과 인증 한 우물만 파고 있는 이 회사 박채규 대표가 만나기로 한 주인공이다. 
     그는 전기전자·무선통신·자동차 전장품 분야에
-
-
-Known issues
-------------
-
-- There are some issues with unicode URLs.
-- Cookie handling : Some websites need cookie handling. At the moment the only work around is to use the raw_html extraction. For instance:
-
-    >>> import urllib2
-    >>> import goose
-    >>> url = "http://www.nytimes.com/2013/08/18/world/middleeast/pressure-by-us-failed-to-sway-egypts-leaders.html?hp"
-    >>> opener = urllib2.build_opener(urllib2.HTTPCookieProcessor())
-    >>> response = opener.open(url)
-    >>> raw_html = response.read()
-    >>> g = goose.Goose()
-    >>> a = g.extract(raw_html=raw_html)
-    >>> a.cleaned_text
-    u'CAIRO \u2014 For a moment, at least, American and European diplomats trying to defuse the volatile standoff in Egypt thought they had a breakthrough.\n\nAs t'
 
 TODO
 ----

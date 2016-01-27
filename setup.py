@@ -22,6 +22,8 @@ limitations under the License.
 """
 
 import os
+import sys
+
 from setuptools import setup, find_packages
 from imp import load_source
 
@@ -40,6 +42,9 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 2',
     'Programming Language :: Python :: 2.6',
     'Programming Language :: Python :: 2.7',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.4',
+    'Programming Language :: Python :: 3.5',
     'Topic :: Internet',
     'Topic :: Utilities',
     'Topic :: Software Development :: Libraries :: Python Modules']
@@ -53,19 +58,27 @@ try:
 except Exception:
     long_description = description
 
+requirements = ['Pillow', 'lxml', 'cssselect', 'jieba', 'nltk', 'six', 'requests']
+test_requirements = ['requests_mock']
+if sys.version_info[0] == 2:
+    requirements.append('beautifulsoup')
+    if sys.version_info[1] < 7:
+        test_requirements.append('unittest2')
+
 setup(name='goose-extractor',
-    version=version.__version__,
-    description=description,
-    long_description=long_description,
-    keywords='scrapping, extractor, web scrapping',
-    classifiers=CLASSIFIERS,
-    author='Xavier Grangier',
-    author_email='grangier@gmail.com',
-    url='https://github.com/grangier/python-goose',
-    license='Apache',
-    packages=find_packages(),
-    include_package_data=True,
-    zip_safe=False,
-    install_requires=['Pillow', 'lxml', 'cssselect', 'jieba', 'beautifulsoup', 'nltk'],
-    test_suite="tests"
-)
+      version=version.__version__,
+      description=description,
+      long_description=long_description,
+      keywords='scrapping, extractor, web scrapping',
+      classifiers=CLASSIFIERS,
+      author='Xavier Grangier',
+      author_email='grangier@gmail.com',
+      url='https://github.com/grangier/python-goose',
+      license='Apache',
+      packages=find_packages(),
+      include_package_data=True,
+      zip_safe=False,
+      install_requires=requirements,
+      test_suite="tests",
+      tests_require=test_requirements
+      )

@@ -20,13 +20,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+from __future__ import absolute_import
+
 import os
 import json
 import hashlib
 import unittest
 
-from base import MockResponse
-from base import TestExtractionBase
+from .base import MockResponse
+from .base import TestExtractionBase
 
 from goose.configuration import Configuration
 from goose.image import Image
@@ -40,8 +42,8 @@ CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 class MockResponseImage(MockResponse):
 
-    def image_content(self, req):
-        md5_hash = hashlib.md5(req.get_full_url()).hexdigest()
+    def image_content(self, url):
+        md5_hash = hashlib.md5(url.encode('utf-8')).hexdigest()
         current_test = self.cls._get_current_testname()
         path = os.path.join(
                 os.path.dirname(CURRENT_PATH),
@@ -51,12 +53,15 @@ class MockResponseImage(MockResponse):
                 current_test,
                 md5_hash)
         path = os.path.abspath(path)
-        f = open(path, 'rb')
-        content = f.read()
-        f.close()
-        return content
+        try:
+            f = open(path, 'rb')
+            content = f.read()
+            f.close()
+            return content
+        except Exception:
+            return None
 
-    def html_content(self, req):
+    def html_content(self):
         current_test = self.cls._get_current_testname()
         path = os.path.join(
                 os.path.dirname(CURRENT_PATH),
@@ -66,12 +71,14 @@ class MockResponseImage(MockResponse):
                 current_test,
                 "%s.html" % current_test)
         path = os.path.abspath(path)
-        return FileHelper.loadResourceFile(path)
+        return FileHelper.loadResourceFile(path).encode('utf-8')
 
-    def content(self, req):
-        if self.cls.data['url'] == req.get_full_url():
-            return self.html_content(req)
-        return self.image_content(req)
+    def contents(self):
+        yield self.cls.data['url'], self.html_content()
+        img_url = self.cls.data['expected']['top_image']['src']
+        if img_url:
+            yield img_url, self.image_content(img_url)
+        # self.image_content()
 
 
 class ImageExtractionTests(TestExtractionBase):
