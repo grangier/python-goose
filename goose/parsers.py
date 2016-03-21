@@ -32,7 +32,7 @@ class Parser(object):
 
     @classmethod
     def xpath_re(self, node, expression):
-        regexp_namespace = "http://exslt.org/regular-expressions"
+        regexp_namespace = "http://exslt.org/regexp"
         items = node.xpath(expression, namespaces={'re': regexp_namespace})
         return items
 
@@ -76,7 +76,7 @@ class Parser(object):
 
     @classmethod
     def getElementsByTag(self, node, tag=None, attr=None, value=None, childs=False):
-        NS = "http://exslt.org/regular-expressions"
+        NS = "http://exslt.org/regexp"
         # selector = tag or '*'
         selector = 'descendant-or-self::%s' % (tag or '*')
         if attr and value:
