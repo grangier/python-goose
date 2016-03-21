@@ -50,7 +50,7 @@ class DocumentCleaner(object):
         "|konafilter|KonaFilter|breadcrumbs|^fn$|wp-caption-text"
         "|legende|ajoutVideo|timestamp|js_replies"
         )
-        self.regexp_namespace = "http://exslt.org/regular-expressions"
+        self.regexp_namespace = "http://exslt.org/regexp"
         self.nauthy_ids_re = "//*[re:test(@id, '%s', 'i')]" % self.remove_nodes_re
         self.nauthy_classes_re = "//*[re:test(@class, '%s', 'i')]" % self.remove_nodes_re
         self.nauthy_names_re = "//*[re:test(@name, '%s', 'i')]" % self.remove_nodes_re
