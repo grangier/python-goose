@@ -78,7 +78,7 @@ class TitleExtractor(BaseExtractor):
         title = ''
 
         # rely on opengraph in case we have the data
-        if "title" in self.article.opengraph.keys():
+        if "title" in self.article.opengraph.keys() and self.article.opengraph['title'] is not None:
             title = self.article.opengraph['title']
             return self.clean_title(title)
 
