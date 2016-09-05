@@ -168,6 +168,29 @@ class StopWordsArabic(StopWords):
         return words
 
 
+class StopWordsFarsi(StopWords):
+    """
+    Farsi segmentation
+    """
+    def __init__(self, language='fa'):
+        super(StopWordsFarsi, self).__init__(language='fa')
+
+    def remove_punctuation(self, content):
+        return content
+
+    def candiate_words(self, stripped_input):
+        import hazm
+        normalizer = hazm.Normalizer()
+        stemmer = hazm.Stemmer()
+
+        words = []
+        norm_input = normalizer.normalize(stripped_input)
+        for word in hazm.word_tokenize(norm_input):
+            words.append(stemmer.stem(word))
+
+        return words
+
+
 class StopWordsKorean(StopWords):
     """
     Korean segmentation
