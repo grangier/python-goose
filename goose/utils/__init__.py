@@ -101,7 +101,7 @@ class URLHelper(object):
         # replace shebang is urls
         final_url = url_to_crawl.replace('#!', '?_escaped_fragment_=') \
                     if '#!' in url_to_crawl else url_to_crawl
-        link_hash = '%s.%s' % (hashlib.md5(final_url).hexdigest(), time.time())
+        link_hash = '%s.%s' % (hashlib.md5(final_url.encode('utf-8')).hexdigest(), time.time())
         return ParsingCandidate(final_url, link_hash)
 
 

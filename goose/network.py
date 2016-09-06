@@ -20,7 +20,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import urllib
 import urllib2
+import urlparse
 
 
 class HtmlFetcher(object):
@@ -41,6 +43,18 @@ class HtmlFetcher(object):
         # utf-8 encode unicode url
         if isinstance(url, unicode):
             url = url.encode('utf-8')
+
+        # for a unicode address the path, query and fragment part
+        # of url must be quote, otherwise we receive a HTTP 400
+        # (bad request) response from web server
+        res = urlparse.urlsplit(url)
+        url = urlparse.SplitResult(
+            scheme=res.scheme,
+            netloc=res.netloc,
+            path=urllib.quote(res.path),
+            query=urllib.quote(res.query),
+            fragment=urllib.quote(res.fragment)
+        ).geturl()
 
         # set request
         self.request = urllib2.Request(

@@ -178,6 +178,23 @@ class.
     >>> print article.cleaned_text[:150]
     دمشق، سوريا (CNN) -- أكدت جهات سورية معارضة أن فصائل مسلحة معارضة لنظام الرئيس بشار الأسد وعلى صلة بـ"الجيش الحر" تمكنت من السيطرة على مستودعات للأسل
 
+Goose in Farsi (Persian)
+---------------
+
+In order to use Goose in Farsi you have to use the StopWordsFarsi
+class.
+
+::
+
+    >>> from goose import Goose
+    >>> from goose.text import StopWordsFarsi
+    >>> url = 'http://www.tabnak.ir/fa/news/620497/'
+    >>> g = Goose({'stopwords_class': StopWordsFarsi})
+    >>> article = g.extract(url=url)
+    >>> print article.cleaned_text[:150]
+	در مراسم تجلیل از مدال آوران المپیک عکس های جالبی به بیرون مخابره شد.
+	به گزارش تابناک ورزشی، روز گذشته مراسم تجلیل از مدال آوران المپیک توسط علی
+
 
 Goose in Korean
 ----------------
