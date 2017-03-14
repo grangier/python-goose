@@ -322,7 +322,7 @@ class ContentExtractor(BaseExtractor):
         """
         nodes_to_check = []
 
-        for tag in ['p', 'pre', 'td', 'section', 'tr', 'div', 'main', 'iframe']:
+        for tag in self.config.tags_to_search:
             items = self.parser.getElementsByTag(doc, tag=tag)
             nodes_to_check += items
         return nodes_to_check
