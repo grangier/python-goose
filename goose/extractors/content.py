@@ -28,7 +28,7 @@ from goose.extractors import BaseExtractor
 KNOWN_ARTICLE_CONTENT_TAGS = [
     {'attr': 'itemprop', 'value': 'articleBody'},
     {'attr': 'class', 'value': 'post-content'},
-    {'tag': 'article'},
+    # {'tag': 'article'},
 ]
 
 
@@ -322,7 +322,7 @@ class ContentExtractor(BaseExtractor):
         """
         nodes_to_check = []
 
-        for tag in ['p', 'pre', 'td']:
+        for tag in self.config.tags_to_search:
             items = self.parser.getElementsByTag(doc, tag=tag)
             nodes_to_check += items
         return nodes_to_check

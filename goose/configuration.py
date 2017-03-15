@@ -82,6 +82,9 @@ class Configuration(object):
         # sent to stdout
         self.debug = False
 
+        # Tags which will be searched for content
+        self.tags_to_search = ['p', 'pre', 'td']
+
         # TODO
         self.extract_publishdate = None
 

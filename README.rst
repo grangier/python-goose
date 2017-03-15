@@ -5,9 +5,9 @@ Intro
 -----
 
 Goose was originally an article extractor written in Java that has most
-recently (aug2011) been converted to a `scala project <https://github.com/GravityLabs/goose>`_.
+recently (Aug2011) been converted to a `scala project <https://github.com/GravityLabs/goose>`_.
 
-This is a complete rewrite in python. The aim of the software is to
+This is a complete rewrite in Python. The aim of the software is to
 take any news article or article-type web page and not only extract what
 is the main body of the article but also all meta data and most probable
 image candidate.
@@ -16,11 +16,11 @@ Goose will try to extract the following information:
 
 -  Main text of an article
 -  Main image of article
--  Any Youtube/Vimeo movies embedded in article
+-  Any YouTube/Vimeo movies embedded in article
 -  Meta Description
 -  Meta tags
 
-The python version was rewritten by:
+The Python version was rewritten by:
 
 -  Xavier Grangier
 
@@ -28,10 +28,10 @@ Licensing
 ---------
 
 If you find Goose useful or have issues please drop me a line. I'd love
-to hear how you're using it or what features should be improved
+to hear how you're using it or what features should be improved.
 
-Goose is licensed by Gravity.com under the Apache 2.0 license, see the
-LICENSE file for more details
+Goose is licensed by Gravity.com under the Apache 2.0 license; see the
+LICENSE file for more details.
 
 Setup
 -----
@@ -70,13 +70,13 @@ pass goose a Configuration() object. The second one is to pass a
 configuration dict.
 
 For instance, if you want to change the userAgent used by Goose just
-pass :
+pass:
 
 ::
 
     >>> g = Goose({'browser_user_agent': 'Mozilla'})
 
-Switching parsers : Goose can now be use with lxml html parser or lxml
+Switching parsers : Goose can now be used with lxml html parser or lxml
 soup parser. By default the html parser is used. If you want to use the
 soup parser pass it in the configuration dict :
 
@@ -87,8 +87,8 @@ soup parser pass it in the configuration dict :
 Goose is now language aware
 ---------------------------
 
-For example scrapping a Spanish content page with correct meta language
-tags
+For example, scraping a Spanish content page with correct meta language
+tags:
 
 ::
 
@@ -114,7 +114,7 @@ configuration :
     u'Importante golpe a la banda terrorista ETA en Francia. La Guardia Civil ha detenido en un hotel de Macon, a 70 kil\xf3metros de Lyon, a Izaskun Lesaka y '
 
 Passing {'use\_meta\_language': False, 'target\_language':'es'} will
-force as configuration will force the spanish language
+forcibly select Spanish.
 
 
 Video extraction
@@ -146,7 +146,7 @@ Goose in Chinese
 Some users want to use Goose for Chinese content. Chinese word
 segmentation is way more difficult to deal with than occidental
 languages. Chinese needs a dedicated StopWord analyser that need to be
-passed to the config object
+passed to the config object.
 
 ::
 
@@ -202,7 +202,7 @@ Known issues
 ------------
 
 - There are some issues with unicode URLs.
-- Cookie handling : Some websites need cookie handling. At the moment the only work around is to use the raw_html extraction. For instance ;
+- Cookie handling : Some websites need cookie handling. At the moment the only work around is to use the raw_html extraction. For instance:
 
     >>> import urllib2
     >>> import goose

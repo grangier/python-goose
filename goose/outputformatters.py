@@ -59,11 +59,11 @@ class OutputFormatter(object):
 
     def get_formatted_text(self):
         self.top_node = self.article.top_node
-        self.remove_negativescores_nodes()
+        # self.remove_negativescores_nodes()
         self.links_to_text()
         self.add_newline_to_br()
         self.replace_with_text()
-        self.remove_fewwords_paragraphs()
+        # self.remove_fewwords_paragraphs()
         return self.convert_to_text()
 
     def convert_to_text(self):
