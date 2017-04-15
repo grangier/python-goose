@@ -21,7 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import urllib2
-
+import cookielib
 
 class HtmlFetcher(object):
 
@@ -41,6 +41,10 @@ class HtmlFetcher(object):
         # utf-8 encode unicode url
         if isinstance(url, unicode):
             url = url.encode('utf-8')
+        
+        cookiejar = cookielib.LWPCookieJar()
+        opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookiejar))
+        urllib2.install_opener(opener)
 
         # set request
         self.request = urllib2.Request(
