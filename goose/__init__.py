@@ -98,3 +98,8 @@ class Goose(object):
                 " directory is not writeble, "
                 "you need to set this for image processing downloads"
             )
+        except OSError:
+            # it is possible that in cases where goose is running concurrently
+            # previous process may delete test.txt file which will cause current 
+            # process to raise OSError.
+            pass
