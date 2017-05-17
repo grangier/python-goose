@@ -60,13 +60,16 @@ class Goose(object):
 
     def crawl(self, crawl_candiate):
         parsers = list(self.config.available_parsers)
-        parsers.remove(self.config.parser_class)
-        try:
-            crawler = Crawler(self.config)
-            article = crawler.crawl(crawl_candiate)
-        except (UnicodeDecodeError, ValueError):
-            self.config.parser_class = parsers[0]
-            return self.crawl(crawl_candiate)
+        article = None
+        for parser in parsers:
+            try:
+                crawler = Crawler(self.config)
+                article = crawler.crawl(crawl_candiate)
+
+                break
+            except (UnicodeDecodeError, ValueError):
+                self.config.parser_class = parser
+                continue
         return article
 
     def initialize(self):
