@@ -144,12 +144,12 @@ class ContentExtractor(BaseExtractor):
 
     def is_boostable(self, node):
         """\
-        alot of times the first paragraph might be the caption under an image
+        a lot of times the first paragraph might be the caption under an image
         so we'll want to make sure if we're going to boost a parent node that
         it should be connected to other paragraphs,
         at least for the first n paragraphs so we'll want to make sure that
         the next sibling is a paragraph and has at
-        least some substatial weight to it
+        least some substantial weight to it
         """
         para = "p"
         steps_away = 0
