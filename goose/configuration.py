@@ -99,6 +99,10 @@ class Configuration(object):
         # http timeout
         self.http_timeout = HTTP_DEFAULT_TIMEOUT
 
+        # proxy settings
+        self.http_proxy = None
+        self.https_proxy = None
+
     def get_parser(self):
         return AVAILABLE_PARSERS[self.parser_class]
 
