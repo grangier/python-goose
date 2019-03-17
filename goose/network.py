@@ -30,6 +30,16 @@ class HtmlFetcher(object):
         # set header
         self.headers = {'User-agent': self.config.browser_user_agent}
 
+        proxies = {}
+        if self.config.http_proxy is not None:
+            proxies["http"] = self.config.http_proxy;
+        if self.config.https_proxy is not None:
+            proxies["https"] = self.config.https_proxy;
+        if len(proxies) > 0:
+            proxy = urllib2.ProxyHandler(proxies)
+            opener = urllib2.build_opener(proxy)
+            urllib2.install_opener(opener)
+
     def get_url(self):
         # if we have a result
         # get the final_url
