@@ -137,7 +137,7 @@ class StopWordsChinese(StopWords):
     Chinese segmentation
     """
     def __init__(self, language='zh'):
-        # force zh languahe code
+        # force zh language code
         super(StopWordsChinese, self).__init__(language='zh')
 
     def candiate_words(self, stripped_input):
@@ -153,7 +153,7 @@ class StopWordsArabic(StopWords):
     Arabic segmentation
     """
     def __init__(self, language='ar'):
-        # force ar languahe code
+        # force ar language code
         super(StopWordsArabic, self).__init__(language='ar')
 
     def remove_punctuation(self, content):

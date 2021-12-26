@@ -149,7 +149,7 @@ class ContentExtractor(BaseExtractor):
         it should be connected to other paragraphs,
         at least for the first n paragraphs so we'll want to make sure that
         the next sibling is a paragraph and has at
-        least some substatial weight to it
+        least some substantial weight to it
         """
         para = "p"
         steps_away = 0
@@ -181,7 +181,7 @@ class ContentExtractor(BaseExtractor):
 
     def add_siblings(self, top_node):
         # in case the extraction used known attributes
-        # we don't want to add sibilings
+        # we don't want to add siblings
         if self.is_articlebody(top_node):
             return top_node
         baselinescore_siblings_para = self.get_siblings_score(top_node)

@@ -204,12 +204,12 @@ class ImageUtilsTests(unittest.TestCase):
         for k, v in self.expected_results.items():
             self.assertEqual(getattr(image_detail, k), v)
 
-        # test image_detail get_ methode
+        # test image_detail get_ method
         for k, v in self.expected_results.items():
             attr = 'get_%s' % k
             self.assertEqual(getattr(image_detail, attr)(), v)
 
-        # test image_detail set_ methode
+        # test image_detail set_ method
         expected_results = {
             'width': 10,
             'height': 10,
