@@ -20,7 +20,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-from HTMLParser import HTMLParser
+from html import unescape as html_unescape
 from goose.text import innerTrim
 
 
@@ -71,7 +71,7 @@ class OutputFormatter(object):
         for node in list(self.get_top_node()):
             txt = self.parser.getText(node)
             if txt:
-                txt = HTMLParser().unescape(txt)
+                txt = html_unescape(txt)
                 txt_lis = innerTrim(txt).split(r'\n')
                 txts.extend(txt_lis)
         return '\n\n'.join(txts)
@@ -96,7 +96,7 @@ class OutputFormatter(object):
         gravity_items = self.parser.css_select(self.top_node, "*[gravityScore]")
         for item in gravity_items:
             score = self.parser.getAttribute(item, 'gravityScore')
-            score = int(score, 0)
+            score = int(float(score)) if score else 0
             if score < 1:
                 item.getparent().remove(item)
 

@@ -43,4 +43,4 @@ class AuthorsExtractor(BaseExtractor):
                 name = self.parser.getText(name_nodes[0])
                 authors.append(name)
 
-        return list(set(authors))
+        return list(dict.fromkeys(authors))

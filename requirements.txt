@@ -2,5 +2,5 @@ Pillow
 lxml
 cssselect
 jieba
-beautifulsoup
+beautifulsoup4
 nltk

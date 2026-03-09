@@ -23,9 +23,11 @@ limitations under the License.
 
 import os
 from setuptools import setup, find_packages
-from imp import load_source
+import importlib.util
 
-version = load_source("version", os.path.join("goose", "version.py"))
+_spec = importlib.util.spec_from_file_location("version", os.path.join("goose", "version.py"))
+version = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(version)
 
 CLASSIFIERS = [
     'Development Status :: 4 - Beta',
@@ -37,9 +39,12 @@ CLASSIFIERS = [
     'Operating System :: Microsoft :: Windows',
     'Programming Language :: Python',
     'Programming Language :: Python',
-    'Programming Language :: Python :: 2',
-    'Programming Language :: Python :: 2.6',
-    'Programming Language :: Python :: 2.7',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
     'Topic :: Internet',
     'Topic :: Utilities',
     'Topic :: Software Development :: Libraries :: Python Modules']
@@ -66,6 +71,6 @@ setup(name='goose-extractor',
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
-    install_requires=['Pillow', 'lxml', 'cssselect', 'jieba', 'beautifulsoup', 'nltk'],
+    install_requires=['Pillow', 'lxml', 'cssselect', 'jieba', 'beautifulsoup4', 'nltk'],
     test_suite="tests"
 )
