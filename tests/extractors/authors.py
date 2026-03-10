@@ -21,10 +21,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from base import TestExtractionBase
+from .base import TestExtractionBase
 
 
 class TestArticleAuthor(TestExtractionBase):
+
+    def assert_authors(self, field, expected_value, result_value):
+        self.assertEqual(set(expected_value), set(result_value))
 
     def test_author_schema(self):
         article = self.getArticle()

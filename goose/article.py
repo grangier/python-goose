@@ -26,31 +26,31 @@ class Article(object):
 
     def __init__(self):
         # title of the article
-        self.title = u""
+        self.title = ""
 
         # stores the lovely, pure text from the article,
         # stripped of html, formatting, etc...
         # just raw text with paragraphs separated by newlines.
         # This is probably what you want to use.
-        self.cleaned_text = u""
+        self.cleaned_text = ""
 
         # meta description field in HTML source
-        self.meta_description = u""
+        self.meta_description = ""
 
         # meta lang field in HTML source
-        self.meta_lang = u""
+        self.meta_lang = ""
 
         # meta favicon field in HTML source
-        self.meta_favicon = u""
+        self.meta_favicon = ""
 
         # meta keywords field in the HTML source
-        self.meta_keywords = u""
+        self.meta_keywords = ""
 
         # The canonical link of this article if found in the meta data
-        self.canonical_link = u""
+        self.canonical_link = ""
 
         # holds the domain of this article we're parsing
-        self.domain = u""
+        self.domain = ""
 
         # holds the top Element we think
         # is a candidate for the main body of the article
@@ -82,7 +82,7 @@ class Article(object):
 
         # stores the final URL that we're going to try
         # and fetch content against, this would be expanded if any
-        self.final_url = u""
+        self.final_url = ""
 
         # stores the MD5 hash of the url
         # to use for various identification tasks
@@ -90,7 +90,7 @@ class Article(object):
 
         # stores the RAW HTML
         # straight from the network connection
-        self.raw_html = u""
+        self.raw_html = ""
 
         # the lxml Document object
         self.doc = None

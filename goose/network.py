@@ -20,7 +20,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import urllib2
+from urllib.request import Request, urlopen
 
 
 class HtmlFetcher(object):
@@ -38,17 +38,13 @@ class HtmlFetcher(object):
         return None
 
     def get_html(self, url):
-        # utf-8 encode unicode url
-        if isinstance(url, unicode):
-            url = url.encode('utf-8')
-
         # set request
-        self.request = urllib2.Request(
+        self.request = Request(
                         url,
                         headers=self.headers)
         # do request
         try:
-            self.result = urllib2.urlopen(
+            self.result = urlopen(
                             self.request,
                             timeout=self.config.http_timeout)
         except Exception:

@@ -25,7 +25,7 @@ import re
 from goose.extractors import BaseExtractor
 
 
-TITLE_SPLITTERS = [u"|", u"-", u"»", u":"]
+TITLE_SPLITTERS = ["|", "-", "»", ":"]
 
 
 class TitleExtractor(BaseExtractor):
@@ -54,7 +54,7 @@ class TitleExtractor(BaseExtractor):
         # check for an empty title
         # so that we don't get an IndexError below
         if len(title_words) == 0:
-            return u""
+            return ""
 
         # check if first letter is in TITLE_SPLITTERS
         # if so remove it
@@ -67,7 +67,7 @@ class TitleExtractor(BaseExtractor):
             title_words.pop(-1)
 
         # rebuild the title
-        title = u" ".join(title_words).strip()
+        title = " ".join(title_words).strip()
 
         return title
 

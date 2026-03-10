@@ -22,11 +22,13 @@ limitations under the License.
 """
 import os
 import json
-import urllib2
 import unittest
 import socket
+import urllib.request
 
-from StringIO import StringIO
+from io import BytesIO
+from urllib.request import Request, urlopen, build_opener, install_opener, HTTPHandler, HTTPSHandler
+from urllib.response import addinfourl
 
 from goose import Goose
 from goose.utils import FileHelper
@@ -53,13 +55,14 @@ class MockResponse():
     def response(self, req):
         data = self.content(req)
         url = req.get_full_url()
-        resp = urllib2.addinfourl(StringIO(data), data, url)
+        data_bytes = data.encode('utf-8') if isinstance(data, str) else data
+        resp = addinfourl(BytesIO(data_bytes), data, url)
         resp.code = self.code
         resp.msg = self.msg
         return resp
 
 
-class MockHTTPHandler(urllib2.HTTPHandler, urllib2.HTTPSHandler):
+class MockHTTPHandler(HTTPHandler, HTTPSHandler):
     """\
     Mocked HTTPHandler in order to query APIs locally
     """
@@ -74,8 +77,8 @@ class MockHTTPHandler(urllib2.HTTPHandler, urllib2.HTTPSHandler):
 
     @staticmethod
     def patch(cls):
-        opener = urllib2.build_opener(MockHTTPHandler)
-        urllib2.install_opener(opener)
+        opener = build_opener(MockHTTPHandler)
+        install_opener(opener)
         # dirty !
         for h in opener.handlers:
             if isinstance(h, MockHTTPHandler):
@@ -84,8 +87,7 @@ class MockHTTPHandler(urllib2.HTTPHandler, urllib2.HTTPSHandler):
 
     @staticmethod
     def unpatch():
-        # urllib2
-        urllib2._opener = None
+        urllib.request._opener = None
 
 
 class BaseMockTests(unittest.TestCase):
@@ -114,7 +116,8 @@ class BaseMockTests(unittest.TestCase):
 
 class MockResponseExtractors(MockResponse):
     def content(self, req):
-        test, suite, module, cls, func = self.cls.id().split('.')
+        parts = self.cls.id().split('.')
+        suite, module, func = parts[-4], parts[-3], parts[-1]
         path = os.path.join(
                 os.path.dirname(CURRENT_PATH),
                 "data",
@@ -133,7 +136,8 @@ class TestExtractionBase(BaseMockTests):
     callback = MockResponseExtractors
 
     def getRawHtml(self):
-        test, suite, module, cls, func = self.id().split('.')
+        parts = self.id().split('.')
+        suite, module, func = parts[-4], parts[-3], parts[-1]
         path = os.path.join(
                 os.path.dirname(CURRENT_PATH),
                 "data",
@@ -148,7 +152,8 @@ class TestExtractionBase(BaseMockTests):
         """\
 
         """
-        test, suite, module, cls, func = self.id().split('.')
+        parts = self.id().split('.')
+        suite, module, func = parts[-4], parts[-3], parts[-1]
         path = os.path.join(
                 os.path.dirname(CURRENT_PATH),
                 "data",
@@ -172,16 +177,16 @@ class TestExtractionBase(BaseMockTests):
         # print result_value
 
         # cleaned_text is Null
-        msg = u"Resulting article text was NULL!"
+        msg = "Resulting article text was NULL!"
         self.assertNotEqual(result_value, None, msg=msg)
 
         # cleaned_text length
-        msg = u"Article text was not as long as expected beginning!"
+        msg = "Article text was not as long as expected beginning!"
         self.assertTrue(len(expected_value) <= len(result_value), msg=msg)
 
         # clean_text value
         result_value = result_value[0:len(expected_value)]
-        msg = u"The beginning of the article text was not as expected!"
+        msg = "The beginning of the article text was not as expected!"
         self.assertEqual(expected_value, result_value, msg=msg)
 
     def runArticleAssertions(self, article, fields):
@@ -199,7 +204,7 @@ class TestExtractionBase(BaseMockTests):
                 continue
 
             # default assertion
-            msg = u"Error %s \nexpected: %s\nresult: %s" % (field, expected_value, result_value)
+            msg = "Error %s \nexpected: %s\nresult: %s" % (field, expected_value, result_value)
             self.assertEqual(expected_value, result_value, msg=msg)
 
     def extract(self, instance):

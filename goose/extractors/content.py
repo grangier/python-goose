@@ -123,7 +123,7 @@ class ContentExtractor(BaseExtractor):
             parent_parent_node = self.parser.getParent(parent_node)
             if parent_parent_node is not None:
                 self.update_node_count(parent_parent_node, 1)
-                self.update_score(parent_parent_node, upscore / 2)
+                self.update_score(parent_parent_node, upscore // 2)
                 if parent_parent_node not in parent_nodes:
                     parent_nodes.append(parent_parent_node)
             cnt += 1
@@ -245,7 +245,7 @@ class ContentExtractor(BaseExtractor):
                 paragraphs_score += word_stats.get_stopword_count()
 
         if paragraphs_number > 0:
-            base = paragraphs_score / paragraphs_number
+            base = paragraphs_score // paragraphs_number
 
         return base
 
@@ -258,7 +258,7 @@ class ContentExtractor(BaseExtractor):
         current_score = 0
         score_string = self.parser.getAttribute(node, 'gravityScore')
         if score_string:
-            current_score = int(score_string)
+            current_score = int(float(score_string))
 
         new_score = current_score + addToScore
         self.parser.setAttribute(node, "gravityScore", str(new_score))
@@ -313,7 +313,7 @@ class ContentExtractor(BaseExtractor):
         grvScoreString = self.parser.getAttribute(node, 'gravityScore')
         if not grvScoreString:
             return None
-        return int(grvScoreString)
+        return int(float(grvScoreString))
 
     def nodes_to_check(self, doc):
         """\
