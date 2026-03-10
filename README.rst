@@ -1,4 +1,4 @@
-Python-Goose - Article Extractor |Build Status|
+Python-Goose - Article Extractor 
 ===============================================
 
 Intro
