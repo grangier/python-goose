@@ -25,8 +25,8 @@ import json
 import hashlib
 import unittest
 
-from base import MockResponse
-from base import TestExtractionBase
+from .base import MockResponse
+from .base import TestExtractionBase
 
 from goose.configuration import Configuration
 from goose.image import Image
@@ -41,7 +41,7 @@ CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 class MockResponseImage(MockResponse):
 
     def image_content(self, req):
-        md5_hash = hashlib.md5(req.get_full_url()).hexdigest()
+        md5_hash = hashlib.md5(req.get_full_url().encode('utf-8')).hexdigest()
         current_test = self.cls._get_current_testname()
         path = os.path.join(
                 os.path.dirname(CURRENT_PATH),
@@ -84,7 +84,8 @@ class ImageExtractionTests(TestExtractionBase):
         """\
 
         """
-        test, suite, module, cls, func = self.id().split('.')
+        parts = self.id().split('.')
+        suite, module, func = parts[-4], parts[-3], parts[-1]
         path = os.path.join(
                 os.path.dirname(CURRENT_PATH),
                 "data",
@@ -111,21 +112,21 @@ class ImageExtractionTests(TestExtractionBase):
     def assert_top_image(self, fields, expected_value, result_image):
         # test if the result value
         # is an Goose Image instance
-        msg = u"Result value is not a Goose Image instance"
+        msg = "Result value is not a Goose Image instance"
         self.assertTrue(isinstance(result_image, Image), msg=msg)
 
         # expected image
         expected_image = self.getExpectedImage(expected_value)
-        msg = u"Expected value is not a Goose Image instance"
+        msg = "Expected value is not a Goose Image instance"
         self.assertTrue(isinstance(expected_image, Image), msg=msg)
 
         # check
-        msg = u"Returned Image is not the one expected"
+        msg = "Returned Image is not the one expected"
         self.assertEqual(expected_image.src, result_image.src, msg=msg)
 
         fields = vars(expected_image)
         for k, v in fields.items():
-            msg = u"Returned Image attribute %s is not the one expected" % k
+            msg = "Returned Image attribute %s is not the one expected" % k
             self.assertEqual(getattr(expected_image, k), getattr(result_image, k), msg=msg)
 
     def test_basic_image(self):

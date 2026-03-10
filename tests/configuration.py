@@ -32,9 +32,9 @@ class TestTempDir(unittest.TestCase):
     def test_tmp_defaut(self):
         g = Goose()
         default_local_storage_path = os.path.join(tempfile.gettempdir(), 'goose')
-        self.assertEquals(g.config.local_storage_path, default_local_storage_path)
+        self.assertEqual(g.config.local_storage_path, default_local_storage_path)
 
     def test_tmp_overwritten(self):
         path = '/tmp/bla'
         g = Goose({'local_storage_path': path})
-        self.assertEquals(g.config.local_storage_path, path)
+        self.assertEqual(g.config.local_storage_path, path)

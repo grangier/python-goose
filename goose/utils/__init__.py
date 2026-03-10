@@ -26,7 +26,7 @@ import re
 import os
 import goose
 import codecs
-import urlparse
+from urllib.parse import urlparse as _urlparse
 
 
 class BuildURL(object):
@@ -38,7 +38,7 @@ class BuildURL(object):
         if o.hostname:
             return o.hotname
         elif self.finalurl:
-            oo = urlparse(self.finalurl)
+            oo = _urlparse(self.finalurl)
             if oo.hostname:
                 return oo.hostname
         return None
@@ -47,7 +47,7 @@ class BuildURL(object):
         if o.scheme:
             return o.scheme
         elif self.finalurl:
-            oo = urlparse(self.finalurl)
+            oo = _urlparse(self.finalurl)
             if oo.scheme:
                 return oo.scheme
         return 'http'
@@ -56,7 +56,7 @@ class BuildURL(object):
         """\
 
         """
-        url_obj = urlparse(self.url)
+        url_obj = _urlparse(self.url)
         scheme = self.getScheme(url_obj)
         hostname = self.getHostname(url_obj)
 
@@ -89,7 +89,7 @@ class ParsingCandidate(object):
 class RawHelper(object):
     @classmethod
     def get_parsing_candidate(self, url, raw_html):
-        if isinstance(raw_html, unicode):
+        if isinstance(raw_html, str):
             raw_html = raw_html.encode('utf-8')
         link_hash = '%s.%s' % (hashlib.md5(raw_html).hexdigest(), time.time())
         return ParsingCandidate(url, link_hash)
@@ -101,7 +101,7 @@ class URLHelper(object):
         # replace shebang is urls
         final_url = url_to_crawl.replace('#!', '?_escaped_fragment_=') \
                     if '#!' in url_to_crawl else url_to_crawl
-        link_hash = '%s.%s' % (hashlib.md5(final_url).hexdigest(), time.time())
+        link_hash = '%s.%s' % (hashlib.md5(final_url.encode('utf-8')).hexdigest(), time.time())
         return ParsingCandidate(final_url, link_hash)
 
 
@@ -113,7 +113,7 @@ class StringReplacement(object):
 
     def replaceAll(self, string):
         if not string:
-            return u''
+            return ''
         return string.replace(self.pattern, self.replaceWith)
 
 
@@ -124,7 +124,7 @@ class ReplaceSequence(object):
 
     #@classmethod
     def create(self, firstPattern, replaceWith=None):
-        result = StringReplacement(firstPattern, replaceWith or u'')
+        result = StringReplacement(firstPattern, replaceWith or '')
         self.replacements.append(result)
         return self
 
@@ -133,7 +133,7 @@ class ReplaceSequence(object):
 
     def replaceAll(self, string):
         if not string:
-            return u''
+            return ''
 
         mutatedString = string
 

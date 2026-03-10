@@ -56,7 +56,7 @@ class Parser(object):
 
     @classmethod
     def nodeToString(self, node):
-        return etree.tostring(node)
+        return etree.tostring(node, encoding='unicode')
 
     @classmethod
     def replaceTag(self, node, tag):
@@ -162,11 +162,11 @@ class Parser(object):
                 if prev is None:
                     if not parent.text:
                         parent.text = ''
-                    parent.text += u' ' + node.tail
+                    parent.text += ' ' + node.tail
                 else:
                     if not prev.tail:
                         prev.tail = ''
-                    prev.tail += u' ' + node.tail
+                    prev.tail += ' ' + node.tail
             node.clear()
             parent.remove(node)
 
@@ -177,7 +177,7 @@ class Parser(object):
     @classmethod
     def getText(self, node):
         txts = [i for i in node.itertext()]
-        return innerTrim(u' '.join(txts).strip())
+        return innerTrim(' '.join(txts).strip())
 
     @classmethod
     def previousSiblings(self, node):
