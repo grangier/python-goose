@@ -47,8 +47,8 @@ class TitleExtractor(BaseExtractor):
             title = pattern.sub("", title).strip()
 
         # split the title in words
-        # TechCrunch | my wonderfull article
-        # my wonderfull article | TechCrunch
+        # TechCrunch | my wonderful article
+        # my wonderful article | TechCrunch
         title_words = title.split()
 
         # check for an empty title
