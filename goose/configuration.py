@@ -39,7 +39,7 @@ class Configuration(object):
 
     def __init__(self):
         # What's the minimum bytes for an image we'd accept is,
-        # alot of times we want to filter out the author's little images
+        # a lot of times we want to filter out the author's little images
         # in the beginning of the article
         self.images_min_bytes = 4500
 
