@@ -99,6 +99,10 @@ class Configuration(object):
         # http timeout
         self.http_timeout = HTTP_DEFAULT_TIMEOUT
 
+        # default url scheme
+        # it will be use as fallback if url doesnt conain one
+        self.default_scheme = 'http://'
+
     def get_parser(self):
         return AVAILABLE_PARSERS[self.parser_class]
 

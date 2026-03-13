@@ -22,6 +22,7 @@ limitations under the License.
 """
 import os
 import platform
+import urllib2
 from tempfile import mkstemp
 
 from goose.version import version_info, __version__
@@ -52,6 +53,11 @@ class Goose(object):
         Main method to extract an article object from a URL,
         pass in a url and get back a Article
         """
+        scheme, address = urllib2.splittype(url)
+
+        if not scheme:
+            url = self.config.default_scheme + url
+
         cc = CrawlCandidate(self.config, url, raw_html)
         return self.crawl(cc)
 
