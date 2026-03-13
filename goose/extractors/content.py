@@ -29,6 +29,7 @@ KNOWN_ARTICLE_CONTENT_TAGS = [
     {'attr': 'itemprop', 'value': 'articleBody'},
     {'attr': 'class', 'value': 'post-content'},
     {'tag': 'article'},
+    {'attr': 'id', 'value': 'docText'},
 ]
 
 
